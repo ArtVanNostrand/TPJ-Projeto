@@ -1,0 +1,81 @@
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.exe
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.pdb
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\MonoGame.Framework.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.MediaFoundation.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XAudio2.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D11.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.DXGI.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct2D1.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Lidgren.Network.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XInput.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.RawInput.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D9.dll
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.MediaFoundation.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XAudio2.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D11.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.DXGI.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct2D1.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XInput.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.RawInput.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D9.xml
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.csprojResolveAssemblyReference.cache
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.exe
+C:\Users\Asus\Desktop\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.pdb
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.exe
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.pdb
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.exe
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.pdb
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\MonoGame.Framework.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.MediaFoundation.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XAudio2.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D11.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.DXGI.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct2D1.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Lidgren.Network.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XInput.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.RawInput.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D9.dll
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.MediaFoundation.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XAudio2.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D11.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.DXGI.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct2D1.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XInput.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.RawInput.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D9.xml
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Content\placeholder pacman.png
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Content\placeholder block.png
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.csprojResolveAssemblyReference.cache
+C:\Users\Asus\Desktop\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Content\pacman30.png
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.exe
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.pdb
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Content\pacman30.png
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Content\placeholder block.png
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Content\placeholder pacman.png
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.exe
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.pdb
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\MonoGame.Framework.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.MediaFoundation.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XAudio2.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D11.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.DXGI.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct2D1.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\Lidgren.Network.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XInput.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.RawInput.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D9.dll
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.MediaFoundation.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XAudio2.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D11.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.DXGI.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct2D1.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.XInput.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.RawInput.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D9.xml
+C:\Users\fill__000\Documents\Filipe\IPCA\1ºAno\2_Semestre\Tecnicas_de_Desenvolvimento_de_Jogos\PACMAN\Pac-Man Project\Pacman_Revolution\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.csprojResolveAssemblyReference.cache
