@@ -19,10 +19,9 @@ namespace Pacman_Revolution
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D pacman, block;
-        byte[,] board = new byte[20, 20]; 
-        byte[] pacmanloc = {1}; //isto está mal [,](new byte[20, 20])
-        int pX = 4, pY = 10;
-        //float lastAutomaticMove = 0f;
+        byte[,] board = new byte[20, 20];
+        byte[,] pacmanloc = new byte[20, 20];
+        int pX = 10, pY = 10;
         float lastHumanMove = 0f;
 
         public Game1()
@@ -86,33 +85,78 @@ namespace Pacman_Revolution
 
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-   
-
-            //if (lastHumanMove >= 1f / 15f)    //GAJO PÔS EM COMENTÁRIO
-            //{
+            if (lastHumanMove >= 1f / 10f)
+            {
+                int flag = 0;
 
                 lastHumanMove = 0f;
 
+
+
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 {
-                    if (canGoUp()) pY--;    //PUS canGoUp
+                    flag++;
+                    if (canGoUp() == true)
+                    {
+                        if (flag == 1)
+                        {
+                            board[pX, pY] = 0;
+                            pY--;
+                            board[pX, pY] = 1;
+                            pacman = Content.Load<Texture2D>("pacman30up");
+                        }
+                    }
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
-                    if (canGoDown()) pY++;
+                    flag++;
+                    if (canGoDown() == true)
+                    {
+                        if (flag == 1)
+                        {
+                            board[pX, pY] = 0;
+                            pY++;
+                            board[pX, pY] = 1;
+
+                            pacman = Content.Load<Texture2D>("pacman30down");
+                        }
+                    }
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Right))
                 {
-                    if (canGoRight()) pX++;
+                    flag++;
+                    if (canGoRight() == true)
+                    {
+                        if (flag == 1)
+                        {
+                            board[pX, pY] = 0;
+                            pX++;
+                            board[pX, pY] = 1;
+
+                            pacman = Content.Load<Texture2D>("pacman30right");
+                        }
+                    }
+                
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Left))
                 {
-                    if (canGoLeft()) pX--;
+                    if (canGoLeft() == true)
+                    {
+                        flag++;
+                        if (flag == 1)
+                        {
+                            board[pX, pY] = 0;
+                            pX--;
+                            board[pX, pY] = 1;
+
+                            pacman = Content.Load<Texture2D>("pacman30");
+                        }
+                    }
                 }
-            //} EM COMENTÁRIO
+            }
 
 
 
@@ -131,8 +175,15 @@ namespace Pacman_Revolution
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-  
-            //spriteBatch.Draw(pacman, new Vector2(300,300), Color.Yellow); EM COMENT
+
+            spriteBatch.Draw(block, new Vector2(250, 200));
+            spriteBatch.Draw(block, new Vector2(250, 210));
+            spriteBatch.Draw(block, new Vector2(250, 220));
+            spriteBatch.Draw(block, new Vector2(250, 230));
+            spriteBatch.Draw(block, new Vector2(250, 240));
+
+
+            //spriteBatch.Draw(pacman, new Vector2(300, 300), Color.Yellow);
 
             for (int x = 0; x < 20; x++)
             {
@@ -140,23 +191,13 @@ namespace Pacman_Revolution
                 {
                     if (board[x, y] != 0)
                     {
-                        spriteBatch.Draw(pacman, new Vector2(x * 30, y * 30));
+                        spriteBatch.Draw(pacman, new Vector2(x * 30, (y - 2) * 30));
                     }
-                    if (y >= pY && x >= pX && y < (pY + pacmanloc.GetLength(0)) && x < (pX + pacmanloc.GetLength(0)))
-                    {
-                        if (pacmanloc[x - pX] != 0 && pacmanloc[y - pY] != 0) //Troquei a ordem do x e do y
-                        {
-                            spriteBatch.Draw(pacman, new Vector2(x * 30, y * 30));
-                        }
-                    }
+                    
                 }
             }
 
 
-            spriteBatch.Draw(block, new Vector2(250, 230));
-      
-        
-          
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -166,13 +207,13 @@ namespace Pacman_Revolution
         private bool canGoUp()
         {
 
-            if (pY == 0)
+            if (pY == 2)
             {
                 return false;
             }
             else
             {
-                return canGo(pX, pY - 1);
+                return true;
             }
 
         }
@@ -180,13 +221,13 @@ namespace Pacman_Revolution
         private bool canGoDown()
         {
 
-            if (pY >= 22)
+            if (pY >= 19)
             {
                 return false;
             }
             else
             {
-                return canGo(pX, pY + 1);
+                return true;
             }
 
         }
@@ -194,13 +235,13 @@ namespace Pacman_Revolution
         private bool canGoLeft()
         {
 
-            if (pX == 0)
+            if (pX == 1)
             {
                 return false;
             }
             else
             {
-                return canGo(pX - 1, pY);
+                return true;
             }
 
         }
@@ -208,41 +249,19 @@ namespace Pacman_Revolution
         private bool canGoRight()
         {
 
-            if (pX == 10)
+            if (pX == 19)
             {
                 return false;
             }
             else
             {
-                return canGo(pX + 1, pY);
+                return true;
             }
 
         }
 
 
-        private bool canGo(int dX, int dY)
-        {
-            //Vamos supor que é possivel
-            // e procurar um contra exemplo
-
-
-            //for (int x = 0; x < piece.GetLength(1); x++)
-            //{
-            //    for (int y = 0; y < piece.GetLength(0); y++)
-            //    {
-            //        if (piece[y, x] != 0 && board[dX + x, dY + y] != 0)
-            //        {
-            //            return false;
-            //        }
-            //    }
-            //}
-            return true;
-        }
-
-
-
-
-
+       
 
 
 
