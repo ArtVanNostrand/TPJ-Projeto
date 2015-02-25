@@ -18,11 +18,18 @@ namespace Pacman_Revolution
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D pacman, block;
+        Texture2D pacman, block, pellet, black, ghost;
+        //board = 0 -> nada
+        //board = 1 -> pacman
+        //board = 2 -> bloco
+        //board = 3 -> pellet
+        //board = 4 -> ghost
         byte[,] board = new byte[20, 20];
-        byte[,] pacmanloc = new byte[20, 20];
-        int pX = 10, pY = 10;
+        byte[,] ghostboard = new byte[20, 20];
+        int pX = 10, pY = 10, gpX=2, gpY=2;
+        int pelletcont = 0;
         float lastHumanMove = 0f;
+        float lastGhostMove = 0f;
 
         public Game1()
             : base()
@@ -30,7 +37,7 @@ namespace Pacman_Revolution
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferHeight = 540;
             graphics.PreferredBackBufferWidth = 600;
         }
 
@@ -45,6 +52,22 @@ namespace Pacman_Revolution
             // TODO: Add your initialization logic here
             
             base.Initialize();
+
+            ghostboard[2, 2] = 1;
+
+            board[5, 2] = 3;
+            board[5, 3] = 3;
+            board[5, 4] = 3;
+            board[5, 5] = 3;
+            board[5, 6] = 3;
+            board[5, 7] = 3;
+
+            board[15, 2] = 3;
+            board[15, 3] = 3;
+            board[15, 4] = 3;
+            board[15, 5] = 3;
+            board[15, 6] = 3;
+            board[15, 7] = 3;
         }
 
         /// <summary>
@@ -57,6 +80,9 @@ namespace Pacman_Revolution
             spriteBatch = new SpriteBatch(GraphicsDevice);
             pacman = Content.Load<Texture2D>("pacman30");
             block = Content.Load<Texture2D>("placeholder block");
+            pellet = Content.Load<Texture2D>("pellet15");
+            black = Content.Load<Texture2D>("black");
+            ghost = Content.Load<Texture2D>("placeholderghost30");
 
             // TODO: use this.Content to load your game content here
         }
@@ -84,6 +110,19 @@ namespace Pacman_Revolution
 
 
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            lastGhostMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+
+            if (lastGhostMove >= 1f / 3f)
+            {
+                lastGhostMove = 0f;
+                if (gpX < 19)
+                {
+                    ghostboard[gpX, gpY] = 0;
+                    gpX++;
+                    ghostboard[gpX, gpY] = 1;
+                }
+            }
 
             if (lastHumanMove >= 1f / 10f)
             {
@@ -100,6 +139,10 @@ namespace Pacman_Revolution
                     {
                         if (flag == 1)
                         {
+                            if (board[pX, pY] == 3)
+                            {
+                                pelletcont++;
+                            }
                             board[pX, pY] = 0;
                             pY--;
                             board[pX, pY] = 1;
@@ -115,6 +158,10 @@ namespace Pacman_Revolution
                     {
                         if (flag == 1)
                         {
+                            if (board[pX, pY] == 3)
+                            {
+                                pelletcont++;
+                            }
                             board[pX, pY] = 0;
                             pY++;
                             board[pX, pY] = 1;
@@ -131,6 +178,10 @@ namespace Pacman_Revolution
                     {
                         if (flag == 1)
                         {
+                            if (board[pX, pY] == 3)
+                            {
+                                pelletcont++;
+                            }
                             board[pX, pY] = 0;
                             pX++;
                             board[pX, pY] = 1;
@@ -148,6 +199,10 @@ namespace Pacman_Revolution
                         flag++;
                         if (flag == 1)
                         {
+                            if (board[pX, pY] == 3)
+                            {
+                                pelletcont++;
+                            }
                             board[pX, pY] = 0;
                             pX--;
                             board[pX, pY] = 1;
@@ -176,11 +231,25 @@ namespace Pacman_Revolution
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(block, new Vector2(250, 200));
-            spriteBatch.Draw(block, new Vector2(250, 210));
-            spriteBatch.Draw(block, new Vector2(250, 220));
-            spriteBatch.Draw(block, new Vector2(250, 230));
-            spriteBatch.Draw(block, new Vector2(250, 240));
+            board[1, 10] = 2;
+            board[2, 10] = 2;
+            board[3, 10] = 2;
+            board[4, 10] = 2;
+            board[5, 10] = 2;
+
+            board[12, 10] = 2;
+            board[13, 10] = 2;
+            board[14, 10] = 2;
+            board[15, 10] = 2;
+
+            board[16, 10] = 2;
+            board[17, 10] = 2;
+            board[18, 10] = 2;
+            board[19, 10] = 2;
+
+            board[18, 19] = 2;
+            board[19, 19] = 2;           
+     
 
 
             //spriteBatch.Draw(pacman, new Vector2(300, 300), Color.Yellow);
@@ -189,13 +258,40 @@ namespace Pacman_Revolution
             {
                 for (int y = 0; y < 20; y++)
                 {
-                    if (board[x, y] != 0)
+
+                    if (board[x, y] == 0)
+                    {
+                        spriteBatch.Draw(black, new Vector2(x * 30, (y - 2) * 30));
+                    }
+                    if (board[x, y] == 1)
                     {
                         spriteBatch.Draw(pacman, new Vector2(x * 30, (y - 2) * 30));
+                    }
+                    if (board[x, y] == 2)
+                    {
+                        spriteBatch.Draw(block, new Vector2(x * 30, (y - 2) * 30));
+                    }
+                    if (board[x, y] == 3)
+                    {
+                        spriteBatch.Draw(pellet, new Vector2(x * 30, (y - 2) * 30));
+                    }
+                    //if (board[x, y] == 4)
+                    //{
+                    //    spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
+                    //}
+                    //if (ghostboard[x, y] == 0)
+                    //{
+                    //    spriteBatch.Draw(black, new Vector2(x * 30, (y - 2) * 30));
+                    //}
+                    if (ghostboard[x, y] == 1)
+                    {
+                        spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
                     }
                     
                 }
             }
+
+
 
 
             spriteBatch.End();
@@ -207,12 +303,13 @@ namespace Pacman_Revolution
         private bool canGoUp()
         {
 
-            if (pY == 2)
+            if (pY == 2 || board[pX,pY-1]==2)
             {
                 return false;
             }
             else
             {
+                
                 return true;
             }
 
@@ -221,12 +318,13 @@ namespace Pacman_Revolution
         private bool canGoDown()
         {
 
-            if (pY >= 19)
+            if (pY >= 19 || board[pX, pY + 1] == 2)
             {
                 return false;
             }
             else
             {
+               
                 return true;
             }
 
@@ -235,7 +333,7 @@ namespace Pacman_Revolution
         private bool canGoLeft()
         {
 
-            if (pX == 1)
+            if (pX == 0 || board[pX-1, pY] == 2)
             {
                 return false;
             }
@@ -249,7 +347,7 @@ namespace Pacman_Revolution
         private bool canGoRight()
         {
 
-            if (pX == 19)
+            if (pX == 19 || board[pX + 1, pY] == 2)
             {
                 return false;
             }
