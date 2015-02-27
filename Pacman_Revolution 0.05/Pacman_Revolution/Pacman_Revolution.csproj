@@ -50,6 +50,9 @@
     <Content Include="Content\black.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\greenghost30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\pacman30.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
