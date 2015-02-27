@@ -19,16 +19,16 @@ namespace Pacman_Revolution
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D pacman, block, pellet, black, ghost;
-        //board = 0 -> nada
+        //board = 0 -> nada/vazio
         //board = 1 -> pacman
         //board = 2 -> bloco
         //board = 3 -> pellet
-        //board = 4 -> ghost
         bool spacepressed = false;
-        byte[,] board = new byte[20, 20];
-        byte[,] ghostboard = new byte[20, 20];
+        //40x20
+        byte[,] board = new byte[40, 22]; //é preciso +2 no y (20 para 22)
+        byte[,] ghostboard = new byte[40, 22];//é preciso +2 no y (20 para 22)
         //last direction faced: up-1, down-2,right-3,left-4
-        int pX = 10, pY = 10, gpX=2, gpY=2, lastdirectionfaced=0;
+        int pX = 20, pY = 10, gpX=2, gpY=2, lastdirectionfaced=0;
         int pelletcont = 0, ghosttype=1;
         float lastHumanMove = 0f;
         float lastGhostMove = 0f;
@@ -38,9 +38,10 @@ namespace Pacman_Revolution
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 540;
-            graphics.PreferredBackBufferWidth = 600;
+            graphics.IsFullScreen = true;
+            //para chegar a estes valores temos de multiplicar por 30. Exemplo: 40(x)*30=1200
+            graphics.PreferredBackBufferWidth = 1200; //x
+            graphics.PreferredBackBufferHeight = 600; //y
         }
 
         /// <summary>
@@ -51,12 +52,12 @@ namespace Pacman_Revolution
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            
+
+           //Codigo apenas corre quando o progama é inicializado
             base.Initialize();
 
             ghostboard[2, 2] = 1;
-            board[10, 10] = 1;
+            board[20, 10] = 1;
 
             board[5, 2] = 3;
             board[5, 3] = 3;
@@ -85,7 +86,7 @@ namespace Pacman_Revolution
             block = Content.Load<Texture2D>("placeholder block");
             pellet = Content.Load<Texture2D>("pellet15");
             black = Content.Load<Texture2D>("black");
-            ghost = Content.Load<Texture2D>("greenghost30");
+            ghost = Content.Load<Texture2D>("purpleghost30");
 
             // TODO: use this.Content to load your game content here
         }
@@ -109,9 +110,6 @@ namespace Pacman_Revolution
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-
-
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastGhostMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             spacepressed = false;
@@ -119,7 +117,7 @@ namespace Pacman_Revolution
             int cooldown = 0, random1=0;
             Random rnd = new Random();
             int randommov = rnd.Next(1, 5);
-            ghosttype = 3;
+            ghosttype = 3; // apenas para testar as diferentes A.I. dos ghosts
 
             if (lastGhostMove >= 1f / 4f)
             {
@@ -547,6 +545,16 @@ namespace Pacman_Revolution
             board[18, 10] = 2;
             board[19, 10] = 2;
 
+            board[25, 10] = 2;
+            board[26, 10] = 2;
+            board[27, 10] = 2;
+            board[28, 10] = 2;
+            board[29, 10] = 2;
+            board[30, 10] = 2;
+
+
+            board[21, 19] = 2;
+            board[22, 19] = 2;  
             board[18, 19] = 2;
             board[19, 19] = 2;           
      
@@ -554,9 +562,9 @@ namespace Pacman_Revolution
 
             //spriteBatch.Draw(pacman, new Vector2(300, 300), Color.Yellow);
 
-            for (int x = 0; x < 20; x++)
+            for (int x = 0; x < 40; x++)
             {
-                for (int y = 0; y < 20; y++)
+                for (int y = 0; y < 22; y++)
                 {
 
                     if (board[x, y] == 0)
@@ -633,7 +641,7 @@ namespace Pacman_Revolution
         private bool canGoDown()
         {
 
-            if (pY >= 19 || board[pX, pY + 1] == 2)
+            if (pY >= 21 || board[pX, pY + 1] == 2)
             {
                 return false;
             }
@@ -648,7 +656,7 @@ namespace Pacman_Revolution
         private bool gcanGoDown()
         {
 
-            if (gpY >= 19 || board[gpX, gpY + 1] == 2)
+            if (gpY >= 21 || board[gpX, gpY + 1] == 2)
             {
                 return false;
             }
@@ -692,7 +700,7 @@ namespace Pacman_Revolution
         private bool canGoRight()
         {
 
-            if (pX == 19 || board[pX + 1, pY] == 2)
+            if (pX == 39 || board[pX + 1, pY] == 2)
             {
                 return false;
             }
@@ -706,7 +714,7 @@ namespace Pacman_Revolution
         private bool gcanGoRight()
         {
 
-            if (gpX == 19 || board[gpX + 1, gpY] == 2)
+            if (gpX == 39 || board[gpX + 1, gpY] == 2)
             {
                 return false;
             }

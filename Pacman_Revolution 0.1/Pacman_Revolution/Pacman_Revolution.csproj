@@ -50,6 +50,9 @@
     <Content Include="Content\black.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\blueghost30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\greenghost30.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -74,7 +77,7 @@
     <Content Include="Content\placeholder pacman.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\placeholderghost30.png">
+    <Content Include="Content\purpleghost30.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
