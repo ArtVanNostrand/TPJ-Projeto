@@ -50,6 +50,18 @@
     <Content Include="Content\30_Navy_Blue_Square.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\afterimage_pacman30down.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\afterimage_pacman30left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\afterimage_pacman30right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\afterimage_pacman30up.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\black.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
