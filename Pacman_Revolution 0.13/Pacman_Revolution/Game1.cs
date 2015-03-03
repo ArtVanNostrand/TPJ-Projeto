@@ -512,13 +512,14 @@ namespace Pacman_Revolution
                 {
                     if (spacepressed == false && Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
-                        lastDashMove = 0f;
+                        
                         //dash - mexe-o 5 unidades para o sentido que o pacman esta virado
                         if (lastdirectionfaced == 1)
                         {
                             cont1 = 0;
                             while (canGoUp() == true && cont1 < 5)
                             {
+                                lastDashMove = 0f;
                                 cont1++;
                                 board[pX, pY] = 0;
                                 pY--;
@@ -531,6 +532,7 @@ namespace Pacman_Revolution
                             cont1 = 0;
                             while (canGoDown() == true && cont1 < 5)
                             {
+                                lastDashMove = 0f;
                                 cont1++;
                                 board[pX, pY] = 0;
                                 pY++;
@@ -543,6 +545,7 @@ namespace Pacman_Revolution
                             cont1 = 0;
                             while (canGoRight() == true && cont1 < 5)
                             {
+                                lastDashMove = 0f;
                                 cont1++;
                                 board[pX, pY] = 0;
                                 pX++;
@@ -555,6 +558,7 @@ namespace Pacman_Revolution
                             cont1 = 0;
                             while (canGoLeft() == true && cont1 < 5)
                             {
+                                lastDashMove = 0f;
                                 cont1++;
                                 board[pX, pY] = 0;
                                 pX--;
