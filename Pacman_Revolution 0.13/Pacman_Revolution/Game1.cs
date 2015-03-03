@@ -19,7 +19,6 @@ namespace Pacman_Revolution
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D pacman, block, pellet, black, ghost;
-        Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown;
         //board = 0 -> nada/vazio
         //board = 1 -> pacman
         //board = 2 -> bloco
@@ -30,11 +29,10 @@ namespace Pacman_Revolution
         byte[,] ghostboard = new byte[40, 22];//é preciso +2 no y (20 para 22)
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
-        int pX = 20, pY = 10, auxpX=20, auxpY=10, gpX=2, gpY=2, lastdirectionfaced=0, gameover=0;
+        int pX = 20, pY = 10, gpX=2, gpY=2, lastdirectionfaced=0, gameover=0;
         int pelletcont = 0, ghosttype=1;
         float lastHumanMove = 0f;
         float lastGhostMove = 0f;
-        float lastAfterimage = -9999f;
         float lastDashMove = 10f;
 
         public Game1()
@@ -128,10 +126,6 @@ namespace Pacman_Revolution
             pellet = Content.Load<Texture2D>("pellet15");
             black = Content.Load<Texture2D>("black");
             ghost = Content.Load<Texture2D>("purpleghost30");
-            afterimageright = Content.Load<Texture2D>("afterimage_pacman30right");
-            afterimageup = Content.Load<Texture2D>("afterimage_pacman30up");
-            afterimagedown = Content.Load<Texture2D>("afterimage_pacman30down");
-            afterimageleft = Content.Load<Texture2D>("afterimage_pacman30left");
 
             // TODO: use this.Content to load your game content here
         }
@@ -158,7 +152,6 @@ namespace Pacman_Revolution
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastGhostMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastDashMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            lastAfterimage += (float)gameTime.ElapsedGameTime.TotalSeconds;
             spacepressed = false;
 
             int cooldown = 0, random1=0;
@@ -526,11 +519,9 @@ namespace Pacman_Revolution
                             cont1 = 0;
                             while (canGoUp() == true && cont1 < 5)
                             {
-                                lastAfterimage = 0f;
                                 lastDashMove = 0f;
-                                board[pX, pY] = 5;
                                 cont1++;
-                             
+                                board[pX, pY] = 0;
                                 pY--;
                                 board[pX, pY] = 1;
                                 spacepressed = true;
@@ -541,11 +532,9 @@ namespace Pacman_Revolution
                             cont1 = 0;
                             while (canGoDown() == true && cont1 < 5)
                             {
-                                lastAfterimage = 0f;
                                 lastDashMove = 0f;
-                                board[pX, pY] = 6;
                                 cont1++;
-                            
+                                board[pX, pY] = 0;
                                 pY++;
                                 board[pX, pY] = 1;
                                 spacepressed = true;
@@ -554,13 +543,11 @@ namespace Pacman_Revolution
                         if (lastdirectionfaced == 3)
                         {
                             cont1 = 0;
-
                             while (canGoRight() == true && cont1 < 5)
                             {
-                                lastAfterimage = 0f;
                                 lastDashMove = 0f;
-                                board[pX, pY] = 7;
                                 cont1++;
+                                board[pX, pY] = 0;
                                 pX++;
                                 board[pX, pY] = 1;
                                 spacepressed = true;
@@ -571,11 +558,9 @@ namespace Pacman_Revolution
                             cont1 = 0;
                             while (canGoLeft() == true && cont1 < 5)
                             {
-                                lastAfterimage = 0f;
                                 lastDashMove = 0f;
-                                board[pX, pY] = 8;
                                 cont1++;
-                       
+                                board[pX, pY] = 0;
                                 pX--;
                                 board[pX, pY] = 1;
                                 spacepressed = true;
@@ -606,23 +591,6 @@ namespace Pacman_Revolution
                     }
                 }
             }
-
-
-
-            if (lastAfterimage > 0.5f)
-            {
-                for (int x = 0; x < 40; x++)
-                {
-                    for (int y = 0; y < 22; y++)
-                    {
-                        if ((board[x, y] > 4) && (board[x, y] < 9))
-                        {
-                            board[x, y] = 0;
-                        }
-                    }
-                }
-            }
-
 
             base.Update(gameTime);
         }
@@ -655,7 +623,6 @@ namespace Pacman_Revolution
                     //board[x, y] == 1 -> pacman
                     //board[x, y] == 2 -> bloco
                     //board[x, y] == 3 -> pellet
-                    //board[x, y] == 5-8-> afterimages
                     //ghostboard[x, y] == 1 -> fantasma
                    
                     if (board[x, y] == 0)
@@ -673,22 +640,6 @@ namespace Pacman_Revolution
                     if (board[x, y] == 3)
                     {
                         spriteBatch.Draw(pellet, new Vector2(x * 30, (y - 2) * 30));
-                    }
-                    if (board[x, y] == 5)
-                    {
-                        spriteBatch.Draw(afterimageup, new Vector2(x * 30, (y - 2) * 30));
-                    }
-                    if (board[x, y] == 6)
-                    {
-                        spriteBatch.Draw(afterimagedown, new Vector2(x * 30, (y - 2) * 30));
-                    }
-                    if (board[x, y] == 7)
-                    {
-                        spriteBatch.Draw(afterimageright, new Vector2(x * 30, (y - 2) * 30));
-                    }
-                    if (board[x, y] == 8)
-                    {
-                        spriteBatch.Draw(afterimageleft, new Vector2(x * 30, (y - 2) * 30));
                     }
                     //if (board[x, y] == 4)
                     //{
