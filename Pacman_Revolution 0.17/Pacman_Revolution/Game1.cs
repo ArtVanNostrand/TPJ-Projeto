@@ -30,7 +30,7 @@ namespace Pacman_Revolution
         byte[,] ghostboard = new byte[40, 22];//é preciso +2 no y (20 para 22)
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
-        int pX = 20, pY = 10, auxpX=20, auxpY=10, gpX=2, gpY=2, lastdirectionfaced=0, gameover=0;
+        int pX = 0, pY = 12, auxpX=20, auxpY=10, gpX=16, gpY=12, lastdirectionfaced=0, gameover=0;
         int pelletcont = 0, ghosttype=1, flag2=0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
@@ -63,8 +63,8 @@ namespace Pacman_Revolution
 
 
             //inicializa o pacman e o ghost
-            ghostboard[2, 2] = 1;
-            board[20, 10] = 1;
+            //ghostboard[16, 12] = 1;
+            //board[0, 12] = 1;
 
 
             //começa a desenhar blocos e pellets
@@ -358,11 +358,10 @@ namespace Pacman_Revolution
             {
                 board[31, y] = 2;
             }
-            for (int y = 16; y < 20; y++)
+            for (int y = 16; y < 21; y++)
             {
                 board[31, y] = 2;
             }
-            board[31, 21] = 2;
 
             board[32, 3] = 2;
             board[32, 7] = 2;
@@ -372,7 +371,7 @@ namespace Pacman_Revolution
             {
                 board[32, y] = 2;
             }
-            board[32, 19] = 2;
+            board[32, 20] = 2;
 
             for (int y = 3; y < 6; y++)
             {
@@ -382,7 +381,7 @@ namespace Pacman_Revolution
             board[33, 14] = 2;
             board[33, 16] = 2;
             board[33, 17] = 2;
-            board[33, 19] = 2;
+            board[33, 18] = 2;
             board[33, 20] = 2;
 
             board[34, 7] = 2;
@@ -459,12 +458,6 @@ namespace Pacman_Revolution
                 board[30, y] = 2;
             }
 
-
-
-            //acaba de desenhar blocos e pellets
-
-
-           
         }
 
         /// <summary>
@@ -1113,9 +1106,6 @@ namespace Pacman_Revolution
 
             spriteBatch.Begin();
 
-
-
-
             //spriteBatch.Draw(pacman, new Vector2(300, 300), Color.Yellow);
 
             for (int x = 0; x < 40; x++)
@@ -1282,7 +1272,7 @@ namespace Pacman_Revolution
         private bool canGoRight()
         {
 
-            if (pX == 39 || board[pX + 1, pY] == 2)
+            if (pX == 34 || board[pX + 1, pY] == 2)
             {
                 return false;
             }
@@ -1306,11 +1296,6 @@ namespace Pacman_Revolution
             }
 
         }
-       
-
-
-
-
 
 
     }
