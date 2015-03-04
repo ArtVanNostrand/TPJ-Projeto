@@ -31,7 +31,8 @@ namespace Pacman_Revolution
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
         int pX = 20, pY = 10, auxpX=20, auxpY=10, gpX=2, gpY=2, lastdirectionfaced=0, gameover=0;
-        int pelletcont = 0, ghosttype=1;
+        int pelletcont = 0, ghosttype=1, flag2=0;
+        int[] repeat = new int[5];
         float lastHumanMove = 0f;
         float lastGhostMove = 0f;
         float lastAfterimage = -9999f;
@@ -69,46 +70,397 @@ namespace Pacman_Revolution
             //começa a desenhar blocos e pellets
             //board[x,y]=2 -> blocos
             //board[x,y]=3 -> pellets
-            for (int y = 1; y < 22; y++)
+            //Blocos
+            for (int y = 3; y < 7; y++)
             {
-                if ((y != 3) && (y != 11) && (y != 12) && (y != 13) && (y != 19))
-                {
-                    board[18, y] = 2;
-                }else{
-                    board[18, y] = 3;
-                }
+                board[1, y] = 2;
+            }
+            for (int y = 8; y < 12; y++)
+            {
+                board[1, y] = 2;
+            }
+            for (int y = 13; y < 16; y++)
+            {
+                board[1, y] = 2;
+            }
+            for (int y = 17; y < 21; y++)
+            {
+                board[1, y] = 2;
             }
 
-            for (int y = 18; y < 22; y++)
+            board[2, 11] = 2;
+            board[2, 13] = 2;
+
+            for (int y = 3; y < 6; y++)
             {
-                board[28, y] = 2;
+                board[3, y] = 2;
+            }
+            for (int y = 7; y < 10; y++)
+            {
+                board[3, y] = 2;
+            }
+            for (int y = 15; y < 18; y++)
+            {
+                board[3, y] = 2;
+            }
+            for (int y = 19; y < 22; y++)
+            {
+                board[3, y] = 2;
             }
 
-            for (int x = 5; x < 9; x++)
+            board[4, 3] = 2;
+            for (int y = 11; y < 14; y++)
             {
-                board[x, 4] = 3;
-                board[x, 5] = 2;
-                board[x, 6] = 3;
+                board[4, y] = 2;
+            }
+            board[4, 17] = 2;
+
+            for (int y = 5; y < 8; y++)
+            {
+                board[5, y] = 2;
+            }
+            board[5, 9] = 2;
+            board[5, 11] = 2;
+            board[5, 13] = 2;
+            board[5, 15] = 2;
+            board[5, 19] = 2;
+            board[5, 20] = 2;
+
+            board[6, 2] = 2;
+            board[6, 3] = 2;
+
+            for (int x = 8; x < 12; x++)
+            {
+                board[x, 3] = 2;
             }
 
-            for (int x = 5; x < 9; x++)
+            board[6, 9] = 2;
+            board[6, 11] = 2;
+            board[6, 13] = 2;
+            for (int y = 15; y < 18; y++)
             {
-                board[x, 16] = 3;
-                board[x, 17] = 2;
-                board[x, 18] = 3;
+                board[6, y] = 2;
+            }
+            board[6, 20] = 2;
+
+            board[7, 5] = 2;
+            board[7, 7] = 2;
+            board[7, 17] = 2;
+            board[7, 18] = 2;
+            board[7, 20] = 2;
+
+            board[8, 5] = 2;
+            for (int y = 7; y < 10; y++)
+            {
+                board[8, y] = 2;
+            }
+            board[8, 15] = 2;
+
+            board[9, 5] = 2;
+            board[9, 9] = 2;
+            board[9, 11] = 2;
+            board[9, 12] = 2;
+            board[9, 14] = 2;
+            board[9, 15] = 2;
+            for (int y = 17; y < 20; y++)
+            {
+                board[9, y] = 2;
+            }
+            board[9, 21] = 2;
+
+            board[10, 7] = 2;
+            board[10, 11] = 2;
+            board[10, 19] = 2;
+
+            for (int y = 5; y < 10; y++)
+            {
+                board[11, y] = 2;
+            }
+            board[11, 11] = 2;
+            board[11, 13] = 2;
+            board[11, 14] = 2;
+            board[11, 16] = 2;
+            board[11, 17] = 2;
+
+            for (int x = 10; x < 16; x++)
+            {
+                board[x, 21] = 2;
             }
 
-            for (int y = 2; y < 8; y++)
-            {
-                board[15, y] = 3;
-            }
+            board[12, 6] = 2;
+            board[12, 11] = 2;
+            board[12, 19] = 2;
 
-            for (int y = 13; y < 17; y++)
+            board[13, 2] = 2;
+            board[13, 4] = 2;
+            board[13, 6] = 2;
+            board[13, 8] = 2;
+            board[13, 9] = 2;
+            for (int y = 16; y < 20; y++)
             {
                 board[13, y] = 2;
             }
 
-         
+            board[14, 4] = 2;
+            board[14, 8] = 2;
+
+            for (int y = 3; y < 7; y++)
+            {
+                board[15, y] = 2;
+            }
+            board[15, 8] = 2;
+            for (int y = 11; y < 14; y++)
+            {
+                board[15, y] = 2;
+            }
+            for (int y = 16; y < 19; y++)
+            {
+                board[15, y] = 2;
+            }
+            board[15, 20] = 2;
+
+            board[16, 8] = 2;
+            board[16, 13] = 2;
+
+            board[17, 3] = 2;
+            board[17, 5] = 2;
+            board[17, 6] = 2;
+            for (int y = 11; y < 14; y++)
+            {
+                board[17, y] = 2;
+            }
+            for (int y = 16; y < 19; y++)
+            {
+                board[17, y] = 2;
+            }
+            board[17, 20] = 2;
+
+            board[18, 3] = 2;
+            board[18, 8] = 2;
+            board[18, 20] = 2;
+
+            for (int y = 5; y < 10; y++)
+            {
+                board[19, y] = 2;
+            }
+            for (int y = 14; y < 19; y++)
+            {
+                board[19, y] = 2;
+            }
+
+            board[20, 2] = 2;
+            board[20, 3] = 2;
+            board[20, 7] = 2;
+            board[20, 11] = 2;
+            board[20, 12] = 2;
+            board[20, 16] = 2;
+            board[20, 20] = 2;
+            board[20, 21] = 2;
+
+            board[21, 5] = 2;
+            board[21, 9] = 2;
+            for (int y = 12; y < 15; y++)
+            {
+                board[21, y] = 2;
+            }
+            board[21, 16] = 2;
+            board[21, 18] = 2;
+
+            for (int y = 3; y < 8; y++)
+            {
+                board[22, y] = 2;
+            }
+            board[22, 9] = 2;
+            board[22, 10] = 2;
+            board[22, 12] = 2;
+            for (int y = 18; y < 21; y++)
+            {
+                board[22, y] = 2;
+            }
+
+            for (int y = 14; y < 17; y++)
+            {
+                board[23, y] = 2;
+            }
+            board[23, 18] = 2;
+
+            for (int y = 3; y < 6; y++)
+            {
+                board[24, y] = 2;
+            }
+            for (int y = 7; y < 11; y++)
+            {
+                board[24, y] = 2;
+            }
+            board[24, 12] = 2;
+            board[24, 20] = 2;
+
+            board[25, 3] = 2;
+            board[25, 7] = 2;
+            for (int y = 12; y < 15; y++)
+            {
+                board[25, y] = 2;
+            }
+            board[25, 16] = 2;
+            for (int y = 18; y < 21; y++)
+            {
+                board[25, y] = 2;
+            }
+
+            board[26, 5] = 2;
+            board[26, 9] = 2;
+            board[26, 10] = 2;
+            board[26, 16] = 2;
+
+            for (int y = 2; y < 6; y++)
+            {
+                board[27, y] = 2;
+            }
+            for (int y = 7; y < 10; y++)
+            {
+                board[27, y] = 2;
+            }
+            for (int y = 16; y < 19; y++)
+            {
+                board[27, y] = 2;
+            }
+            board[27, 20] = 2;
+            board[27, 21] = 2;
+
+            board[28, 11] = 2;
+            board[28, 13] = 2;
+
+            board[29, 3] = 2;
+            for (int y = 5; y < 8; y++)
+            {
+                board[29, y] = 2;
+            }
+            board[29, 9] = 2;
+            board[29, 11] = 2;
+            board[29, 13] = 2;
+            for (int y = 15; y < 18; y++)
+            {
+                board[29, y] = 2;
+            }
+            for (int y = 19; y < 22; y++)
+            {
+                board[29, y] = 2;
+            }
+
+            board[30, 3] = 2;
+            board[30, 9] = 2;
+            for (int y = 11; y < 14; y++)
+            {
+                board[30, y] = 2;
+            }
+
+            for (int y = 5; y < 8; y++)
+            {
+                board[31, y] = 2;
+            }
+            for (int y = 16; y < 20; y++)
+            {
+                board[31, y] = 2;
+            }
+            board[31, 21] = 2;
+
+            board[32, 3] = 2;
+            board[32, 7] = 2;
+            board[32, 9] = 2;
+            board[32, 10] = 2;
+            for (int y = 12; y < 15; y++)
+            {
+                board[32, y] = 2;
+            }
+            board[32, 19] = 2;
+
+            for (int y = 3; y < 6; y++)
+            {
+                board[33, y] = 2;
+            }
+            board[33, 9] = 2;
+            board[33, 14] = 2;
+            board[33, 16] = 2;
+            board[33, 17] = 2;
+            board[33, 19] = 2;
+            board[33, 20] = 2;
+
+            board[34, 7] = 2;
+            board[34, 11] = 2;
+            board[34, 12] = 2;
+
+
+
+            //por as pellets
+            for (int x = 0; x < 35; x++)
+            {
+                for (int y = 2; y < 22; y++)
+                {
+                    if (board[x, y] != 2)
+                    {
+                        board[x, y] = 3;
+                    }
+                }
+            }
+
+            //zona fantasmas
+            for (int c = 3; c < 9; c++)
+            {
+                for (int l = 10; l < 15; l++)
+                {
+                    board[c, l] = 0;
+                }
+            }
+
+            for (int a = 13; a < 20; a++)
+            {
+                for (int b = 10; b < 16; b++)
+                {
+                    board[a, b] = 0;
+                }
+            }
+
+            for (int d = 26; d < 32; d++)
+            {
+                for (int e = 10; e < 16; e++)
+                {
+                    board[d, e] = 0;
+                }
+            }
+
+            //zona fantasma esquerda
+            for (int y = 11; y < 14; y++)
+            {
+                board[4, y] = 2;
+            }
+            board[5, 11] = 2;
+            board[5, 13] = 2;
+            board[6, 11] = 2;
+            board[6, 13] = 2;
+
+            //zona fantasma meio
+            for (int y = 11; y < 14; y++)
+            {
+                board[15, y] = 2;
+            }
+            board[16, 13] = 2;
+            for (int y = 11; y < 14; y++)
+            {
+                board[17, y] = 2;
+            }
+
+            //zona fantasma direita
+            board[28, 11] = 2;
+            board[28, 13] = 2;
+            board[29, 11] = 2;
+            board[29, 13] = 2;
+            for (int y = 11; y < 14; y++)
+            {
+                board[30, y] = 2;
+            }
+
+
+
             //acaba de desenhar blocos e pellets
 
 
@@ -127,7 +479,7 @@ namespace Pacman_Revolution
             block = Content.Load<Texture2D>("placeholder block");
             pellet = Content.Load<Texture2D>("pellet15");
             black = Content.Load<Texture2D>("black");
-            ghost = Content.Load<Texture2D>("purpleghost30");
+            ghost = Content.Load<Texture2D>("blueghost30");
             afterimageright = Content.Load<Texture2D>("afterimage_pacman30right");
             afterimageup = Content.Load<Texture2D>("afterimage_pacman30up");
             afterimagedown = Content.Load<Texture2D>("afterimage_pacman30down");
@@ -318,6 +670,7 @@ namespace Pacman_Revolution
                                     if (gcanGoUp() == true)
                                     {
                                         gpY--;
+                                        cooldown2 = 1;
                                     }
                                 }
                                 else
@@ -325,12 +678,132 @@ namespace Pacman_Revolution
                                     if (gcanGoDown() == true)
                                     {
                                         gpY++;
+                                        cooldown2 = 1;
                                     }
                                 }
 
                             }
                         }
                     }
+
+
+
+
+
+                    if (cooldown2 == 0)
+                    {
+                        if (repeat[1] + repeat[2] + repeat[3] + repeat[4] > 9)
+                        {
+                            for (int x = 0; x < 5; x++)
+                            {
+                                repeat[x] = 0;
+                            }
+                        }
+
+                        if (flag2 == 1)
+                        {
+                            if (gcanGoUp() == true)
+                            {
+                                flag2 = 0;
+                                //repeat[1]++;
+                                gpY--;
+                                cooldown2 = 1;
+                            }
+                        }
+                        if (flag2 == 2)
+                        {
+                            if (gcanGoLeft() == true)
+                            {
+                                flag2 = 0;
+                                //repeat[1]++;
+                                gpX--;
+                                cooldown2 = 1;
+                            }
+                        }
+                        if (flag2 == 3)
+                        {
+                            if (gcanGoDown() == true)
+                            {
+                                flag2 = 0;
+                                //repeat[1]++;
+                                gpY++;
+                                cooldown2 = 1;
+                            }
+                        }
+                        if (flag2 == 4)
+                        {
+                            if (gcanGoRight() == true)
+                            {
+                                flag2 = 0;
+                                //repeat[1]++;
+                                gpX++;
+                                cooldown2 = 1;
+                            }
+                        }
+                    }
+
+
+
+
+                        if (cooldown2 == 0)
+                        {
+                            if (gcanGoUp() == true)
+                            {
+                                if (repeat[1] < 5)
+                                {
+                                    flag2 = 1;
+                                    repeat[1]++;
+                                    gpY--;
+                                    cooldown2 = 1;
+                                }
+                            }
+                        }
+                    
+                            if (cooldown2 == 0)
+                            {
+                                if (gcanGoLeft() == true)
+                                {
+                                    if (repeat[2] < 5)
+                                    {
+                                        flag2 = 2;
+                                        repeat[2]++;
+                                        gpX--;
+                                        cooldown2 = 1;
+                                    }
+                                }
+                            }
+
+                            if (cooldown2 == 0)
+                            {
+                                if (gcanGoDown() == true)
+                                {
+                                    if (repeat[3] < 5)
+                                    {
+                                        flag2 = 3;
+                                        repeat[3]++;
+                                        gpY++;
+                                        cooldown2 = 1;
+                                    }
+                                }
+                            }
+
+                            if (cooldown2 == 0)
+                            {
+                                if (gcanGoRight() == true)
+                                {
+                                    if (repeat[4] < 5)
+                                    {
+                                        flag2 = 4;
+                                        repeat[4]++;
+                                        gpX++;
+                                        cooldown2 = 1;
+                                    }
+                                }
+                            }
+                         
+                           
+                       
+                    
                     ghostboard[gpX, gpY] = 1;
                 }//ghosttype==3
 
