@@ -18,8 +18,9 @@ namespace Pacman_Revolution
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D pacman, block, pellet, black, ghost;
+        Texture2D pacman, block, pellet, black, ghost, ghost2;
         Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown;
+        SpriteFont font1;
         //board = 0 -> nada/vazio
         //board = 1 -> pacman
         //board = 2 -> bloco
@@ -30,13 +31,14 @@ namespace Pacman_Revolution
         byte[,] ghostboard = new byte[40, 22];//é preciso +2 no y (20 para 22)
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
-        int pX = 0, pY = 12, auxpX=20, auxpY=10, gpX=16, gpY=12, lastdirectionfaced=0, gameover=0;
+        int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=16, gpY=12, lastdirectionfaced=0, gameover=0;
         int pelletcont = 0, ghosttype=1, flag2=0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
-        float lastGhostMove = 0f;
+        float lastGhostMove = 0f, ghostspeed=0f;
         float lastAfterimage = -9999f;
         float lastDashMove = 10f;
+        float totalgametime = 0f;
 
         public Game1()
             : base()
@@ -62,8 +64,8 @@ namespace Pacman_Revolution
             base.Initialize();
 
 
-            //inicializa o pacman e o ghost
-            //ghostboard[16, 12] = 1;
+
+            //ghostboard[1,1] = 2;
             //board[0, 12] = 1;
 
 
@@ -473,10 +475,13 @@ namespace Pacman_Revolution
             pellet = Content.Load<Texture2D>("pellet15");
             black = Content.Load<Texture2D>("black");
             ghost = Content.Load<Texture2D>("blueghost30");
+            ghost2 = Content.Load<Texture2D>("greenghost30");
             afterimageright = Content.Load<Texture2D>("afterimage_pacman30right");
             afterimageup = Content.Load<Texture2D>("afterimage_pacman30up");
             afterimagedown = Content.Load<Texture2D>("afterimage_pacman30down");
             afterimageleft = Content.Load<Texture2D>("afterimage_pacman30left");
+            font1 = Content.Load<SpriteFont>("SpriteFont1a");
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -504,7 +509,19 @@ namespace Pacman_Revolution
             lastGhostMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastDashMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastAfterimage += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            totalgametime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             spacepressed = false;
+
+
+            ghostspeed=4f;
+
+            if(totalgametime>60f){
+                ghostspeed=5f;
+            }
+            if(totalgametime>120f){
+                ghostspeed=6f;
+            }
+
 
             int cooldown = 0, random1=0;
             Random rnd = new Random();
@@ -520,7 +537,7 @@ namespace Pacman_Revolution
 
 
 
-            if (lastGhostMove >= 1f / 4f)
+            if (lastGhostMove >= 1f / ghostspeed)
             {
                 lastGhostMove = 0f;
 
@@ -803,6 +820,145 @@ namespace Pacman_Revolution
 
 
 
+
+
+
+                //segue o jogador +/- random
+                if (ghosttype == 4)
+                {
+                    ghostboard[gpX, gpY] = 0;
+                    int flag1, cooldown2;
+
+                    cooldown2 = 0;
+                    random1 = 0;
+                    flag1 = 0;
+
+                    if ((gpX != pX) && (gpY != pY))
+                    {
+                        random1 = rnd.Next(1, 3);
+                        flag1 = 1;
+                    }
+
+
+                 
+                    if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
+                    {
+                        if (gpX != pX)
+                        {
+                            if (gpX > pX)
+                            {
+                                if (gcanGoLeft() == true)
+                                {
+                                    gpX--;
+                                    cooldown2 = 1;
+                                }
+                            }
+                            else
+                            {
+                                if (gcanGoRight() == true)
+                                {
+                                    gpX++;
+                                    cooldown2 = 1;
+                                }
+                            }
+                        }
+                    }
+
+                    if (cooldown2 == 0)
+                    {
+                        if ((flag1 == 0) || (flag1 == 1 && random1 == 2))
+                        {
+                            if (gpY != pY)
+                            {
+                                if (gpY > pY)
+                                {
+                                    if (gcanGoUp() == true)
+                                    {
+                                        gpY--;
+                                        cooldown2 = 1;
+                                    }
+                                }
+                                else
+                                {
+                                    if (gcanGoDown() == true)
+                                    {
+                                        gpY++;
+                                        cooldown2 = 1;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
+
+
+                    if (cooldown2 == 0)
+                    {
+                        if (gcanGoUp() == true)
+                        {
+                            
+                                flag2 = 1;
+                        
+                                gpY--;
+                                cooldown2 = 1;
+                            
+                        }
+                    }
+
+                    if (cooldown2 == 0)
+                    {
+                        if (gcanGoLeft() == true)
+                        {
+                            
+                                flag2 = 2;
+                           
+                                gpX--;
+                                cooldown2 = 1;
+                            
+                        }
+                    }
+
+                    if (cooldown2 == 0)
+                    {
+                        if (gcanGoDown() == true)
+                        {
+                            
+                                flag2 = 3;
+                              
+                                gpY++;
+                                cooldown2 = 1;
+                            
+                        }
+                    }
+
+                    if (cooldown2 == 0)
+                    {
+                        if (gcanGoRight() == true)
+                        {
+                           
+                                flag2 = 4;
+                             
+                                gpX++;
+                                cooldown2 = 1;
+                            
+                        }
+                    }
+
+
+
+
+                    ghostboard[gpX, gpY] = 1;
+                    //auxgpX = gpX;
+                    //auxgpY = gpY;
+
+                }//ghosttype==4
+
+
+
+
+
+
                 ////segue o jogador deseparecendo as vezes
                 //if (ghosttype == 10)
                 //{
@@ -907,6 +1063,10 @@ namespace Pacman_Revolution
                             //apaga a posição antiga do pacman, mexe-o para baixo e desenha a nova posição
                             board[pX, pY] = 0;
                             pY--;
+                            if (board[pX, pY] == 3)
+                            {
+                                pelletcont++;
+                            }
                             board[pX, pY] = 1;
                             //
                             lastdirectionfaced = 1;
@@ -922,12 +1082,13 @@ namespace Pacman_Revolution
                     {
                         if (flag == 1)
                         {
+             
+                            board[pX, pY] = 0;
+                            pY++;
                             if (board[pX, pY] == 3)
                             {
                                 pelletcont++;
                             }
-                            board[pX, pY] = 0;
-                            pY++;
                             board[pX, pY] = 1;
                             lastdirectionfaced = 2;
 
@@ -943,12 +1104,13 @@ namespace Pacman_Revolution
                     {
                         if (flag == 1)
                         {
+                          
+                            board[pX, pY] = 0;
+                            pX++;
                             if (board[pX, pY] == 3)
                             {
                                 pelletcont++;
                             }
-                            board[pX, pY] = 0;
-                            pX++;
                             board[pX, pY] = 1;
                             lastdirectionfaced = 3;
                             pacman = Content.Load<Texture2D>("pacman30right");
@@ -964,12 +1126,13 @@ namespace Pacman_Revolution
                         flag++;
                         if (flag == 1)
                         {
+                          
+                            board[pX, pY] = 0;
+                            pX--;
                             if (board[pX, pY] == 3)
                             {
                                 pelletcont++;
                             }
-                            board[pX, pY] = 0;
-                            pX--;
                             board[pX, pY] = 1;
                             lastdirectionfaced = 4;
 
@@ -980,76 +1143,86 @@ namespace Pacman_Revolution
 
                 int cont1;
 
-
-                if (lastDashMove >= 10f)
+                if (pelletcont > 9)
                 {
-                    if (spacepressed == false && Keyboard.GetState().IsKeyDown(Keys.Space))
+                    if (lastDashMove >= 10f)
                     {
-                        
-                        //dash - mexe-o 5 unidades para o sentido que o pacman esta virado
-                        if (lastdirectionfaced == 1)
+                        if (spacepressed == false && Keyboard.GetState().IsKeyDown(Keys.Space))
                         {
-                            cont1 = 0;
-                            while (canGoUp() == true && cont1 < 5)
-                            {
-                                lastAfterimage = 0f;
-                                lastDashMove = 0f;
-                                board[pX, pY] = 5;
-                                cont1++;
-                             
-                                pY--;
-                                board[pX, pY] = 1;
-                                spacepressed = true;
-                            }
-                        }
-                        if (lastdirectionfaced == 2)
-                        {
-                            cont1 = 0;
-                            while (canGoDown() == true && cont1 < 5)
-                            {
-                                lastAfterimage = 0f;
-                                lastDashMove = 0f;
-                                board[pX, pY] = 6;
-                                cont1++;
-                            
-                                pY++;
-                                board[pX, pY] = 1;
-                                spacepressed = true;
-                            }
-                        }
-                        if (lastdirectionfaced == 3)
-                        {
-                            cont1 = 0;
 
-                            while (canGoRight() == true && cont1 < 5)
+                            //dash - mexe-o 5 unidades para o sentido que o pacman esta virado mas gasta 10 pellets
+                            if (lastdirectionfaced == 1)
                             {
-                                lastAfterimage = 0f;
-                                lastDashMove = 0f;
-                                board[pX, pY] = 7;
-                                cont1++;
-                                pX++;
-                                board[pX, pY] = 1;
-                                spacepressed = true;
+                                cont1 = 0;
+                                while (canGoUp() == true && cont1 < 5)
+                                {
+                                    lastAfterimage = 0f;
+                                    lastDashMove = 0f;
+                             
+                                    board[pX, pY] = 5;
+                                    cont1++;
+
+                                    pY--;
+                                    board[pX, pY] = 1;
+                                    spacepressed = true;
+                                }
                             }
-                        }
-                        if (lastdirectionfaced == 4)
-                        {
-                            cont1 = 0;
-                            while (canGoLeft() == true && cont1 < 5)
+                            if (lastdirectionfaced == 2)
                             {
-                                lastAfterimage = 0f;
-                                lastDashMove = 0f;
-                                board[pX, pY] = 8;
-                                cont1++;
-                       
-                                pX--;
-                                board[pX, pY] = 1;
-                                spacepressed = true;
+                                cont1 = 0;
+                                while (canGoDown() == true && cont1 < 5)
+                                {
+                                    lastAfterimage = 0f;
+                                    lastDashMove = 0f;
+                            
+                                    board[pX, pY] = 6;
+                                    cont1++;
+
+                                    pY++;
+                                    board[pX, pY] = 1;
+                                    spacepressed = true;
+                                }
                             }
+                            if (lastdirectionfaced == 3)
+                            {
+                                cont1 = 0;
+
+                                while (canGoRight() == true && cont1 < 5)
+                                {
+                                    lastAfterimage = 0f;
+                                    lastDashMove = 0f;
+                              
+                                    board[pX, pY] = 7;
+                                    cont1++;
+                                    pX++;
+                                    board[pX, pY] = 1;
+                                    spacepressed = true;
+                                }
+                            }
+                            if (lastdirectionfaced == 4)
+                            {
+                                cont1 = 0;
+                                while (canGoLeft() == true && cont1 < 5)
+                                {
+                                    lastAfterimage = 0f;
+                                    lastDashMove = 0f;
+                                  
+                                    board[pX, pY] = 8;
+                                    cont1++;
+
+                                    pX--;
+                                    board[pX, pY] = 1;
+                                    spacepressed = true;
+                                }
+                            }
+                            if (lastDashMove < 0.1f)
+                            {
+                                pelletcont = pelletcont - 10;
+                            }
+
                         }
 
                     }
-
                 }
             }
 
@@ -1088,6 +1261,8 @@ namespace Pacman_Revolution
                     }
                 }
             }
+
+           
 
 
             base.Update(gameTime);
@@ -1165,12 +1340,27 @@ namespace Pacman_Revolution
                     {
                         spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
                     }
+                    if (ghostboard[x, y] == 2)
+                    {
+                        spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
+                    }
                     
                 }
             }
 
 
 
+            spriteBatch.DrawString(font1, "Time: " + totalgametime, new Vector2(1040, 10), Color.White);
+
+            spriteBatch.DrawString(font1, "Pellets: " + pelletcont, new Vector2(1040, 50), Color.White);
+            if (lastDashMove > 10f)
+            {
+                spriteBatch.DrawString(font1, "Dash Ready!", new Vector2(1060, 150), Color.White);
+            }
+            else
+            {
+                spriteBatch.DrawString(font1, "Dash not ready yet!", new Vector2(1060, 150), Color.White);
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);
