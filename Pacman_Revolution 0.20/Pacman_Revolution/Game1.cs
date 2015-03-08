@@ -493,6 +493,16 @@ namespace Pacman_Revolution
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            pacman.Dispose();
+            block.Dispose();
+            pellet.Dispose();
+            black.Dispose();
+            ghost.Dispose();
+            ghost2.Dispose();
+            afterimageright.Dispose();
+            afterimageup.Dispose();
+            afterimagedown.Dispose();
+            afterimageleft.Dispose();
         }
 
         /// <summary>
