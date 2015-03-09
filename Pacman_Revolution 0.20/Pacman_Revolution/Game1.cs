@@ -31,8 +31,9 @@ namespace Pacman_Revolution
         byte[,] ghostboard = new byte[40, 22];//é preciso +2 no y (20 para 22)
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
-        int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=16, gpY=12, lastdirectionfaced=0, gameover=0;
-        int pelletcont = 0, ghosttype=1, flag2=0;
+        int[,] ghostcoords = new int[8, 2];   //guardar coordenadas dos vários fantasmas[número do fantasma, posição(0 = x; 1 = y)]
+        int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=13, gpY=10, lastdirectionfaced=0, gameover=0;
+        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount=0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
         float lastGhostMove = 0f, ghostspeed=0f;
@@ -63,7 +64,11 @@ namespace Pacman_Revolution
            //Codigo apenas corre quando o progama é inicializado
             base.Initialize();
 
-
+            for (linha = 0; linha < 8; linha++)
+            {
+                ghostcoords[linha, 0] = gpX + linha;
+                ghostcoords[linha, 1] = gpY;
+            }
 
             //ghostboard[1,1] = 2;
             //board[0, 12] = 1;
@@ -537,160 +542,100 @@ namespace Pacman_Revolution
             Random rnd = new Random();
             int randommov = rnd.Next(1, 5);
             ghosttype = 3; // apenas para testar as diferentes A.I. dos ghosts
-
-
-            //detetar se um fantasma apanhou o pacman
-            if (pX == gpX && pY == gpY)
-            {
-                gameover = 1;
-            }
-
-
-
-            if (lastGhostMove >= 1f / ghostspeed)
-            {
-                lastGhostMove = 0f;
-
-                //movimento completamente random
-                if (ghosttype == 1){
-                    ghostboard[gpX, gpY] = 0;
-                    if (randommov == 1)
-                    {
-                        if (gcanGoRight() == true)
-                        {
-                            gpX++;
-                        }
-                    }
-                    if (randommov == 2)
-                    {
-                        if (gcanGoLeft() == true)
-                        {
-                            gpX--;
-                        }
-                    }
-                    if (randommov == 3)
-                    {
-                        if (gcanGoDown() == true)
-                        {
-                            gpY++;
-                        }
-                    }
-                    if (randommov == 4)
-                    {
-                        if (gcanGoUp() == true)
-                        {
-                            gpY--;
-                        }
-                    }
-                    if (gpX == pX)
-                    {
-
-                    }
-
-                    ghostboard[gpX, gpY] = 1;
-                }//ghosttype==1
-
-
-                //segue o jogador mas prioritiza o x
-                if (ghosttype == 2)
+            
+                gpX = ghostcoords[ghostcount, 0];
+                gpY = ghostcoords[ghostcount, 1];
+                //detetar se um fantasma apanhou o pacman
+                if (pX == gpX && pY == gpY)
                 {
-                    ghostboard[gpX, gpY] = 0;
-                    cooldown = 0;
+                    gameover = 1;
+                }
 
-                    if (gpX != pX)
+
+
+                if (lastGhostMove >= 1f / ghostspeed)
+                {
+                    lastGhostMove = 0f;
+
+                    //movimento completamente random
+                    if (ghosttype == 1)
                     {
-
-                        if (gpX > pX){
-                            if (gcanGoLeft() == true)
-                            {
-                                gpX--;
-                                cooldown = 1;
-                            }
-                        }else{
+                        ghostboard[gpX, gpY] = 0;
+                        if (randommov == 1)
+                        {
                             if (gcanGoRight() == true)
                             {
                                 gpX++;
-                                cooldown = 1;
                             }
                         }
-
-                    }
-
-                    if (gpY != pY)
-                    {
-
-                        if (cooldown == 0)
+                        if (randommov == 2)
                         {
-                            if (gpY > pY)
+                            if (gcanGoLeft() == true)
                             {
-                                if (gcanGoUp() == true)
+                                gpX--;
+                            }
+                        }
+                        if (randommov == 3)
+                        {
+                            if (gcanGoDown() == true)
+                            {
+                                gpY++;
+                            }
+                        }
+                        if (randommov == 4)
+                        {
+                            if (gcanGoUp() == true)
+                            {
+                                gpY--;
+                            }
+                        }
+                        if (gpX == pX)
+                        {
+
+                        }
+                        if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
+                        else ghostboard[gpX, gpY] = 2;
+                    }//ghosttype==1
+
+
+                    //segue o jogador mas prioritiza o x
+                    if (ghosttype == 2)
+                    {
+                        ghostboard[gpX, gpY] = 0;
+                        cooldown = 0;
+
+                        if (gpX != pX)
+                        {
+
+                            if (gpX > pX)
+                            {
+                                if (gcanGoLeft() == true)
                                 {
-                                    gpY--;
+                                    gpX--;
+                                    cooldown = 1;
                                 }
                             }
                             else
                             {
-                                if (gcanGoDown() == true)
+                                if (gcanGoRight() == true)
                                 {
-                                    gpY++;
+                                    gpX++;
+                                    cooldown = 1;
                                 }
                             }
+
                         }
 
-                    }
-                    ghostboard[gpX, gpY] = 1;
-                }//ghosttype==2
-
-
-                //segue o jogador +/- random
-                if (ghosttype == 3)
-                {
-                    ghostboard[gpX, gpY] = 0;
-                    int flag1, cooldown2;
-
-                    cooldown2 = 0;
-                    random1 = 0;
-                    flag1 = 0;
-
-                    if ((gpX != pX) && (gpY != pY))
-                    {
-                        random1 = rnd.Next(1, 3);
-                        flag1 = 1;
-                    }
-
-                    if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
-                    {
-                        if (gpX != pX)
+                        if (gpY != pY)
                         {
-                                if (gpX > pX)
-                                {
-                                    if (gcanGoLeft() == true)
-                                    {
-                                        gpX--;
-                                        cooldown2 = 1;
-                                    }
-                                }else{
-                                    if (gcanGoRight() == true)
-                                    {
-                                        gpX++;
-                                        cooldown2 = 1;
-                                    }
-                                }
-                        }
-                    }
 
-                    if (cooldown2 == 0)
-                    {
-                        if ((flag1 == 0) || (flag1 == 1 && random1 == 2))
-                        {
-                            if (gpY != pY)
+                            if (cooldown == 0)
                             {
                                 if (gpY > pY)
                                 {
                                     if (gcanGoUp() == true)
                                     {
                                         gpY--;
-                                        cooldown2 = 1;
                                     }
                                 }
                                 else
@@ -698,69 +643,137 @@ namespace Pacman_Revolution
                                     if (gcanGoDown() == true)
                                     {
                                         gpY++;
+                                    }
+                                }
+                            }
+
+                        }
+                        if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
+                        else ghostboard[gpX, gpY] = 2;
+                    }//ghosttype==2
+
+
+                    //segue o jogador +/- random
+                    if (ghosttype == 3)
+                    {
+                        ghostboard[gpX, gpY] = 0;
+                        int flag1, cooldown2;
+
+                        cooldown2 = 0;
+                        random1 = 0;
+                        flag1 = 0;
+
+                        if ((gpX != pX) && (gpY != pY))
+                        {
+                            random1 = rnd.Next(1, 3);
+                            flag1 = 1;
+                        }
+
+                        if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
+                        {
+                            if (gpX != pX)
+                            {
+                                if (gpX > pX)
+                                {
+                                    if (gcanGoLeft() == true)
+                                    {
+                                        gpX--;
                                         cooldown2 = 1;
                                     }
                                 }
-
+                                else
+                                {
+                                    if (gcanGoRight() == true)
+                                    {
+                                        gpX++;
+                                        cooldown2 = 1;
+                                    }
+                                }
                             }
                         }
-                    }
 
-
-
-
-
-                    if (cooldown2 == 0)
-                    {
-                        if (repeat[1] + repeat[2] + repeat[3] + repeat[4] > 9)
+                        if (cooldown2 == 0)
                         {
-                            for (int x = 0; x < 5; x++)
+                            if ((flag1 == 0) || (flag1 == 1 && random1 == 2))
                             {
-                                repeat[x] = 0;
+                                if (gpY != pY)
+                                {
+                                    if (gpY > pY)
+                                    {
+                                        if (gcanGoUp() == true)
+                                        {
+                                            gpY--;
+                                            cooldown2 = 1;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (gcanGoDown() == true)
+                                        {
+                                            gpY++;
+                                            cooldown2 = 1;
+                                        }
+                                    }
+
+                                }
                             }
                         }
 
-                        if (flag2 == 1)
+
+
+
+
+                        if (cooldown2 == 0)
                         {
-                            if (gcanGoUp() == true)
+                            if (repeat[1] + repeat[2] + repeat[3] + repeat[4] > 9)
                             {
-                                flag2 = 0;
-                                //repeat[1]++;
-                                gpY--;
-                                cooldown2 = 1;
+                                for (int x = 0; x < 5; x++)
+                                {
+                                    repeat[x] = 0;
+                                }
+                            }
+
+                            if (flag2 == 1)
+                            {
+                                if (gcanGoUp() == true)
+                                {
+                                    flag2 = 0;
+                                    //repeat[1]++;
+                                    gpY--;
+                                    cooldown2 = 1;
+                                }
+                            }
+                            if (flag2 == 2)
+                            {
+                                if (gcanGoLeft() == true)
+                                {
+                                    flag2 = 0;
+                                    //repeat[1]++;
+                                    gpX--;
+                                    cooldown2 = 1;
+                                }
+                            }
+                            if (flag2 == 3)
+                            {
+                                if (gcanGoDown() == true)
+                                {
+                                    flag2 = 0;
+                                    //repeat[1]++;
+                                    gpY++;
+                                    cooldown2 = 1;
+                                }
+                            }
+                            if (flag2 == 4)
+                            {
+                                if (gcanGoRight() == true)
+                                {
+                                    flag2 = 0;
+                                    //repeat[1]++;
+                                    gpX++;
+                                    cooldown2 = 1;
+                                }
                             }
                         }
-                        if (flag2 == 2)
-                        {
-                            if (gcanGoLeft() == true)
-                            {
-                                flag2 = 0;
-                                //repeat[1]++;
-                                gpX--;
-                                cooldown2 = 1;
-                            }
-                        }
-                        if (flag2 == 3)
-                        {
-                            if (gcanGoDown() == true)
-                            {
-                                flag2 = 0;
-                                //repeat[1]++;
-                                gpY++;
-                                cooldown2 = 1;
-                            }
-                        }
-                        if (flag2 == 4)
-                        {
-                            if (gcanGoRight() == true)
-                            {
-                                flag2 = 0;
-                                //repeat[1]++;
-                                gpX++;
-                                cooldown2 = 1;
-                            }
-                        }
-                    }
 
 
 
@@ -778,502 +791,503 @@ namespace Pacman_Revolution
                                 }
                             }
                         }
-                    
-                            if (cooldown2 == 0)
-                            {
-                                if (gcanGoLeft() == true)
-                                {
-                                    if (repeat[2] < 5)
-                                    {
-                                        flag2 = 2;
-                                        repeat[2]++;
-                                        gpX--;
-                                        cooldown2 = 1;
-                                    }
-                                }
-                            }
 
-                            if (cooldown2 == 0)
-                            {
-                                if (gcanGoDown() == true)
-                                {
-                                    if (repeat[3] < 5)
-                                    {
-                                        flag2 = 3;
-                                        repeat[3]++;
-                                        gpY++;
-                                        cooldown2 = 1;
-                                    }
-                                }
-                            }
-
-                            if (cooldown2 == 0)
-                            {
-                                if (gcanGoRight() == true)
-                                {
-                                    if (repeat[4] < 5)
-                                    {
-                                        flag2 = 4;
-                                        repeat[4]++;
-                                        gpX++;
-                                        cooldown2 = 1;
-                                    }
-                                }
-                            }
-                         
-                           
-                       
-                    
-                    ghostboard[gpX, gpY] = 1;
-                }//ghosttype==3
-
-
-
-
-
-
-
-                //segue o jogador +/- random
-                if (ghosttype == 4)
-                {
-                    ghostboard[gpX, gpY] = 0;
-                    int flag1, cooldown2;
-
-                    cooldown2 = 0;
-                    random1 = 0;
-                    flag1 = 0;
-
-                    if ((gpX != pX) && (gpY != pY))
-                    {
-                        random1 = rnd.Next(1, 3);
-                        flag1 = 1;
-                    }
-
-
-                 
-                    if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
-                    {
-                        if (gpX != pX)
+                        if (cooldown2 == 0)
                         {
-                            if (gpX > pX)
+                            if (gcanGoLeft() == true)
                             {
-                                if (gcanGoLeft() == true)
+                                if (repeat[2] < 5)
                                 {
+                                    flag2 = 2;
+                                    repeat[2]++;
                                     gpX--;
                                     cooldown2 = 1;
                                 }
                             }
-                            else
+                        }
+
+                        if (cooldown2 == 0)
+                        {
+                            if (gcanGoDown() == true)
                             {
-                                if (gcanGoRight() == true)
+                                if (repeat[3] < 5)
                                 {
+                                    flag2 = 3;
+                                    repeat[3]++;
+                                    gpY++;
+                                    cooldown2 = 1;
+                                }
+                            }
+                        }
+
+                        if (cooldown2 == 0)
+                        {
+                            if (gcanGoRight() == true)
+                            {
+                                if (repeat[4] < 5)
+                                {
+                                    flag2 = 4;
+                                    repeat[4]++;
                                     gpX++;
                                     cooldown2 = 1;
                                 }
                             }
                         }
-                    }
 
-                    if (cooldown2 == 0)
+
+
+
+                        if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
+                        else ghostboard[gpX, gpY] = 2;
+                    }//ghosttype==3
+
+
+
+
+
+
+
+                    //segue o jogador +/- random
+                    if (ghosttype == 4)
                     {
-                        if ((flag1 == 0) || (flag1 == 1 && random1 == 2))
+                        ghostboard[gpX, gpY] = 0;
+                        int flag1, cooldown2;
+
+                        cooldown2 = 0;
+                        random1 = 0;
+                        flag1 = 0;
+
+                        if ((gpX != pX) && (gpY != pY))
                         {
-                            if (gpY != pY)
+                            random1 = rnd.Next(1, 3);
+                            flag1 = 1;
+                        }
+
+
+
+                        if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
+                        {
+                            if (gpX != pX)
                             {
-                                if (gpY > pY)
+                                if (gpX > pX)
                                 {
-                                    if (gcanGoUp() == true)
+                                    if (gcanGoLeft() == true)
                                     {
-                                        gpY--;
+                                        gpX--;
                                         cooldown2 = 1;
                                     }
                                 }
                                 else
                                 {
-                                    if (gcanGoDown() == true)
+                                    if (gcanGoRight() == true)
                                     {
-                                        gpY++;
+                                        gpX++;
                                         cooldown2 = 1;
                                     }
                                 }
-
                             }
                         }
-                    }
 
-
-
-                    if (cooldown2 == 0)
-                    {
-                        if (gcanGoUp() == true)
+                        if (cooldown2 == 0)
                         {
-                            
+                            if ((flag1 == 0) || (flag1 == 1 && random1 == 2))
+                            {
+                                if (gpY != pY)
+                                {
+                                    if (gpY > pY)
+                                    {
+                                        if (gcanGoUp() == true)
+                                        {
+                                            gpY--;
+                                            cooldown2 = 1;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (gcanGoDown() == true)
+                                        {
+                                            gpY++;
+                                            cooldown2 = 1;
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+
+
+                        if (cooldown2 == 0)
+                        {
+                            if (gcanGoUp() == true)
+                            {
+
                                 flag2 = 1;
-                        
+
                                 gpY--;
                                 cooldown2 = 1;
-                            
-                        }
-                    }
 
-                    if (cooldown2 == 0)
-                    {
-                        if (gcanGoLeft() == true)
+                            }
+                        }
+
+                        if (cooldown2 == 0)
                         {
-                            
+                            if (gcanGoLeft() == true)
+                            {
+
                                 flag2 = 2;
-                           
+
                                 gpX--;
                                 cooldown2 = 1;
-                            
-                        }
-                    }
 
-                    if (cooldown2 == 0)
-                    {
-                        if (gcanGoDown() == true)
+                            }
+                        }
+
+                        if (cooldown2 == 0)
                         {
-                            
+                            if (gcanGoDown() == true)
+                            {
+
                                 flag2 = 3;
-                              
+
                                 gpY++;
                                 cooldown2 = 1;
-                            
-                        }
-                    }
 
-                    if (cooldown2 == 0)
-                    {
-                        if (gcanGoRight() == true)
+                            }
+                        }
+
+                        if (cooldown2 == 0)
                         {
-                           
+                            if (gcanGoRight() == true)
+                            {
+
                                 flag2 = 4;
-                             
+
                                 gpX++;
                                 cooldown2 = 1;
-                            
-                        }
-                    }
 
-
-
-
-                    ghostboard[gpX, gpY] = 1;
-                    //auxgpX = gpX;
-                    //auxgpY = gpY;
-
-                }//ghosttype==4
-
-
-
-
-
-
-                ////segue o jogador deseparecendo as vezes
-                //if (ghosttype == 10)
-                //{
-                //    ghostboard[gpX, gpY] = 0;
-                //    int flag1;
-
-                //    flag1 = 0;
-
-                //    if ((gpX != pX) && (gpY != pY))
-                //    {
-                //        random1 = rnd.Next(1, 2);
-                //        flag1 = 1;
-                //    }
-
-                //    if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
-                //    {
-                //        if (gpX != pX)
-                //        {
-                //            if (flag1 == 1 && random1 == 1)
-                //            {
-                //                if (gpX > pX)
-                //                {
-                //                    if (gcanGoLeft() == true)
-                //                    {
-                //                        gpX--;
-
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    if (gcanGoRight() == true)
-                //                    {
-                //                        gpX++;
-
-                //                    }
-                //                }
-
-                //            }
-                //        }
-                //    }
-
-                //        if ((flag1 == 0) || (flag1 == 1 && random1 == 2))
-                //        {
-                //            if (gpY != pY)
-                //            {
-
-
-                //                if (cooldown == 0)
-                //                {
-                //                    if (gpY > pY)
-                //                    {
-                //                        if (gcanGoUp() == true)
-                //                        {
-                //                            gpY--;
-                //                        }
-                //                    }
-                //                    else
-                //                    {
-                //                        if (gcanGoDown() == true)
-                //                        {
-                //                            gpY++;
-                //                        }
-                //                    }
-                //                }
-
-                //            }
-
-                //            if (gpX == pX)
-                //            {
-
-                //            }
-
-                //            ghostboard[gpX, gpY] = 1;
-                //        }
-
-                //    }//ghosttype==10
-
-                
-
-                
-            }
-
-            if (lastHumanMove >= 1f / 10f)
-            {
-                int flag = 0;
-
-                lastHumanMove = 0f;
-
-
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                {
-                    flag++;
-                    if (canGoUp() == true)
-                    {
-                        if (flag == 1)
-                        {
-                            if (board[pX, pY] == 3)
-                            {
-                                pelletcont++;
                             }
-                            //apaga a posição antiga do pacman, mexe-o para baixo e desenha a nova posição
-                            board[pX, pY] = 0;
-                            pY--;
-                            if (board[pX, pY] == 3)
-                            {
-                                pelletcont++;
-                            }
-                            board[pX, pY] = 1;
-                            //
-                            lastdirectionfaced = 1;
-                            pacman = Content.Load<Texture2D>("pacman30up");
                         }
-                    }
+
+
+
+
+                        if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
+                        else ghostboard[gpX, gpY] = 2;
+                        //auxgpX = gpX;
+                        //auxgpY = gpY;
+
+                    }//ghosttype==4
+
+
+
+
+
+
+                    ////segue o jogador deseparecendo as vezes
+                    //if (ghosttype == 10)
+                    //{
+                    //    ghostboard[gpX, gpY] = 0;
+                    //    int flag1;
+
+                    //    flag1 = 0;
+
+                    //    if ((gpX != pX) && (gpY != pY))
+                    //    {
+                    //        random1 = rnd.Next(1, 2);
+                    //        flag1 = 1;
+                    //    }
+
+                    //    if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
+                    //    {
+                    //        if (gpX != pX)
+                    //        {
+                    //            if (flag1 == 1 && random1 == 1)
+                    //            {
+                    //                if (gpX > pX)
+                    //                {
+                    //                    if (gcanGoLeft() == true)
+                    //                    {
+                    //                        gpX--;
+
+                    //                    }
+                    //                }
+                    //                else
+                    //                {
+                    //                    if (gcanGoRight() == true)
+                    //                    {
+                    //                        gpX++;
+
+                    //                    }
+                    //                }
+
+                    //            }
+                    //        }
+                    //    }
+
+                    //        if ((flag1 == 0) || (flag1 == 1 && random1 == 2))
+                    //        {
+                    //            if (gpY != pY)
+                    //            {
+
+
+                    //                if (cooldown == 0)
+                    //                {
+                    //                    if (gpY > pY)
+                    //                    {
+                    //                        if (gcanGoUp() == true)
+                    //                        {
+                    //                            gpY--;
+                    //                        }
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        if (gcanGoDown() == true)
+                    //                        {
+                    //                            gpY++;
+                    //                        }
+                    //                    }
+                    //                }
+
+                    //            }
+
+                    //            if (gpX == pX)
+                    //            {
+
+                    //            }
+
+                    //            ghostboard[gpX, gpY] = 1;
+                    //        }
+
+                    //    }//ghosttype==10
+
+
+                    ghostcoords[ghostcount, 0] = gpX;
+                    ghostcoords[ghostcount, 1] = gpY;
+                    ghostcount++;
+                    if (ghostcount == 2) ghostcount = 0;
                 }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                if (lastHumanMove >= 1f / 10f)
                 {
-                    flag++;
-                    if (canGoDown() == true)
-                    {
-                        if (flag == 1)
-                        {
-             
-                            board[pX, pY] = 0;
-                            pY++;
-                            if (board[pX, pY] == 3)
-                            {
-                                pelletcont++;
-                            }
-                            board[pX, pY] = 1;
-                            lastdirectionfaced = 2;
+                    int flag = 0;
 
-                            pacman = Content.Load<Texture2D>("pacman30down");
-                        }
-                    }
-                }
+                    lastHumanMove = 0f;
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    flag++;
-                    if (canGoRight() == true)
-                    {
-                        if (flag == 1)
-                        {
-                          
-                            board[pX, pY] = 0;
-                            pX++;
-                            if (board[pX, pY] == 3)
-                            {
-                                pelletcont++;
-                            }
-                            board[pX, pY] = 1;
-                            lastdirectionfaced = 3;
-                            pacman = Content.Load<Texture2D>("pacman30right");
-                        }
-                    }
 
-                }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    if (canGoLeft() == true)
+                    if (Keyboard.GetState().IsKeyDown(Keys.Up))
                     {
                         flag++;
-                        if (flag == 1)
+                        if (canGoUp() == true)
                         {
-                          
-                            board[pX, pY] = 0;
-                            pX--;
-                            if (board[pX, pY] == 3)
+                            if (flag == 1)
                             {
-                                pelletcont++;
+                                if (board[pX, pY] == 3)
+                                {
+                                    pelletcont++;
+                                }
+                                //apaga a posição antiga do pacman, mexe-o para baixo e desenha a nova posição
+                                board[pX, pY] = 0;
+                                pY--;
+                                if (board[pX, pY] == 3)
+                                {
+                                    pelletcont++;
+                                }
+                                board[pX, pY] = 1;
+                                //
+                                lastdirectionfaced = 1;
+                                pacman = Content.Load<Texture2D>("pacman30up");
                             }
-                            board[pX, pY] = 1;
-                            lastdirectionfaced = 4;
+                        }
+                    }
 
-                            pacman = Content.Load<Texture2D>("pacman30");
+                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    {
+                        flag++;
+                        if (canGoDown() == true)
+                        {
+                            if (flag == 1)
+                            {
+
+                                board[pX, pY] = 0;
+                                pY++;
+                                if (board[pX, pY] == 3)
+                                {
+                                    pelletcont++;
+                                }
+                                board[pX, pY] = 1;
+                                lastdirectionfaced = 2;
+
+                                pacman = Content.Load<Texture2D>("pacman30down");
+                            }
+                        }
+                    }
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                    {
+                        flag++;
+                        if (canGoRight() == true)
+                        {
+                            if (flag == 1)
+                            {
+
+                                board[pX, pY] = 0;
+                                pX++;
+                                if (board[pX, pY] == 3)
+                                {
+                                    pelletcont++;
+                                }
+                                board[pX, pY] = 1;
+                                lastdirectionfaced = 3;
+                                pacman = Content.Load<Texture2D>("pacman30right");
+                            }
+                        }
+
+                    }
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                    {
+                        if (canGoLeft() == true)
+                        {
+                            flag++;
+                            if (flag == 1)
+                            {
+
+                                board[pX, pY] = 0;
+                                pX--;
+                                if (board[pX, pY] == 3)
+                                {
+                                    pelletcont++;
+                                }
+                                board[pX, pY] = 1;
+                                lastdirectionfaced = 4;
+
+                                pacman = Content.Load<Texture2D>("pacman30");
+                            }
+                        }
+                    }
+
+                    int cont1;
+
+                    if (pelletcont > 9)
+                    {
+                        if (lastDashMove >= 10f)
+                        {
+                            if (spacepressed == false && Keyboard.GetState().IsKeyDown(Keys.Space))
+                            {
+
+                                //dash - mexe-o 5 unidades para o sentido que o pacman esta virado mas gasta 10 pellets
+                                if (lastdirectionfaced == 1)
+                                {
+                                    cont1 = 0;
+                                    while (canGoUp() == true && cont1 < 5)
+                                    {
+                                        lastAfterimage = 0f;
+                                        lastDashMove = 0f;
+
+                                        board[pX, pY] = 5;
+                                        cont1++;
+
+                                        pY--;
+                                        board[pX, pY] = 1;
+                                        spacepressed = true;
+                                    }
+                                }
+                                if (lastdirectionfaced == 2)
+                                {
+                                    cont1 = 0;
+                                    while (canGoDown() == true && cont1 < 5)
+                                    {
+                                        lastAfterimage = 0f;
+                                        lastDashMove = 0f;
+
+                                        board[pX, pY] = 6;
+                                        cont1++;
+
+                                        pY++;
+                                        board[pX, pY] = 1;
+                                        spacepressed = true;
+                                    }
+                                }
+                                if (lastdirectionfaced == 3)
+                                {
+                                    cont1 = 0;
+
+                                    while (canGoRight() == true && cont1 < 5)
+                                    {
+                                        lastAfterimage = 0f;
+                                        lastDashMove = 0f;
+
+                                        board[pX, pY] = 7;
+                                        cont1++;
+                                        pX++;
+                                        board[pX, pY] = 1;
+                                        spacepressed = true;
+                                    }
+                                }
+                                if (lastdirectionfaced == 4)
+                                {
+                                    cont1 = 0;
+                                    while (canGoLeft() == true && cont1 < 5)
+                                    {
+                                        lastAfterimage = 0f;
+                                        lastDashMove = 0f;
+
+                                        board[pX, pY] = 8;
+                                        cont1++;
+
+                                        pX--;
+                                        board[pX, pY] = 1;
+                                        spacepressed = true;
+                                    }
+                                }
+                                if (lastDashMove < 0.1f)
+                                {
+                                    pelletcont = pelletcont - 10;
+                                }
+
+                            }
+
                         }
                     }
                 }
 
-                int cont1;
 
-                if (pelletcont > 9)
+
+                //detetar se um fantasma apanhou o pacman
+                if (pX == gpX && pY == gpY)
                 {
-                    if (lastDashMove >= 10f)
-                    {
-                        if (spacepressed == false && Keyboard.GetState().IsKeyDown(Keys.Space))
-                        {
-
-                            //dash - mexe-o 5 unidades para o sentido que o pacman esta virado mas gasta 10 pellets
-                            if (lastdirectionfaced == 1)
-                            {
-                                cont1 = 0;
-                                while (canGoUp() == true && cont1 < 5)
-                                {
-                                    lastAfterimage = 0f;
-                                    lastDashMove = 0f;
-                             
-                                    board[pX, pY] = 5;
-                                    cont1++;
-
-                                    pY--;
-                                    board[pX, pY] = 1;
-                                    spacepressed = true;
-                                }
-                            }
-                            if (lastdirectionfaced == 2)
-                            {
-                                cont1 = 0;
-                                while (canGoDown() == true && cont1 < 5)
-                                {
-                                    lastAfterimage = 0f;
-                                    lastDashMove = 0f;
-                            
-                                    board[pX, pY] = 6;
-                                    cont1++;
-
-                                    pY++;
-                                    board[pX, pY] = 1;
-                                    spacepressed = true;
-                                }
-                            }
-                            if (lastdirectionfaced == 3)
-                            {
-                                cont1 = 0;
-
-                                while (canGoRight() == true && cont1 < 5)
-                                {
-                                    lastAfterimage = 0f;
-                                    lastDashMove = 0f;
-                              
-                                    board[pX, pY] = 7;
-                                    cont1++;
-                                    pX++;
-                                    board[pX, pY] = 1;
-                                    spacepressed = true;
-                                }
-                            }
-                            if (lastdirectionfaced == 4)
-                            {
-                                cont1 = 0;
-                                while (canGoLeft() == true && cont1 < 5)
-                                {
-                                    lastAfterimage = 0f;
-                                    lastDashMove = 0f;
-                                  
-                                    board[pX, pY] = 8;
-                                    cont1++;
-
-                                    pX--;
-                                    board[pX, pY] = 1;
-                                    spacepressed = true;
-                                }
-                            }
-                            if (lastDashMove < 0.1f)
-                            {
-                                pelletcont = pelletcont - 10;
-                            }
-
-                        }
-
-                    }
+                    gameover = 1;
                 }
-            }
 
-
-
-            //detetar se um fantasma apanhou o pacman
-            if (pX == gpX && pY == gpY)
-            {
-                gameover = 1;
-            }
-
-            if (gameover == 1)
-            {
-                for (int x = 0; x < 40; x++)
+                if (gameover == 1)
                 {
-                    for (int y = 0; y < 22; y++)
+                    for (int x = 0; x < 40; x++)
                     {
-                        board[x, y] = 2;
-                        ghostboard[x, y] = 0;
-                    }
-                }
-            }
-
-
-
-            if (lastAfterimage > 0.5f)
-            {
-                for (int x = 0; x < 40; x++)
-                {
-                    for (int y = 0; y < 22; y++)
-                    {
-                        if ((board[x, y] > 4) && (board[x, y] < 9))
+                        for (int y = 0; y < 22; y++)
                         {
-                            board[x, y] = 0;
+                            board[x, y] = 2;
+                            ghostboard[x, y] = 0;
                         }
                     }
                 }
+
+
+
+                if (lastAfterimage > 0.5f)
+                {
+                    for (int x = 0; x < 40; x++)
+                    {
+                        for (int y = 0; y < 22; y++)
+                        {
+                            if ((board[x, y] > 4) && (board[x, y] < 9))
+                            {
+                                board[x, y] = 0;
+                            }
+                        }
+                    }
             }
-
-           
-
 
             base.Update(gameTime);
         }
@@ -1346,19 +1360,23 @@ namespace Pacman_Revolution
                     //{
                     //    spriteBatch.Draw(black, new Vector2(x * 30, (y - 2) * 30));
                     //}
-                    if (ghostboard[x, y] == 1)
-                    {
-                        spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
-                    }
-                    if (ghostboard[x, y] == 2)
-                    {
-                        spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
-                    }
+
+
+                    //if (ghostboard[x, y] == 1)
+                    //{
+                    //    spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
+                    //}
+                    //if (ghostboard[x, y] == 2)
+                    //{
+                    //    spriteBatch.Draw(ghost2, new Vector2(x * 30, (y - 2) * 30));
+                    //}
+
+                    spriteBatch.Draw(ghost, new Vector2(ghostcoords[0, 0] * 30, (ghostcoords[0, 1] - 2) * 30));
+                    spriteBatch.Draw(ghost2, new Vector2(ghostcoords[1, 0] * 30, (ghostcoords[1, 1] - 2) * 30));
+
                     
                 }
             }
-
-
 
             spriteBatch.DrawString(font1, "Time: " + totalgametime, new Vector2(1040, 10), Color.White);
 
