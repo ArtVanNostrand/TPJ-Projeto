@@ -35,6 +35,7 @@ namespace Pacman_Revolution
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
         int[,] ghostcoords = new int[8, 2];   //guardar coordenadas dos vários fantasmas[número do fantasma, posição(0 = x; 1 = y)]
+        int[] ghostLastDirection = new int[8]; //guardar a direção do último movimento dos vários fantasmas
         int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=13, gpY=10, lastdirectionfaced=0, gameover=0;
         int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount=0;
         int[] repeat = new int[5];
@@ -76,18 +77,23 @@ namespace Pacman_Revolution
                 ghostcoords[linha, 1] = gpY;
             }
 
-            //ghostboard[1,1] = 2;
-         
-
-
-            //começa a desenhar blocos e pellets
-            //board[x,y]=2 -> blocos
-            //board[x,y]=3 -> pellets
-            //Blocos
-            for (int y = 3; y < 7; y++)
+            for (linha = 0; linha < 8; linha ++)
             {
-                board[1, y] = 2;
+                ghostLastDirection[linha] = 6;
             }
+
+                //ghostboard[1,1] = 2;
+
+
+
+                //começa a desenhar blocos e pellets
+                //board[x,y]=2 -> blocos
+                //board[x,y]=3 -> pellets
+                //Blocos
+                for (int y = 3; y < 7; y++)
+                {
+                    board[1, y] = 2;
+                }
             for (int y = 8; y < 12; y++)
             {
                 board[1, y] = 2;
@@ -560,11 +566,11 @@ namespace Pacman_Revolution
                 gpX = ghostcoords[ghostcount, 0];
                 gpY = ghostcoords[ghostcount, 1];
 
-                if (ghostcount == 1)
+                if (ghostcount == 0)
                 {
                     ghosttype = 1;
                 }
-                if (ghostcount == 2)
+                if (ghostcount == 1)
                 {
                     ghosttype = 3;
                 }
@@ -698,17 +704,19 @@ namespace Pacman_Revolution
                             {
                                 if (gpX > pX)
                                 {
-                                    if (gcanGoLeft() == true)
+                                    if (gcanGoLeft() == true && ghostLastDirection[ghostcount] != 6) // 8 - cima // 4 - esquerda // 5 - baixo // 6 - direita
                                     {
                                         gpX--;
+                                        ghostLastDirection[ghostcount] = 4;
                                         cooldown2 = 1;
                                     }
                                 }
                                 else
                                 {
-                                    if (gcanGoRight() == true)
+                                    if (gcanGoRight() == true && ghostLastDirection[ghostcount] != 4)
                                     {
                                         gpX++;
+                                        ghostLastDirection[ghostcount] = 6;
                                         cooldown2 = 1;
                                     }
                                 }
@@ -723,17 +731,19 @@ namespace Pacman_Revolution
                                 {
                                     if (gpY > pY)
                                     {
-                                        if (gcanGoUp() == true)
+                                        if (gcanGoUp() == true && ghostLastDirection[ghostcount] != 5)
                                         {
                                             gpY--;
+                                            ghostLastDirection[ghostcount] = 8;
                                             cooldown2 = 1;
                                         }
                                     }
                                     else
                                     {
-                                        if (gcanGoDown() == true)
+                                        if (gcanGoDown() == true && ghostLastDirection[ghostcount] != 8)
                                         {
                                             gpY++;
+                                            ghostLastDirection[ghostcount] = 5;
                                             cooldown2 = 1;
                                         }
                                     }
@@ -758,41 +768,45 @@ namespace Pacman_Revolution
 
                             if (flag2 == 1)
                             {
-                                if (gcanGoUp() == true)
+                                if (gcanGoUp() == true && ghostLastDirection[ghostcount] != 5)
                                 {
                                     flag2 = 0;
                                     //repeat[1]++;
                                     gpY--;
+                                    ghostLastDirection[ghostcount] = 8;
                                     cooldown2 = 1;
                                 }
                             }
                             if (flag2 == 2)
                             {
-                                if (gcanGoLeft() == true)
+                                if (gcanGoLeft() == true && ghostLastDirection[ghostcount] != 6)
                                 {
                                     flag2 = 0;
                                     //repeat[1]++;
                                     gpX--;
+                                    ghostLastDirection[ghostcount] = 4;
                                     cooldown2 = 1;
                                 }
                             }
                             if (flag2 == 3)
                             {
-                                if (gcanGoDown() == true)
+                                if (gcanGoDown() == true && ghostLastDirection[ghostcount] != 8)
                                 {
                                     flag2 = 0;
                                     //repeat[1]++;
                                     gpY++;
+                                    ghostLastDirection[ghostcount] = 5;
                                     cooldown2 = 1;
                                 }
                             }
                             if (flag2 == 4)
                             {
-                                if (gcanGoRight() == true)
+                                if (gcanGoRight() == true && ghostLastDirection[ghostcount] != 4)
                                 {
                                     flag2 = 0;
                                     //repeat[1]++;
                                     gpX++;
+                                    ghostLastDirection[ghostcount] = 6;
                                     cooldown2 = 1;
                                 }
                             }
@@ -803,13 +817,14 @@ namespace Pacman_Revolution
 
                         if (cooldown2 == 0)
                         {
-                            if (gcanGoUp() == true)
+                            if (gcanGoUp() == true && ghostLastDirection[ghostcount] != 5)
                             {
                                 if (repeat[1] < 5)
                                 {
                                     flag2 = 1;
                                     repeat[1]++;
                                     gpY--;
+                                    ghostLastDirection[ghostcount] = 8;
                                     cooldown2 = 1;
                                 }
                             }
@@ -817,13 +832,14 @@ namespace Pacman_Revolution
 
                         if (cooldown2 == 0)
                         {
-                            if (gcanGoLeft() == true)
+                            if (gcanGoLeft() == true && ghostLastDirection[ghostcount] != 6)
                             {
                                 if (repeat[2] < 5)
                                 {
                                     flag2 = 2;
                                     repeat[2]++;
                                     gpX--;
+                                    ghostLastDirection[ghostcount] = 4;
                                     cooldown2 = 1;
                                 }
                             }
@@ -831,13 +847,14 @@ namespace Pacman_Revolution
 
                         if (cooldown2 == 0)
                         {
-                            if (gcanGoDown() == true)
+                            if (gcanGoDown() == true && ghostLastDirection[ghostcount] != 8)
                             {
                                 if (repeat[3] < 5)
                                 {
                                     flag2 = 3;
                                     repeat[3]++;
                                     gpY++;
+                                    ghostLastDirection[ghostcount] = 5;
                                     cooldown2 = 1;
                                 }
                             }
@@ -845,13 +862,14 @@ namespace Pacman_Revolution
 
                         if (cooldown2 == 0)
                         {
-                            if (gcanGoRight() == true)
+                            if (gcanGoRight() == true && ghostLastDirection[ghostcount] != 4)
                             {
                                 if (repeat[4] < 5)
                                 {
                                     flag2 = 4;
                                     repeat[4]++;
                                     gpX++;
+                                    ghostLastDirection[ghostcount] = 6;
                                     cooldown2 = 1;
                                 }
                             }
