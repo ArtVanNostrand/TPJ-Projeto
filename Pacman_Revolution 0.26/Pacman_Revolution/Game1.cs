@@ -20,7 +20,7 @@ namespace Pacman_Revolution
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D pacman, block, pellet, black, ghost, ghost2, bullet;
+        Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, bullet;
         Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown;
         SpriteFont font1;
         SoundEffect eatingpellet, music1;
@@ -140,7 +140,7 @@ namespace Pacman_Revolution
                 board[5, y] = 2;
             }
             board[5, 9] = 2;
-            board[5, 11] = 2;
+            board[5, 11] = 0; // = 2
             board[5, 13] = 2;
             board[5, 15] = 2;
             board[5, 19] = 2;
@@ -452,7 +452,7 @@ namespace Pacman_Revolution
             {
                 board[4, y] = 2;
             }
-            board[5, 11] = 2;
+            board[5, 11] = 2; 
             board[5, 13] = 2;
             board[6, 11] = 2;
             board[6, 13] = 2;
@@ -480,6 +480,12 @@ namespace Pacman_Revolution
 
 
             board[0, 12] = 1;
+
+            //Zonas em que o fantasma fica preso agora abertas
+            board[4, 12] = 0;
+            board[16, 13] = 0;
+            board[30, 12] = 0;
+
         }
 
         /// <summary>
@@ -497,6 +503,7 @@ namespace Pacman_Revolution
             black = Content.Load<Texture2D>("black");
             ghost = Content.Load<Texture2D>("blueghost30");
             ghost2 = Content.Load<Texture2D>("greenghost30");
+            ghost3 = Content.Load<Texture2D>("purpleghost30");
             afterimageright = Content.Load<Texture2D>("afterimage_pacman30right");
             afterimageup = Content.Load<Texture2D>("afterimage_pacman30up");
             afterimagedown = Content.Load<Texture2D>("afterimage_pacman30down");
@@ -572,11 +579,11 @@ namespace Pacman_Revolution
 
                 if (ghostcount == 0)
                 {
-                    ghosttype = 1;
+                    ghosttype = 1;  //movimento random
                 }
-                if (ghostcount == 1)
+                if (ghostcount != 0)
                 {
-                    ghosttype = 3;
+                    ghosttype = 3;  //segue o jogador
                 }
                 //detetar se um fantasma apanhou o pacman
                 if (pX == gpX && pY == gpY)
@@ -1110,7 +1117,7 @@ namespace Pacman_Revolution
                     ghostcoords[ghostcount, 0] = gpX;
                     ghostcoords[ghostcount, 1] = gpY;
                     ghostcount++;
-                    if (ghostcount == 2) ghostcount = 0;
+                    if (ghostcount == 3) ghostcount = 0;
                 }
 
                 if (lastHumanMove >= 1f / 10f)
@@ -1515,8 +1522,7 @@ namespace Pacman_Revolution
 
                     spriteBatch.Draw(ghost, new Vector2(ghostcoords[0, 0] * 30, (ghostcoords[0, 1] - 2) * 30));
                     spriteBatch.Draw(ghost2, new Vector2(ghostcoords[1, 0] * 30, (ghostcoords[1, 1] - 2) * 30));
-
-                    
+                    spriteBatch.Draw(ghost3, new Vector2(ghostcoords[2, 0] * 30, (ghostcoords[2, 1] - 2) * 30));   
                 }
             }
 
