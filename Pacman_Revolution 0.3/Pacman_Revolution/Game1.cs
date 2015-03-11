@@ -40,7 +40,8 @@ namespace Pacman_Revolution
         int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
-        float lastGhostMove = 0f, ghostspeed=0f;
+        float ghostspeed=0f;
+        float[] lastGhostMove = new float[8];
         float lastAfterimage = -9999f;
         float lastDashMove = 10f;
         float totalgametime = 0f;
@@ -362,7 +363,7 @@ namespace Pacman_Revolution
             {
                 board[29, y] = 2;
             }
-            for (int y = 19; y < 22; y++)
+            for (int y = 19; y < 21; y++)
             {
                 board[29, y] = 2;
             }
@@ -501,9 +502,9 @@ namespace Pacman_Revolution
             pellet = Content.Load<Texture2D>("white pellet v2 10x10");
             bullet = Content.Load<Texture2D>("yellow shot v2 30x14");
             black = Content.Load<Texture2D>("black");
-            ghost = Content.Load<Texture2D>("blueghost30");
-            ghost2 = Content.Load<Texture2D>("greenghost30");
-            ghost3 = Content.Load<Texture2D>("purpleghost30");
+            ghost = Content.Load<Texture2D>("blueghost30 v2");
+            ghost2 = Content.Load<Texture2D>("greenghost30 v2");
+            ghost3 = Content.Load<Texture2D>("purpleghost30 v2");
             afterimageright = Content.Load<Texture2D>("afterimage_pacman30right");
             afterimageup = Content.Load<Texture2D>("afterimage_pacman30up");
             afterimagedown = Content.Load<Texture2D>("afterimage_pacman30down");
@@ -551,7 +552,10 @@ namespace Pacman_Revolution
                 Exit();
 
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            lastGhostMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            for (int x = 0; x < 8f; x++)
+            {
+                lastGhostMove[x] += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             lastDashMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastBullet += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastAfterimage += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -594,11 +598,11 @@ namespace Pacman_Revolution
                     gameover = 1;
                 }
 
-
-
-                if (lastGhostMove >= 1f / ghostspeed)
+                 
+                                                     //ghostspeed
+                if (lastGhostMove[ghostcount] >= 1f / ghostspeed)
                 {
-                    lastGhostMove = 0f;
+                    lastGhostMove[ghostcount] = 0f;
 
                     //movimento completamente random
                     if (ghosttype == 1)
