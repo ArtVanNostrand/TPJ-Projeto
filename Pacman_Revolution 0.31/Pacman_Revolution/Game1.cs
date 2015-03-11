@@ -20,7 +20,7 @@ namespace Pacman_Revolution
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, bullet;
+        Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, bullet, box;
         Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown;
         SpriteFont font1;
         SoundEffect eatingpellet, music1;
@@ -37,7 +37,7 @@ namespace Pacman_Revolution
         int[,] ghostcoords = new int[8, 2];   //guardar coordenadas dos vários fantasmas[número do fantasma, posição(0 = x; 1 = y)]
         int[] ghostLastDirection = new int[8]; //guardar a direção do último movimento dos vários fantasmas
         int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=13, gpY=10, spX=1, spY=1, lastdirectionfaced=0, gameover=0;
-        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount;
+        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score=0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
         float ghostspeed=0f;
@@ -405,9 +405,9 @@ namespace Pacman_Revolution
             board[33, 18] = 2;
             board[33, 20] = 2;
 
-            board[34, 7] = 2;
-            board[34, 11] = 2;
-            board[34, 12] = 2;
+            //board[34, 7] = 2;
+            //board[34, 11] = 2;
+            //board[34, 12] = 2;
 
 
 
@@ -497,6 +497,7 @@ namespace Pacman_Revolution
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            box = Content.Load<Texture2D>("bloco");
             pacman = Content.Load<Texture2D>("pacman v2 30x30");
             block = Content.Load<Texture2D>("block 30x30 v2");
             pellet = Content.Load<Texture2D>("white pellet v2 10x10");
@@ -538,6 +539,7 @@ namespace Pacman_Revolution
             afterimageleft.Dispose();
             eatingpellet.Dispose();
             bullet.Dispose();
+            box.Dispose();
         }
 
 
@@ -1147,6 +1149,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    score++;
                                 }
                                 //apaga a posição antiga do pacman, mexe-o para baixo e desenha a nova posição
                                 board[pX, pY] = 0;
@@ -1155,6 +1158,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    score++;
                                 }
                                 board[pX, pY] = 1;
                                 //
@@ -1178,6 +1182,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    score++;
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 2;
@@ -1201,6 +1206,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    score++;
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 3;
@@ -1224,6 +1230,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    score++;
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 4;
@@ -1457,6 +1464,8 @@ namespace Pacman_Revolution
 
             spriteBatch.Begin();
 
+         
+
             //spriteBatch.Draw(pacman, new Vector2(300, 300), Color.Yellow);
 
             for (int x = 0; x < 40; x++)
@@ -1531,23 +1540,57 @@ namespace Pacman_Revolution
                     spriteBatch.Draw(ghost, new Vector2(ghostcoords[0, 0] * 30, (ghostcoords[0, 1] - 2) * 30));
                     spriteBatch.Draw(ghost2, new Vector2(ghostcoords[1, 0] * 30, (ghostcoords[1, 1] - 2) * 30));
                     spriteBatch.Draw(ghost3, new Vector2(ghostcoords[2, 0] * 30, (ghostcoords[2, 1] - 2) * 30));   
+
+
+
                 }
             }
 
-            spriteBatch.DrawString(font1, "Time: " + totalgametime, new Vector2(1040, 10), Color.White);
+            spriteBatch.DrawString(font1, "Time:" + totalgametime, new Vector2(1052, 10), Color.White);
 
-            spriteBatch.DrawString(font1, "Pellets: " + pelletcont, new Vector2(1040, 50), Color.White);
-            if (lastDashMove > 10f)
+            spriteBatch.DrawString(font1, "Pellets:" + pelletcont, new Vector2(1052, 50), Color.White);
+
+            spriteBatch.DrawString(font1, "Score:" + score, new Vector2(1052, 90), Color.White);
+
+
+            //spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1050, 130), Color.White);
+
+            spriteBatch.DrawString(font1, "Shoot:3P", new Vector2(1080, 150), Color.White);
+            if (lastBullet > 0.8f)
             {
-                spriteBatch.DrawString(font1, "Dash Ready!", new Vector2(1060, 150), Color.White);
+                spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 175), Color.White);
             }
             else
             {
-                spriteBatch.DrawString(font1, "Dash not ready yet!", new Vector2(1060, 150), Color.White);
+                spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 175), Color.White);
             }
+
+
+            spriteBatch.DrawString(font1, "Dash:10P", new Vector2(1080, 225), Color.White);
+            if (lastDashMove > 10f)
+            {
+                spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 250), Color.White);
+            }
+            else
+            {
+                spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 250), Color.White);
+            }
+
+
+            DrawRectangle(new Rectangle(1050, 0, 148, 600), Color.DarkBlue);
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private void DrawRectangle(Rectangle r, Color c)
+        {
+
+            spriteBatch.Draw(box, new Rectangle(r.X, r.Y, r.Width, 1), c);
+            spriteBatch.Draw(box, new Rectangle(r.X, r.Y, 1, r.Height), c);
+            spriteBatch.Draw(box, new Rectangle(r.X, r.Y + r.Height - 1, r.Width, 1), c);
+            spriteBatch.Draw(box, new Rectangle(r.X + r.Width - 1, r.Y, 1, r.Height), c);
+
         }
 
 
