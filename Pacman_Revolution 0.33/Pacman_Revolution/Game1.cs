@@ -47,6 +47,9 @@ namespace Pacman_Revolution
         float totalgametime = 0f;
         float lastBullet = 10f;
 
+        float lastTeleport = 10f;
+        int tpX = 1, tpY = 1, tmarker=0;
+
         public Game1()
             : base()
         {
@@ -560,8 +563,12 @@ namespace Pacman_Revolution
             }
             lastDashMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastBullet += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            lastTeleport += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastAfterimage += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            totalgametime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (gameover == 0)
+            {
+                totalgametime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             spacepressed = false;
 
 
@@ -1410,6 +1417,51 @@ namespace Pacman_Revolution
 
 
 
+                    //teleport
+                    if (pelletcont > 24)
+                    {
+                        if (lastTeleport >= 1.9f)
+                        {
+                            if (Keyboard.GetState().IsKeyDown(Keys.X))
+                            {
+                                pelletcont = pelletcont - 25;
+                                lastTeleport = 0f;
+
+                                if (tmarker == 0)
+                                {
+                                    board[pX, pY] = 5;
+                                    tpX = pX;
+                                    tpY = pY;
+                                    tmarker = 1;
+                                }else{
+
+                                
+                                    for (int x = 0; x < 40; x++)
+                                    {
+                                        for (int y = 0; y < 22; y++)
+                                        {
+                                            if (board[x,y] == 1)
+                                            {
+                                                board[x, y] = 0;
+                                                board[tpX, tpY] = 1;
+                                                pX = tpX;
+                                                pY = tpY;
+                                            }
+                                        }
+                                    }
+                                    tmarker = 0;
+                                }
+
+                            }
+                        }
+                    }//teleport
+
+
+
+
+
+
+
                 }
 
 
@@ -1576,8 +1628,33 @@ namespace Pacman_Revolution
                 spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 250), Color.White);
             }
 
+            spriteBatch.DrawString(font1, "Teleport:25P", new Vector2(1060, 300), Color.White);
+            if (lastTeleport > 1.9f)
+            {
+                spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 325), Color.White);
+            }
+            else
+            {
+                spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 325), Color.White);
+            }
+
+
 
             DrawRectangle(new Rectangle(1050, 0, 148, 600), Color.DarkBlue);
+
+
+            //teleport marker
+            for (int x = 0; x < 40; x++)
+            {
+                for (int y = 0; y < 22; y++)
+                {
+                    if (tmarker == 1)
+                    {
+                        board[tpX, tpY] = 5;
+                    }
+                }
+            }
+            //teleport marker
 
             spriteBatch.End();
             base.Draw(gameTime);
