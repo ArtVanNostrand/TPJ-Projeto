@@ -1416,16 +1416,22 @@ namespace Pacman_Revolution
 
                         }
                     }
-
+                
                     //disparar
+                    Console.WriteLine("lastbullet = " + lastBullet);
                     if (lastBullet >= 1f / 6f)
                     {
+                        Console.WriteLine("count1 = " + cont1);
+                        Console.WriteLine("flagBullet[0] = " + flagBullet[0]);
+
                         if (flagBullet[0] == 2 && cont1 < 5)
                         {
-
+                            Console.WriteLine("flagFirstBullet[0] = " + flagFirstBullet[0]);
                             lastBullet = 0f;
                             if (flagFirstBullet[0] == 1)
                             {
+                                Console.WriteLine("AAAAAAAAAAALLLLLLLLLLLLLLLLAAA");
+
                                 board[pX, pY - 1] = 9;
                                 boardBullet[0] = pX;
                                 boardBullet[1] = pY - 1;
@@ -1433,6 +1439,7 @@ namespace Pacman_Revolution
                             }
                             else
                             {
+                                Console.WriteLine("AAAAAAAAAAAAAA");
                                 board[boardBullet[0], boardBullet[1]] = 0;
                                 boardBullet[1] = boardBullet[1] - 1;
                                 board[boardBullet[0], boardBullet[1]] = 9;
