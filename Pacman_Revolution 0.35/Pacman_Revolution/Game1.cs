@@ -1345,15 +1345,15 @@ namespace Pacman_Revolution
                     {
                         if (lastBullet >= 0.8f)
                         {
-                            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+                            if (Keyboard.GetState().IsKeyDown(Keys.Q))
                             {
                                 if (lastdirectionfaced == 1)
                                 {
                                     cont1 = 0;
                                     if (scanGoUp() == true && cont1 < 5)
                                     {
-                                        flagBullet[0] = 1;
-                                        flagFirstBullet[0] = 0;
+                                        flagBullet[0] = 2;
+                                        flagFirstBullet[0] = 1;
                                     }
                                 }
                                 if (lastdirectionfaced == 2)
@@ -1416,28 +1416,31 @@ namespace Pacman_Revolution
 
                         }
                     }
-                    //disparar
 
-                    if (flagBullet[0] == 1 && cont1 < 5)
+                    //disparar
+                    if (lastBullet >= 1f / 6f)
                     {
-                        //if (lastBullet >= 1f / 6f)
-                        lastBullet = 0f;
-                        if (flagFirstBullet[0] == 0)
+                        if (flagBullet[0] == 2 && cont1 < 5)
                         {
-                            board[pX, pY - 1] = 9;
-                            boardBullet[0] = pX;
-                            boardBullet[1] = pY - 1;
-                            flagFirstBullet[0] = 1;
+
+                            lastBullet = 0f;
+                            if (flagFirstBullet[0] == 1)
+                            {
+                                board[pX, pY - 1] = 9;
+                                boardBullet[0] = pX;
+                                boardBullet[1] = pY - 1;
+                                flagFirstBullet[0] = 2;
+                            }
+                            else
+                            {
+                                board[boardBullet[0], boardBullet[1]] = 0;
+                                boardBullet[1] = boardBullet[1] - 1;
+                                board[boardBullet[0], boardBullet[1]] = 9;
+                            }
+                            cont1++;
+                            board[pX, pY] = 1;
+                            spacepressed = true;
                         }
-                        else
-                        {
-                            board[boardBullet[0], boardBullet[1]] = 0;
-                            boardBullet[1] = boardBullet[1] - 1;
-                            board[boardBullet[0], boardBullet[1]] = 9;
-                        }
-                        cont1++;
-                        board[pX, pY] = 1;
-                        spacepressed = true;
                     }
 
                     //teleport
@@ -1452,7 +1455,7 @@ namespace Pacman_Revolution
 
                                 if (tmarker == 0)
                                 {
-                                    board[pX, pY] = 9;
+                                    board[pX, pY] = 10;
                                     tpX = pX;
                                     tpY = pY;
                                     tmarker = 1;
@@ -1682,7 +1685,7 @@ namespace Pacman_Revolution
                 {
                     if (tmarker == 1)
                     {
-                        board[tpX, tpY] = 9;
+                        board[tpX, tpY] = 10;
                     }
                 }
             }
