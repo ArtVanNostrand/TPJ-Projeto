@@ -32,6 +32,7 @@ namespace Pacman_Revolution
         //40x20
         byte[,] board = new byte[40, 22]; //é preciso +2 no y (20 para 22)
         byte[,] ghostboard = new byte[40, 22];//é preciso +2 no y (20 para 22)
+        int[] boardBullet = new int[2];
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
         int[,] ghostcoords = new int[8, 2];   //guardar coordenadas dos vários fantasmas[número do fantasma, posição(0 = x; 1 = y)]
@@ -582,7 +583,9 @@ namespace Pacman_Revolution
             }
 
 
-            int cooldown = 0, random1=0;
+            int cooldown = 0, random1 = 0, bX, bY; 
+            int[] flagBullet = new int[1];
+            int[] flagFirstBullet = new int[1];
             Random rnd = new Random();
             int randommov = rnd.Next(1, 5);
             //ghosttype = 3; // apenas para testar as diferentes A.I. dos ghosts
@@ -1247,7 +1250,7 @@ namespace Pacman_Revolution
                         }
                     }
 
-                    int cont1;
+                    int cont1 = 0;
 
                     if (pelletcont > 9)
                     {
@@ -1333,37 +1336,31 @@ namespace Pacman_Revolution
 
 
                     //disparar
-                    if (pelletcont > 9999)
+                    if (pelletcont > 0)
                     {
                         if (lastBullet >= 0.8f)
                         {
                             if (Keyboard.GetState().IsKeyDown(Keys.Z))
                             {
-                             
-
                                 if (lastdirectionfaced == 1)
                                 {
                                     cont1 = 0;
-                                    while (scanGoUp() == true && cont1 < 5)
+                                    if (scanGoUp() == true && cont1 < 5)
                                     {
-                                        lastBullet = 0f;
-
-                                        board[pX, pY] = 5;
-                                        cont1++;
-
-                                        pY--;
-                                        board[pX, pY] = 1;
-                                        spacepressed = true;
+                                        flagBullet[0] = 1;
+                                        flagFirstBullet[0] = 0;
                                     }
                                 }
                                 if (lastdirectionfaced == 2)
                                 {
                                     cont1 = 0;
+                                    bX = pX;
+                                    bY = pY;
                                     while (scanGoDown() == true && cont1 < 5)
                                     {
                                         lastBullet = 0f;
 
-                                        board[pX, pY] = 6;
+                                        board[pX, pY] = 9;
                                         cont1++;
 
                                         pY++;
@@ -1374,12 +1371,13 @@ namespace Pacman_Revolution
                                 if (lastdirectionfaced == 3)
                                 {
                                     cont1 = 0;
-
+                                    bX = pX;
+                                    bY = pY;
                                     while (scanGoRight() == true && cont1 < 5)
                                     {
                                         lastBullet = 0f;
 
-                                        board[pX, pY] = 7;
+                                        board[pX, pY] = 9;
                                         cont1++;
                                         pX++;
                                         board[pX, pY] = 1;
@@ -1389,11 +1387,13 @@ namespace Pacman_Revolution
                                 if (lastdirectionfaced == 4)
                                 {
                                     cont1 = 0;
+                                    bX = pX;
+                                    bY = pY;
                                     while (scanGoLeft() == true && cont1 < 5)
                                     {
                                         lastBullet = 0f;
 
-                                        board[pX, pY] = 8;
+                                        board[pX, pY] = 9;
                                         cont1++;
 
                                         pX--;
@@ -1413,9 +1413,27 @@ namespace Pacman_Revolution
                     }
                     //disparar
 
-
-
-
+                    if (flagBullet[0] == 1 && cont1 < 5)
+                    {
+                        //if (lastBullet >= 1f / 6f)
+                        lastBullet = 0f;
+                        if (flagFirstBullet[0] == 0)
+                        {
+                            board[pX, pY - 1] = 9;
+                            boardBullet[0] = pX;
+                            boardBullet[1] = pY - 1;
+                            flagFirstBullet[0] = 1;
+                        }
+                        else
+                        {
+                            board[boardBullet[0], boardBullet[1]] = 0;
+                            boardBullet[1] = boardBullet[1] - 1;
+                            board[boardBullet[0], boardBullet[1]] = 9;
+                        }
+                        cont1++;
+                        board[pX, pY] = 1;
+                        spacepressed = true;
+                    }
 
                     //teleport
                     if (pelletcont > 24)
@@ -1570,6 +1588,11 @@ namespace Pacman_Revolution
                     {
                         spriteBatch.Draw(afterimageleft, new Vector2(x * 30, (y - 2) * 30));
                     }
+                    if (board[x,y] == 9)
+                    {
+                        spriteBatch.Draw(bullet, new Vector2(x * 30, (y - 2) * 30));
+                    }
+
                     //if (board[x, y] == 4)
                     //{
                     //    spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
@@ -1591,9 +1614,9 @@ namespace Pacman_Revolution
 
                     spriteBatch.Draw(ghost, new Vector2(ghostcoords[0, 0] * 30, (ghostcoords[0, 1] - 2) * 30));
                     spriteBatch.Draw(ghost2, new Vector2(ghostcoords[1, 0] * 30, (ghostcoords[1, 1] - 2) * 30));
-                    spriteBatch.Draw(ghost3, new Vector2(ghostcoords[2, 0] * 30, (ghostcoords[2, 1] - 2) * 30));   
+                    spriteBatch.Draw(ghost3, new Vector2(ghostcoords[2, 0] * 30, (ghostcoords[2, 1] - 2) * 30));
 
-
+                        
 
                 }
             }
