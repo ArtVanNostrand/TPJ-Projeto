@@ -1352,19 +1352,8 @@ namespace Pacman_Revolution
                                     cont1 = 0;
                                     if (scanGoUp() == true && cont1 < 5)
                                     {
-<<<<<<< HEAD:Pacman_Revolution 0.33/Pacman_Revolution/Game1.cs
                                         flagBullet[0] = 1;
                                         flagFirstBullet[0] = 0;
-=======
-                                        lastBullet = 0f;
-
-                                        board[pX, pY] = 5;
-                                        cont1++;
-
-                                        pY--;
-                                        board[pX, pY] = 1;
-                          
->>>>>>> origin/master:Pacman_Revolution 0.35/Pacman_Revolution/Game1.cs
                                     }
                                 }
                                 if (lastdirectionfaced == 2)
@@ -1604,18 +1593,15 @@ namespace Pacman_Revolution
                     {
                         spriteBatch.Draw(afterimageleft, new Vector2(x * 30, (y - 2) * 30));
                     }
-<<<<<<< HEAD:Pacman_Revolution 0.33/Pacman_Revolution/Game1.cs
                     if (board[x,y] == 9)
                     {
                         spriteBatch.Draw(bullet, new Vector2(x * 30, (y - 2) * 30));
                     }
-
-=======
-                    if (board[x, y] == 9)
+                    if (board[x, y] == 10)
                     {
                         spriteBatch.Draw(afterimageup, new Vector2(x * 30, (y - 2) * 30));
                     }
->>>>>>> origin/master:Pacman_Revolution 0.35/Pacman_Revolution/Game1.cs
+
                     //if (board[x, y] == 4)
                     //{
                     //    spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
