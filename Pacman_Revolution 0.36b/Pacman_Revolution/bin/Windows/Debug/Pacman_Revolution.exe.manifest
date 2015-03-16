@@ -67,14 +67,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Pacman_Revolution.exe" size="56320">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Pacman_Revolution.exe" size="56832">
       <assemblyIdentity name="Pacman_Revolution" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>NPr/pamEPP9nXRt/eHG2W9jUoz4=</dsig:DigestValue>
+        <dsig:DigestValue>3W49/ddUlOQGPHHd/DdVsesGrqE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

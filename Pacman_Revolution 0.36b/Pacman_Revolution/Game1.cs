@@ -36,15 +36,17 @@ namespace Pacman_Revolution
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
         int[,] ghostcoords = new int[8, 2];   //guardar coordenadas dos vários fantasmas[número do fantasma, posição(0 = x; 1 = y)]
+        int[] ghostHealth = new int[8];
         int[] ghostLastDirection = new int[8]; //guardar a direção do último movimento dos vários fantasmas
         int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=13, gpY=10, spX=1, spY=1, lastdirectionfaced=0, gameover=0;
-        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score=0;
+        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
         float ghostspeed=0f;
         float[] lastGhostMove = new float[8];
         float lastAfterimage = -9999f;
         float lastDashMove = 10f;
+        float lastTimeHit = 0f;
         float totalgametime = 0f;
         float lastBullet = 10f;
 
@@ -86,6 +88,11 @@ namespace Pacman_Revolution
             for (linha = 0; linha < 8; linha ++)
             {
                 ghostLastDirection[linha] = 6;
+            }
+
+            for (linha = 0; linha < 8; linha++)
+            {
+                ghostHealth[linha] = 1;
             }
 
                 //ghostboard[1,1] = 2;
@@ -567,6 +574,7 @@ namespace Pacman_Revolution
                 lastGhostMove[x] += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             lastDashMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            lastTimeHit += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastBullet += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastTeleport += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastAfterimage += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -609,12 +617,18 @@ namespace Pacman_Revolution
                     ghosttype = 3;  //segue o jogador
                 }
                 //detetar se um fantasma apanhou o pacman
+                if (pacmanDead(vidaPacman, pX, pY, gpX, gpY, lastTimeHit) == true) gameover = 1;
+
                 if (pX == gpX && pY == gpY)
                 {
-                    gameover = 1;
+                    Console.WriteLine("vidaPacman = " + vidaPacman);
+                    Console.WriteLine("pX = " + pX);
+                    Console.WriteLine("gpX = " + gpX);
+                    Console.WriteLine("pY = " + pY);
+                    Console.WriteLine("gpY = " + gpY);
+                    Console.WriteLine("lastTimeHit = " + lastTimeHit);
                 }
 
-                 
                                                      //ghostspeed
                 if (lastGhostMove[ghostcount] >= 1f / ghostspeed)
                 {
@@ -1503,10 +1517,7 @@ namespace Pacman_Revolution
 
 
                 //detetar se um fantasma apanhou o pacman
-                if (pX == gpX && pY == gpY)
-                {
-                    gameover = 1;
-                }
+                if (pacmanDead(vidaPacman, pX, pY, gpX, gpY, lastTimeHit) == true) gameover = 1;
 
                 if (gameover == 1)
                 {
@@ -1885,7 +1896,6 @@ namespace Pacman_Revolution
 
         private bool gcanGoRight()
         {
-
             if (gpX == 39 || board[gpX + 1, gpY] == 2)
             {
                 return false;
@@ -1897,6 +1907,27 @@ namespace Pacman_Revolution
 
         }
 
+        private bool ghostDead(int vida, int ghostX, int ghostY)
+        {
+            if (board[ghostX, ghostY] == 9)
+            {
+                vida--;
+                board[ghostX, ghostY] = 10; //imagem de fantasma morto
+            }
+            if (vida <= 0) return true;
+            else return false;
+        }
+
+        private bool pacmanDead(int vida, int pacmanX, int pacmanY, int ghostX, int ghostY, float lastHit)
+        {
+            if (pacmanX == ghostX && pacmanY == ghostY && lastHit >= 3)
+            {
+                vida--;
+                lastHit = 0;
+            }
+            if (vida <= 0) return true;
+            else return false;
+        }
 
     }
 }
