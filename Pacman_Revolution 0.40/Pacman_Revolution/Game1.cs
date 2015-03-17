@@ -51,6 +51,8 @@ namespace Pacman_Revolution
         float lastBullet = 10f;
         float CooldownVida = 10f;
         float bulletSpeed = 10f;
+        int[,] flagBullet = new int[45, 25];
+        int auxflagbullet = 0;
 
         float lastTeleport = 10f;
         int tpX = 1, tpY = 1, tmarker=0;
@@ -514,7 +516,7 @@ namespace Pacman_Revolution
             pacman = Content.Load<Texture2D>("pacman v2 30x30");
             block = Content.Load<Texture2D>("block 30x30 v2");
             pellet = Content.Load<Texture2D>("white pellet v2 10x10");
-            bullet = Content.Load<Texture2D>("yellow shot v3 11x22");
+            bullet = Content.Load<Texture2D>("yellow shot v4 9x18");
             black = Content.Load<Texture2D>("black");
             ghost = Content.Load<Texture2D>("blueghost30 v2");
             ghost2 = Content.Load<Texture2D>("brownghost30 v2");
@@ -559,9 +561,14 @@ namespace Pacman_Revolution
             afterimageup.Dispose();
             afterimagedown.Dispose();
             afterimageleft.Dispose();
-            eatingpellet.Dispose();
             bullet.Dispose();
             box.Dispose();
+
+            eatingpellet.Dispose();
+            dashsound.Dispose();
+            music1.Dispose();
+
+       
         }
 
 
@@ -605,7 +612,7 @@ namespace Pacman_Revolution
 
 
             int cooldown = 0, random1 = 0, bX, bY; 
-            int[,] flagBullet = new int[45,25];
+  
             int bulletcont = 0;
             int[] flagFirstBullet = new int[1];
             Random rnd = new Random();
@@ -1472,6 +1479,7 @@ namespace Pacman_Revolution
                                     {
                                         pelletcont = pelletcont - 1;
                                         lastBullet = 0;
+                                        auxflagbullet = board[pX, pY - 1];
                                         board[pX, pY-1] = 9;
                                         flagBullet[pX, pY-1] = 1;
                                     }
@@ -1616,23 +1624,24 @@ namespace Pacman_Revolution
 
 
                 //dispararparte2
-                int cont3 = 0;
+                int cont3;
 
 
                 cont3 = 0;
-                if (bulletSpeed > 0.3f)
+                if (bulletSpeed > 0.1f)
                 {
                     for (int x = 0; x < 40; x++)
                     {
                         for (int y = 0; y < 22; y++)
                         {
                             //1 - cima
-                            if (flagBullet[x, y] == 1 && cont3 == 0)
+                            if (flagBullet[x, y] == 1 && cont3 == 0 && y+1 >2 && board[x,y - 1] != 2)
                             {
                                 cont3 = 1;
                                 bulletSpeed = 0f;
-                                flagBullet[x, y] = 0;
+                                //board[x, y] = auxflagbullet; //fix
                                 board[x, y] = 0;
+                                auxflagbullet = flagBullet[x, y - 1];
                                 flagBullet[x, y - 1] = 1;
                                 board[x, y - 1] = 9;
                             }
@@ -1714,7 +1723,7 @@ namespace Pacman_Revolution
                     }
                     if (board[x,y] == 9)
                     {
-                        spriteBatch.Draw(bullet, new Vector2(x * 30+8, (y - 2) * 30));
+                        spriteBatch.Draw(bullet, new Vector2(x * 30+10, (y - 2) * 30));
                     }
                     if (board[x, y] == 10)
                     {

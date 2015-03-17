@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Xp6NYhXKK1FkyhEMSK9EdawXFaM=</dsig:DigestValue>
+        <dsig:DigestValue>mzj80TPSLtSgp1ZnCPJCRD9NRFU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -472,6 +472,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>/DH3h7V4skobSKoy3Fq21E4XNns=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\yellow shot v4 9x18.png" size="3191">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>oyQXxawH9suIuWnQj42s42PXeZQ=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Icon.ico" size="32038">
