@@ -49,6 +49,7 @@ namespace Pacman_Revolution
         float lastTimeHit = 0f;
         float totalgametime = 0f;
         float lastBullet = 10f;
+        float CooldownVida = 10f;
 
         float lastTeleport = 10f;
         int tpX = 1, tpY = 1, tmarker=0;
@@ -581,6 +582,7 @@ namespace Pacman_Revolution
             if (gameover == 0)
             {
                 totalgametime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                CooldownVida += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             spacepressed = false;
 
@@ -601,7 +603,7 @@ namespace Pacman_Revolution
             Random rnd = new Random();
             int randommov = rnd.Next(1, 5);
             //ghosttype = 3; // apenas para testar as diferentes A.I. dos ghosts
-            for (ghostcount = 0; ghostcount < 3; ghostcount++)
+            for (ghostcount = 0; ghostcount < 5; ghostcount++)
             {
 
 
@@ -612,12 +614,22 @@ namespace Pacman_Revolution
                 {
                     ghosttype = 1;  //movimento random
                 }
-                if (ghostcount != 0)
+                if (ghostcount == 1)
+                {
+                    ghosttype = 2;  //movimento 
+                }
+                if (ghostcount != 0 && ghostcount != 1 )
                 {
                     ghosttype = 3;  //segue o jogador
                 }
+
+                ghosttype = 3;
                 //detetar se um fantasma apanhou o pacman
-                if (pacmanDead(vidaPacman, pX, pY, gpX, gpY, lastTimeHit) == true) gameover = 1;
+                if (pacmanDead(vidaPacman, pX, pY, gpX, gpY, lastTimeHit) == true)
+                {
+                    
+                    gameover = 1;
+                }
 
                 if (pX == gpX && pY == gpY)
                 {
@@ -672,6 +684,11 @@ namespace Pacman_Revolution
                         }
                         if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
                         else ghostboard[gpX, gpY] = 2;
+                        if (pX == gpX && pY == gpY && CooldownVida > 3f)
+                        {
+                            CooldownVida = 0f;
+                            vidaPacman--;
+                        }
                     }//ghosttype==1
 
 
@@ -727,6 +744,11 @@ namespace Pacman_Revolution
                         }
                         if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
                         else ghostboard[gpX, gpY] = 2;
+                        if (pX == gpX && pY == gpY && CooldownVida > 3f)
+                        {
+                            CooldownVida = 0f;
+                            vidaPacman--;
+                        }
                     }//ghosttype==2
 
 
@@ -928,6 +950,11 @@ namespace Pacman_Revolution
 
                         if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
                         else ghostboard[gpX, gpY] = 2;
+                        if (pX == gpX && pY == gpY && CooldownVida > 3f)
+                        {
+                            CooldownVida = 0f;
+                            vidaPacman--;
+                        }
                     }//ghosttype==3
 
 
@@ -1515,6 +1542,8 @@ namespace Pacman_Revolution
                 }
 
 
+              
+
 
                 //detetar se um fantasma apanhou o pacman
                 if (pacmanDead(vidaPacman, pX, pY, gpX, gpY, lastTimeHit) == true) gameover = 1;
@@ -1648,6 +1677,8 @@ namespace Pacman_Revolution
                     spriteBatch.Draw(ghost, new Vector2(ghostcoords[0, 0] * 30, (ghostcoords[0, 1] - 2) * 30));
                     spriteBatch.Draw(ghost2, new Vector2(ghostcoords[1, 0] * 30, (ghostcoords[1, 1] - 2) * 30));
                     spriteBatch.Draw(ghost3, new Vector2(ghostcoords[2, 0] * 30, (ghostcoords[2, 1] - 2) * 30));
+                    spriteBatch.Draw(ghost4, new Vector2(ghostcoords[3, 0] * 30, (ghostcoords[2, 1] - 2) * 30));
+                    spriteBatch.Draw(ghost5, new Vector2(ghostcoords[4, 0] * 30, (ghostcoords[2, 1] - 2) * 30));
 
                         
 
@@ -1660,6 +1691,7 @@ namespace Pacman_Revolution
 
             spriteBatch.DrawString(font1, "Score:" + score, new Vector2(1052, 90), Color.White);
 
+            spriteBatch.DrawString(font1, "Health:" + vidaPacman, new Vector2(1052, 110), Color.White);
 
             //spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1050, 130), Color.White);
 
@@ -1920,11 +1952,11 @@ namespace Pacman_Revolution
 
         private bool pacmanDead(int vida, int pacmanX, int pacmanY, int ghostX, int ghostY, float lastHit)
         {
-            if (pacmanX == ghostX && pacmanY == ghostY && lastHit >= 3)
-            {
-                vida--;
-                lastHit = 0;
-            }
+            //if (pacmanX == ghostX && pacmanY == ghostY && lastHit >= 3)
+            //{
+            //    vida--;
+            //    lastHit = 0;
+            //}
             if (vida <= 0) return true;
             else return false;
         }
