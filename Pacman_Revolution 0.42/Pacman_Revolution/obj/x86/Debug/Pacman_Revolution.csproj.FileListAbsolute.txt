@@ -1460,3 +1460,70 @@ C:\Users\Asus\Desktop\Pac-Man Project 0.40\Pacman_Revolution 0.40\Pacman_Revolut
 C:\Users\Asus\Desktop\Pac-Man Project 0.40\Pacman_Revolution 0.40\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.csprojResolveAssemblyReference.cache
 C:\Users\Asus\Desktop\Pac-Man Project 0.40\Pacman_Revolution 0.40\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.exe.manifest
 C:\Users\Asus\Desktop\Pac-Man Project 0.40\Pacman_Revolution 0.40\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.application
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.exe
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.pdb
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\brownghost30 v2.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\greyghost30 v2.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\yellow shot v4 9x18.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\eating pellet sound v1.xnb
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\PAC MAN Championship Edition DX  Pac Rainbow.xnb
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\30_Navy_Blue_Square.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\afterimage_pacman30down.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\afterimage_pacman30left.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\afterimage_pacman30right.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\afterimage_pacman30up.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\black.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\block 30x30 v2.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\bloco.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\blueghost30 v2.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\blueghost30.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\greenghost30 v2.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\greenghost30.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pacman v2 30x30 -  down.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pacman v2 30x30 -  right.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pacman v2 30x30 -  up.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pacman v2 30x30.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pacman30.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pacman30down.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pacman30right.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pacman30up.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\pellet15.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\placeholder block.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\placeholder pacman.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\purpleghost30 v2.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\purpleghost30.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\redghost30.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\white pellet v2 10x10.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\white pellet v2 30x30.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\yellow shot v2 30x14.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\yellow shot v3 11x22.png
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\placeholder music.xnb
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\placeholder sound.xnb
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Content\SpriteFont1a.xnb
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.exe.manifest
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.application
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.exe
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Pacman_Revolution.pdb
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\MonoGame.Framework.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.MediaFoundation.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.XAudio2.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D11.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.DXGI.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct2D1.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\Lidgren.Network.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.XInput.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.RawInput.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D9.dll
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.MediaFoundation.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.XAudio2.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D11.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.DXGI.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct2D1.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.XInput.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.RawInput.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\bin\Windows\Debug\SharpDX.Direct3D9.xml
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.csprojResolveAssemblyReference.cache
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.exe.manifest
+C:\Users\fill__000\Documents\GitHub\TPJ-Projeto\Pacman_Revolution 0.42\Pacman_Revolution\obj\x86\Debug\Pacman_Revolution.application

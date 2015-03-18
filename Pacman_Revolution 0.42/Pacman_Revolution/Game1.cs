@@ -39,7 +39,7 @@ namespace Pacman_Revolution
         int[] ghostHealth = new int[8];
         int[] ghostLastDirection = new int[8]; //guardar a direção do último movimento dos vários fantasmas
         int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=13, gpY=10, spX=1, spY=1, lastdirectionfaced=0, gameover=0;
-        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3;
+        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3, pelletScore = 0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
         float ghostspeed=0f;
@@ -1222,6 +1222,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    pelletScore++;
                                     score++;
                                 }
                                 //apaga a posição antiga do pacman, mexe-o para baixo e desenha a nova posição
@@ -1231,6 +1232,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    pelletScore++;
                                     score++;
                                 }
                                 board[pX, pY] = 1;
@@ -1255,6 +1257,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    pelletScore++;
                                     score++;
                                 }
                                 board[pX, pY] = 1;
@@ -1279,6 +1282,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    pelletScore++;
                                     score++;
                                 }
                                 board[pX, pY] = 1;
@@ -1303,6 +1307,7 @@ namespace Pacman_Revolution
                                 {
                                     eatingpellet.Play();
                                     pelletcont++;
+                                    pelletScore++;
                                     score++;
                                 }
                                 board[pX, pY] = 1;
@@ -1712,7 +1717,7 @@ namespace Pacman_Revolution
                     {
                         spriteBatch.Draw(pacman, new Vector2(x * 30, (y - 2) * 30));
                     }
-                    if (board[x, y] == 2)
+                    if (board[x, y] == 2 && gameover == 0)
                     {
                         spriteBatch.Draw(block, new Vector2(x * 30, (y-2) * 30));
                     }
@@ -1768,63 +1773,118 @@ namespace Pacman_Revolution
                     //    spriteBatch.Draw(ghost2, new Vector2(x * 30, (y - 2) * 30));
                     //}
 
-                    spriteBatch.Draw(ghost, new Vector2(ghostcoords[0, 0] * 30, (ghostcoords[0, 1] - 2) * 30));
-                    spriteBatch.Draw(ghost2, new Vector2(ghostcoords[1, 0] * 30, (ghostcoords[1, 1] - 2) * 30));
-                    spriteBatch.Draw(ghost3, new Vector2(ghostcoords[2, 0] * 30, (ghostcoords[2, 1] - 2) * 30));
-                    spriteBatch.Draw(ghost4, new Vector2(ghostcoords[3, 0] * 30, (ghostcoords[3, 1] - 2) * 30));
-                    spriteBatch.Draw(ghost5, new Vector2(ghostcoords[4, 0] * 30, (ghostcoords[4, 1] - 2) * 30));
-                    spriteBatch.Draw(ghost6, new Vector2(ghostcoords[5, 0] * 30, (ghostcoords[5, 1] - 2) * 30));
-
+                    if (gameover == 0)
+                    {
+                        spriteBatch.Draw(ghost, new Vector2(ghostcoords[0, 0] * 30, (ghostcoords[0, 1] - 2) * 30));
+                        spriteBatch.Draw(ghost2, new Vector2(ghostcoords[1, 0] * 30, (ghostcoords[1, 1] - 2) * 30));
+                        spriteBatch.Draw(ghost3, new Vector2(ghostcoords[2, 0] * 30, (ghostcoords[2, 1] - 2) * 30));
+                        spriteBatch.Draw(ghost4, new Vector2(ghostcoords[3, 0] * 30, (ghostcoords[3, 1] - 2) * 30));
+                        spriteBatch.Draw(ghost5, new Vector2(ghostcoords[4, 0] * 30, (ghostcoords[4, 1] - 2) * 30));
+                        spriteBatch.Draw(ghost6, new Vector2(ghostcoords[5, 0] * 30, (ghostcoords[5, 1] - 2) * 30));
+                    }
                         
 
                 }
             }
 
-            spriteBatch.DrawString(font1, "Time:" + totalgametime, new Vector2(1052, 70), Color.White);
-
-            spriteBatch.DrawString(font1, "Pellets:" + pelletcont, new Vector2(1052, 35), Color.White);
-
-            spriteBatch.DrawString(font1, "Score:" + score, new Vector2(1052, 95), Color.White);
-
-            spriteBatch.DrawString(font1, "Health:" + vidaPacman, new Vector2(1052, 10), Color.White);
-
-            //spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1050, 130), Color.White);
-
-            spriteBatch.DrawString(font1, "Shoot:3P(Q)", new Vector2(1065, 150), Color.White);
-            if (lastBullet > 0.5f)
+            if (gameover == 0)
             {
-                spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 175), Color.White);
+                spriteBatch.DrawString(font1, "Time:" + totalgametime, new Vector2(1052, 70), Color.White);
+
+                spriteBatch.DrawString(font1, "Pellets:" + pelletcont, new Vector2(1052, 35), Color.White);
+
+                spriteBatch.DrawString(font1, "Score:" + score, new Vector2(1052, 95), Color.White);
+
+                spriteBatch.DrawString(font1, "Health:" + vidaPacman, new Vector2(1052, 10), Color.White);
+
+                //spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1050, 130), Color.White);
+
+                spriteBatch.DrawString(font1, "Shoot:3P(Q)", new Vector2(1065, 150), Color.White);
+                if (lastBullet > 0.5f)
+                {
+                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 175), Color.White);
+                }
+                else
+                {
+                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 175), Color.White);
+                }
+
+
+                spriteBatch.DrawString(font1, "Dash:10P(W)", new Vector2(1065, 225), Color.White);
+                if (lastDashMove > 10f)
+                {
+                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 250), Color.White);
+                }
+                else
+                {
+                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 250), Color.White);
+                }
+
+                spriteBatch.DrawString(font1, "Tele:25P(E)", new Vector2(1065, 300), Color.White);
+                if (lastTeleport > 1.9f)
+                {
+                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 325), Color.White);
+                }
+                else
+                {
+                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 325), Color.White);
+                }
             }
-            else
+
+            //                                              x   y largura altura
+            if (gameover == 0) DrawRectangle(new Rectangle(1050, 0, 148, 600), Color.DarkBlue);
+
+            if (gameover == 1)
             {
-                spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 175), Color.White);
+                //music1.Stop();
+                pacman = Content.Load<Texture2D>("pacman v2 30x30 -  up");
+                spriteBatch.Draw(pacman, new Vector2(420, 18));
+                spriteBatch.Draw(pacman, new Vector2(450, 18));
+                spriteBatch.Draw(pacman, new Vector2(480, 18));
+                spriteBatch.Draw(pacman, new Vector2(510, 18));
+                spriteBatch.Draw(pacman, new Vector2(540, 18));
+                spriteBatch.Draw(pacman, new Vector2(570, 18));
+                spriteBatch.Draw(pacman, new Vector2(600, 18));
+                spriteBatch.Draw(pacman, new Vector2(630, 18));
+                spriteBatch.Draw(pacman, new Vector2(660, 18));
+                spriteBatch.Draw(pacman, new Vector2(690, 18));
+                spriteBatch.Draw(pacman, new Vector2(720, 18));
+                pacman = Content.Load<Texture2D>("pacman v2 30x30");
+                spriteBatch.Draw(pacman, new Vector2(418, 50));
+                spriteBatch.Draw(pacman, new Vector2(418, 80));
+                spriteBatch.Draw(pacman, new Vector2(418, 110));
+                spriteBatch.Draw(pacman, new Vector2(418, 140));
+                spriteBatch.Draw(pacman, new Vector2(418, 170));
+                spriteBatch.Draw(pacman, new Vector2(418, 200));
+                spriteBatch.Draw(pacman, new Vector2(418, 230));
+                spriteBatch.Draw(pacman, new Vector2(418, 260));
+                pacman = Content.Load<Texture2D>("pacman v2 30x30 -  right");
+                spriteBatch.Draw(pacman, new Vector2(720, 50));
+                spriteBatch.Draw(pacman, new Vector2(720, 80));
+                spriteBatch.Draw(pacman, new Vector2(720, 110));
+                spriteBatch.Draw(pacman, new Vector2(720, 140));
+                spriteBatch.Draw(pacman, new Vector2(720, 170));
+                spriteBatch.Draw(pacman, new Vector2(720, 200));
+                spriteBatch.Draw(pacman, new Vector2(720, 230));
+                spriteBatch.Draw(pacman, new Vector2(720, 260));
+                pacman = Content.Load<Texture2D>("pacman v2 30x30 -  down");
+                spriteBatch.Draw(pacman, new Vector2(418, 290));
+                spriteBatch.Draw(pacman, new Vector2(450, 290));
+                spriteBatch.Draw(pacman, new Vector2(480, 290));
+                spriteBatch.Draw(pacman, new Vector2(510, 290));
+                spriteBatch.Draw(pacman, new Vector2(540, 290));
+                spriteBatch.Draw(pacman, new Vector2(570, 290));
+                spriteBatch.Draw(pacman, new Vector2(600, 290));
+                spriteBatch.Draw(pacman, new Vector2(630, 290));
+                spriteBatch.Draw(pacman, new Vector2(660, 290));
+                spriteBatch.Draw(pacman, new Vector2(690, 290));
+                spriteBatch.Draw(pacman, new Vector2(720, 290));
+                DrawRectangle(new Rectangle(450, 50, 269, 239), Color.Red);
+                spriteBatch.DrawString(font1, "GAME OVER", new Vector2(530, 70), Color.Yellow);
+                spriteBatch.DrawString(font1, "Time: " + totalgametime, new Vector2(475, 150), Color.Yellow);
+                spriteBatch.DrawString(font1, "Pellets Collected: " + pelletScore, new Vector2(475, 180), Color.Yellow);
+                spriteBatch.DrawString(font1, "Score:" + score, new Vector2(475, 210), Color.Yellow);
             }
-
-
-            spriteBatch.DrawString(font1, "Dash:10P(W)", new Vector2(1065, 225), Color.White);
-            if (lastDashMove > 10f)
-            {
-                spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 250), Color.White);
-            }
-            else
-            {
-                spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 250), Color.White);
-            }
-
-            spriteBatch.DrawString(font1, "Tele:25P(E)", new Vector2(1065, 300), Color.White);
-            if (lastTeleport > 1.9f)
-            {
-                spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 325), Color.White);
-            }
-            else
-            {
-                spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 325), Color.White);
-            }
-
-
-
-            DrawRectangle(new Rectangle(1050, 0, 148, 600), Color.DarkBlue);
-
 
             //teleport marker
             for (int x = 0; x < 40; x++)
