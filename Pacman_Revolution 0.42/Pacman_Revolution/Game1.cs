@@ -30,8 +30,8 @@ namespace Pacman_Revolution
         //board = 3 -> pellet
         bool spacepressed = false;
         //40x20
-        byte[,] board = new byte[40, 22]; //é preciso +2 no y (20 para 22)
-        byte[,] ghostboard = new byte[40, 22];//é preciso +2 no y (20 para 22)
+        int[,] board = new int[40, 22]; //é preciso +2 no y (20 para 22)
+        int[,] ghostboard = new int[40, 22];//é preciso +2 no y (20 para 22)
         int[] boardBullet = new int[2];
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
@@ -53,6 +53,13 @@ namespace Pacman_Revolution
         float bulletSpeed = 10f;
         int[,] flagBullet = new int[45, 25];
         int auxflagbullet = 0;
+        int contbullet = 0;
+        int cont3=0;
+
+        int cooldown = 0, random1 = 0, bX, bY;
+
+        int bulletcont = 0;
+        int[] flagFirstBullet = new int[1];
 
         float lastTeleport = 10f;
         int tpX = 1, tpY = 1, tmarker=0;
@@ -611,10 +618,6 @@ namespace Pacman_Revolution
             }
 
 
-            int cooldown = 0, random1 = 0, bX, bY; 
-  
-            int bulletcont = 0;
-            int[] flagFirstBullet = new int[1];
             Random rnd = new Random();
             int randommov = rnd.Next(1, 5);
             //ghosttype = 3; // apenas para testar as diferentes A.I. dos ghosts
@@ -1464,49 +1467,52 @@ namespace Pacman_Revolution
                     //    }
                     //}
                 
-                    //disparar
+                    //dispararparte1
 
-
-                    if (pelletcont > 0)
+                    if (contbullet == 0)
                     {
-                        if (lastBullet >= 0.5f)
+                        if (pelletcont > 0)
                         {
-                            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+                            if (lastBullet >= 0.5f)
                             {
-                                if (lastdirectionfaced == 1)
+                                if (Keyboard.GetState().IsKeyDown(Keys.Q))
                                 {
-                                    if (canGoUp() == true)
+                                    if (lastdirectionfaced == 1)
                                     {
-                                        pelletcont = pelletcont - 1;
-                                        lastBullet = 0;
-                                        auxflagbullet = board[pX, pY - 1];
-                                        board[pX, pY-1] = 9;
-                                        flagBullet[pX, pY-1] = 1;
+                                        if (canGoUp() == true)
+                                        {
+                                            contbullet = 1;
+                                            pelletcont = pelletcont - 1;
+                                            bulletSpeed = 0;
+                                            lastBullet = 0;
+                                            auxflagbullet = board[pX, pY - 1];
+                                            board[pX, pY - 1] = 9;
+                                            flagBullet[pX, pY - 1] = 1;
+                                        }
                                     }
-                                }
-                                if (lastdirectionfaced == 2)
-                                {
-                                    if (canGoDown() == true)
+                                    if (lastdirectionfaced == 2)
                                     {
-                                        pelletcont = pelletcont - 1;
-                                        lastBullet = 0;
-                                        board[pX, pY + 1] = 9;
-                                        flagBullet[pX, pY + 1] = 2;
+                                        if (canGoDown() == true)
+                                        {
+                                            pelletcont = pelletcont - 1;
+                                            lastBullet = 0;
+                                            board[pX, pY + 1] = 9;
+                                            flagBullet[pX, pY + 1] = 2;
+                                        }
                                     }
-                                }
-                               
+
 
 
 
                                     //if (flagBullet[0] == 2 && cont1 < 5)
                                     //{
 
-                     
+
                                     //if (flagFirstBullet[0] == 1)
                                     //{
 
 
-                                    
+
                                     //boardBullet[0] = pX;
                                     //boardBullet[1] = pY - 1;
                                     //flagFirstBullet[0] = 2;
@@ -1518,16 +1524,16 @@ namespace Pacman_Revolution
                                     //    boardBullet[1] = boardBullet[1] - 1;
                                     //    board[boardBullet[0], boardBullet[1]] = 9;
                                     //}
-                                    cont1++;
-                                    spacepressed = true;
+                                  
+                            
                                     //}
 
 
-                                
+
+                                }
                             }
                         }
                     }
-
 
 
 
@@ -1624,26 +1630,39 @@ namespace Pacman_Revolution
 
 
                 //dispararparte2
-                int cont3;
+              
 
 
                 cont3 = 0;
-                if (bulletSpeed > 0.1f)
+                if (contbullet > 0)
                 {
-                    for (int x = 0; x < 40; x++)
+                    if (bulletSpeed > 0.08f)
                     {
-                        for (int y = 0; y < 22; y++)
+                        for (int x = 0; x < 40; x++)
                         {
-                            //1 - cima
-                            if (flagBullet[x, y] == 1 && cont3 == 0 && y+1 >2 && board[x,y - 1] != 2)
+                            for (int y = 0; y < 22; y++)
                             {
-                                cont3 = 1;
-                                bulletSpeed = 0f;
-                                //board[x, y] = auxflagbullet; //fix
-                                board[x, y] = 0;
-                                auxflagbullet = flagBullet[x, y - 1];
-                                flagBullet[x, y - 1] = 1;
-                                board[x, y - 1] = 9;
+                                //1 - cima
+                                if (flagBullet[x, y] == 1)
+                                {
+                                    if (((y - 1 == 0 || (board[x, y - 1] != 0 && board[x, y - 1] != 3) || ghostboard[x, y - 1] != 0)))
+                                    {
+                                        flagBullet[x, y] = 0;
+                                        board[x, y] = auxflagbullet;
+                                        contbullet = 0;
+                                        cont3 = 1;
+                                    }
+                                }
+                                if (flagBullet[x, y] == 1 && cont3 == 0 && y + 1 > 2 && board[x, y - 1] != 2)
+                                {
+                                    cont3 = 1;
+                                    bulletSpeed = 0f;
+                                    board[x, y] = auxflagbullet;
+                                    auxflagbullet = board[x, y - 1];
+                                    flagBullet[x, y - 1] = 1;
+                                    board[x, y - 1] = 9;
+                                }
+
                             }
                         }
                     }
@@ -1853,6 +1872,21 @@ namespace Pacman_Revolution
         }
 
         private bool scanGoUp()
+        {
+
+            if (spY == 2 || board[spX, spY - 1] == 2 || board[spX, spY - 1] == 1 || ghostboard[spX, spY - 1] != 0)
+            {
+                board[spX, spY] = 0;
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
+        private bool bulletcanGoUp()
         {
 
             if (spY == 2 || board[spX, spY - 1] == 2 || board[spX, spY - 1] == 1 || ghostboard[spX, spY - 1] != 0)
