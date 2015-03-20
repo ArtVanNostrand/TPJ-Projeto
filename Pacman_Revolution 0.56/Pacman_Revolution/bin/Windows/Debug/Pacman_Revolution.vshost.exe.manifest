@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>uxZyzZXJxVtBgjbliCYryTUdclA=</dsig:DigestValue>
+        <dsig:DigestValue>aeYJbDdxaw5XK1zyISQt0Ghxpl4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -283,6 +283,24 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>NHcsceNGsZKsC3hPn/Yx+r8B0hc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\darkblueghost30x19.png" size="3885">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Jo2rz/rMzPHCMHRmG+nJUCkO+SA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\darkblueghostv230.png" size="4342">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>ni16CrqIXgoeBC3Ly4cH5IvWeMI=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\explosao30x30.png" size="5063">
@@ -508,6 +526,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>sBEtAMwpsPNRZZWyiaCcwzlgzSU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\redghost30x30v5.png" size="4214">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>h6NeC/My+S9gjcFK682jmSqeMNU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\superpacmanaltdown.png" size="4387">

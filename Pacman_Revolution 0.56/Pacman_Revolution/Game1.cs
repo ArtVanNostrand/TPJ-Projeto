@@ -538,7 +538,7 @@ namespace Pacman_Revolution
             ghost3 = Content.Load<Texture2D>("greyghost30 v2");
             ghost4 = Content.Load<Texture2D>("purpleghost30 v2");
             ghost5 = Content.Load<Texture2D>("greenghost30 v2");
-            ghost6 = Content.Load<Texture2D>("redghost30");
+            ghost6 = Content.Load<Texture2D>("redghost30x30v5");
             portal = Content.Load<Texture2D>("portal19x30");
             afterimageright = Content.Load<Texture2D>("afterimage_pacman30right");
             afterimageup = Content.Load<Texture2D>("afterimage_pacman30up");
