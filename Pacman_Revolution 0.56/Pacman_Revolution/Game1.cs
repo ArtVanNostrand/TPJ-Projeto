@@ -20,7 +20,7 @@ namespace Pacman_Revolution
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, ghost4, ghost5, ghost6, bullet, box, bulletH;
+        Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, ghost4, ghost5, ghost6, bullet, box, bulletH, explosion;
         Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown, portal, superbullet, superbulletH;
         SpriteFont font1;
         SoundEffect eatingpellet, music1, dashsound, soundteleport, soundtransform, soundpacmanhit;
@@ -29,6 +29,9 @@ namespace Pacman_Revolution
         //board = 1 -> pacman
         //board = 2 -> bloco
         //board = 3 -> pellet
+        //board = 9 -> bullet
+        //board = 5-8 -> afterimages
+        //ghostboard = 1 -> fantasma
         bool spacepressed = false;
         //40x20
         int[,] board = new int[40, 22]; //é preciso +2 no y (20 para 22)
@@ -36,9 +39,9 @@ namespace Pacman_Revolution
         int[] boardBullet = new int[2];
         //last direction faced: up-1, down-2,right-3,left-4
         //gameover deteta se o pacman ja não tem mais vidas
-        int[,] ghostcoords = new int[8, 2];   //guardar coordenadas dos vários fantasmas[número do fantasma, posição(0 = x; 1 = y)]
-        int[] ghostHealth = new int[8];
-        int[] ghostLastDirection = new int[8]; //guardar a direção do último movimento dos vários fantasmas
+        int[,] ghostcoords = new int[6, 2];   //guardar coordenadas dos vários fantasmas[número do fantasma, posição(0 = x; 1 = y)]
+        int[] ghostHealth = new int[6];
+        int[] ghostLastDirection = new int[6]; //guardar a direção do último movimento dos vários fantasmas
         int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=13, gpY=10, spX=1, spY=1, lastdirectionfaced=0, gameover=0;
         int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3, pelletScore = 0;
         int[] repeat = new int[5];
@@ -95,18 +98,18 @@ namespace Pacman_Revolution
 
             music1.Play();
 
-            for (linha = 0; linha < 8; linha++)
+            for (linha = 0; linha < 6; linha++)
             {
                 ghostcoords[linha, 0] = gpX + linha;
                 ghostcoords[linha, 1] = gpY;
             }
 
-            for (linha = 0; linha < 8; linha ++)
+            for (linha = 0; linha < 6; linha ++)
             {
                 ghostLastDirection[linha] = 6;
             }
 
-            for (linha = 0; linha < 8; linha++)
+            for (linha = 0; linha < 6; linha++)
             {
                 ghostHealth[linha] = 1;
             }
@@ -553,7 +556,7 @@ namespace Pacman_Revolution
 
             songsuper = Content.Load<SoundEffect>("superpacman14s");
 
-
+            explosion = Content.Load<Texture2D>("explosao30x30");
             
 
             music1 = Content.Load<SoundEffect>("PAC MAN Championship Edition DX  Pac Rainbow");
@@ -639,6 +642,7 @@ namespace Pacman_Revolution
             Random rnd = new Random();
             int randommov = rnd.Next(1, 5);
             //ghosttype = 3; // apenas para testar as diferentes A.I. dos ghosts
+            //MOVIMENTO FANTASMAS
             for (ghostcount = 0; ghostcount < 6; ghostcount++)
             {
 
@@ -650,31 +654,16 @@ namespace Pacman_Revolution
                 {
                     ghosttype = 1;  //movimento random
                 }
-                if (ghostcount == 1)
-                {
-                    ghosttype = 2;  //movimento 
-                }
                 if (ghostcount != 0 && ghostcount != 1 )
                 {
                     ghosttype = 3;  //segue o jogador
                 }
 
-                ghosttype = 3;
                 //detetar se um fantasma apanhou o pacman
                 if (pacmanDead(vidaPacman, pX, pY, gpX, gpY, lastTimeHit) == true)
                 {
                     
                     gameover = 1;
-                }
-
-                if (pX == gpX && pY == gpY)
-                {
-                    Console.WriteLine("vidaPacman = " + vidaPacman);
-                    Console.WriteLine("pX = " + pX);
-                    Console.WriteLine("gpX = " + gpX);
-                    Console.WriteLine("pY = " + pY);
-                    Console.WriteLine("gpY = " + gpY);
-                    Console.WriteLine("lastTimeHit = " + lastTimeHit);
                 }
 
                                                      //ghostspeed
@@ -1257,7 +1246,6 @@ namespace Pacman_Revolution
 
                     //    }//ghosttype==10
 
-
                     ghostcoords[ghostcount, 0] = gpX;
                     ghostcoords[ghostcount, 1] = gpY;
                     //ghostcount++;
@@ -1623,6 +1611,10 @@ namespace Pacman_Revolution
                                 flagDireita = 0;
                                 auxLastDirection = 0;
                             }
+                        }
+                        for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                        {
+                            ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
                         }
                     }
 
@@ -2020,6 +2012,10 @@ namespace Pacman_Revolution
                     {
                         spriteBatch.Draw(superbulletH, new Vector2(x * 30 + 10, (y - 2) * 30));
                     }
+                    if (board[x, y] == 14)
+                    {
+                        spriteBatch.Draw(explosion, new Vector2(x * 30 + 10, (y - 2) * 30));
+                    }
 
                     //if (board[x, y] == 4)
                     //{
@@ -2386,15 +2382,20 @@ namespace Pacman_Revolution
 
         }
 
-        private bool ghostDead(int vida, int ghostX, int ghostY)
+        private void ghostDead(int vida, int ghostX, int ghostY, int numGhost)
         {
             if (board[ghostX, ghostY] == 9)
             {
                 vida--;
-                board[ghostX, ghostY] = 10; //imagem de fantasma morto
             }
-            if (vida <= 0) return true;
-            else return false;
+            if (vida <= 0)
+            {
+                board[ghostX, ghostY] = 14;
+                vida = 1;
+                ghostcoords[numGhost, 0] = 13;
+                gpX = 13;
+                gpY = 10;
+            }//imagem de fantasma morto
         }
 
         private bool pacmanDead(int vida, int pacmanX, int pacmanY, int ghostX, int ghostY, float lastHit)
