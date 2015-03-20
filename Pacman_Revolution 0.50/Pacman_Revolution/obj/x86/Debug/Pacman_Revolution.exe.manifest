@@ -67,14 +67,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Pacman_Revolution.exe" size="65536">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Pacman_Revolution.exe" size="68096">
       <assemblyIdentity name="Pacman_Revolution" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>JF2R0xUZKhS+aQLep/WrvOtOuxI=</dsig:DigestValue>
+        <dsig:DigestValue>SlM1dFmrSYDm6wE3t+lY2ZO1/Bc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -589,6 +589,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>oyQXxawH9suIuWnQj42s42PXeZQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\yellow shot v4 9x18Horizontal.png" size="3200">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>ffMz/TonLGoG4vJQHYvYqmtj+CI=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Icon.ico" size="32038">

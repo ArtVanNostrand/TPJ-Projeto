@@ -20,7 +20,7 @@ namespace Pacman_Revolution
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, ghost4, ghost5, ghost6, bullet, box;
+        Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, ghost4, ghost5, ghost6, bullet, box, bulletH;
         Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown, portal, superbullet;
         SpriteFont font1;
         SoundEffect eatingpellet, music1, dashsound, soundteleport, soundtransform, soundpacmanhit;
@@ -54,7 +54,7 @@ namespace Pacman_Revolution
         float CooldownVida = 10f;
         float bulletSpeed = 10f;
         float supertime = 0f;
-        int[,] flagBullet = new int[45, 25];
+        int flagBullet = 0, auxLastDirection = 0, flagCima = 0, flagBaixo = 0, flagEsquerda = 0, flagDireita = 0;
         int auxflagbullet = 0;
         int contbullet = 0, super=0;
         int cont3=0, cont4=0;
@@ -63,7 +63,7 @@ namespace Pacman_Revolution
         int cooldown = 0, random1 = 0, bX, bY;
 
         int bulletcont = 0;
-        int[] flagFirstBullet = new int[1];
+        int flagFirstBullet = 0;
 
         float lastTeleport = 10f;
         int tpX = 1, tpY = 1, tmarker=0;
@@ -528,6 +528,7 @@ namespace Pacman_Revolution
             block = Content.Load<Texture2D>("block 30x30 v2");
             pellet = Content.Load<Texture2D>("white pellet v2 10x10");
             bullet = Content.Load<Texture2D>("yellow shot v4 9x18");
+            bulletH = Content.Load<Texture2D>("yellow shot v4 9x18Horizontal");
             superbullet = Content.Load<Texture2D>("superpellet");
             black = Content.Load<Texture2D>("black");
             ghost = Content.Load<Texture2D>("blueghost30 v2");
@@ -1405,6 +1406,196 @@ namespace Pacman_Revolution
                         }
                     }
 
+                    //LASTDIRECTIONFACED »» 1 = cima // 2 = baixo // 3 = direita // 4 = esquerda
+                    //Disparar OLD parte 1
+                    if (pelletcont > 0)
+                    {
+                        if (lastBullet >= 0.8f)
+                        {
+                            if (Keyboard.GetState().IsKeyDown(Keys.Q) && flagBullet == 0)
+                            {
+                                if (pY != 2 && lastdirectionfaced == 1 && (board[pX, pY - 1] == 0 || board[pX, pY - 1] == 3))
+                                {
+                                    if (scanGoUp() == true)
+                                    {
+                                        auxLastDirection = 1;
+                                        flagBullet = 1;
+                                        flagFirstBullet = 0;
+                                    }
+                                }
+                                if (pY != 21 && lastdirectionfaced == 2 && (board[pX, pY + 1] == 0 || board[pX, pY + 1] == 3))
+                                {
+                                    if (scanGoDown() == true)
+                                    {
+                                        auxLastDirection = 2;
+                                        flagBullet = 1;
+                                        flagFirstBullet = 0;
+                                    }
+                                }
+                                if (pX != 0 && lastdirectionfaced == 4 && (board[pX - 1, pY] == 0 || board[pX - 1, pY] == 3))
+                                {
+                                    if (scanGoRight() == true)
+                                    {
+                                        auxLastDirection = 4;
+                                        flagBullet = 1;
+                                        flagFirstBullet = 0;
+                                    }
+                                }
+                                if (pX != 34 && lastdirectionfaced == 3 && (board[pX + 1, pY] == 0 || board[pX + 1, pY] == 3))
+                                {
+                                    if (scanGoLeft() == true)
+                                    {
+                                        auxLastDirection = 3;
+                                        flagBullet = 1;
+                                        flagFirstBullet = 0;
+                                    }
+                                }
+
+                                if (lastBullet < 0.1f)
+                                {
+                                    pelletcont = pelletcont - 3;
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    //Disparar OLD parte 2
+                    if (flagBullet == 1)
+                    {
+                        if (auxLastDirection == 1)    //CIMA
+                        {
+                            if (flagFirstBullet == 0)
+                            {
+                                boardBullet[0] = pX;
+                                boardBullet[1] = pY - 1;
+                                flagFirstBullet = 1;
+                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                            }
+                            else if ((board[boardBullet[0], boardBullet[1] - 1] == 0 || board[boardBullet[0], boardBullet[1] - 1] == 3) && boardBullet[1] != 1)
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                boardBullet[1] = boardBullet[1] - 1;
+                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                board[boardBullet[0], boardBullet[1]] = 9;
+                            }
+                            if (boardBullet[1] == 1 || flagCima == 1)
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                flagBullet = 0;
+                            }
+                            if (board[boardBullet[0], boardBullet[1] - 1] == 2) flagCima = 1;
+                            if (flagBullet == 0)
+                            {
+                                flagCima = 0;
+                                auxLastDirection = 0;
+                            }
+                        }
+                        else if (auxLastDirection == 2)   //BAIXO
+                        {
+                            if (flagFirstBullet == 0)
+                            {
+                                boardBullet[0] = pX;
+                                boardBullet[1] = pY + 1;
+                                flagFirstBullet = 1;
+                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                            }
+                            else if (boardBullet[1] != 21 && (board[boardBullet[0], boardBullet[1] + 1] == 0 || board[boardBullet[0], boardBullet[1] + 1] == 3))
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                boardBullet[1] = boardBullet[1] + 1;
+                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                board[boardBullet[0], boardBullet[1]] = 9;
+                            }
+                            if (boardBullet[1] == 21 && flagBaixo == 1)
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                flagBullet = 0;
+                            }
+                            if (flagBaixo == 1)
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                flagBullet = 0;
+                            }
+                            if (boardBullet[1] == 21 && flagBaixo == 0) flagBaixo = 1;
+                            if (boardBullet[1] != 21 && board[boardBullet[0], boardBullet[1] + 1] == 2) flagBaixo = 1;
+                            if (flagBullet == 0)
+                            {
+                                flagBaixo = 0;
+                                auxLastDirection = 0;
+                            }
+                        }
+                        else if (auxLastDirection == 4)   //ESQUERDA
+                        {
+                            if (flagFirstBullet == 0)
+                            {
+                                boardBullet[0] = pX - 1;
+                                boardBullet[1] = pY;
+                                flagFirstBullet = 1;
+                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                            }
+                            else if (boardBullet[0] != 0 && (board[boardBullet[0] - 1, boardBullet[1]] == 0 || board[boardBullet[0] - 1, boardBullet[1]] == 3))
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                boardBullet[0] = boardBullet[0] - 1;
+                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                board[boardBullet[0], boardBullet[1]] = 11;
+                            }
+                            if (boardBullet[0] == 0 && flagEsquerda == 1)
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                flagBullet = 0;
+                            }
+                            if (flagEsquerda == 1)
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                flagBullet = 0;
+                            }
+                            if (boardBullet[0] == 0 && flagEsquerda == 0) flagEsquerda = 1;
+                            if (boardBullet[0] != 0 && board[boardBullet[0] - 1, boardBullet[1]] == 2) flagEsquerda = 1;
+                            if (flagBullet == 0)
+                            {
+                                flagEsquerda = 0;
+                                auxLastDirection = 0;
+                            }
+                        }
+                        else if (auxLastDirection == 3)   //DIREITA
+                        {
+                            if (flagFirstBullet == 0)
+                            {
+                                boardBullet[0] = pX + 1;
+                                boardBullet[1] = pY;
+                                flagFirstBullet = 1;
+                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                            }
+                            else if (boardBullet[0] != 34 && (board[boardBullet[0] + 1, boardBullet[1]] == 0 || board[boardBullet[0] + 1, boardBullet[1]] == 3))
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                boardBullet[0] = boardBullet[0] + 1;
+                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                board[boardBullet[0], boardBullet[1]] = 11;
+                            }
+                            if (boardBullet[0] == 34 && flagDireita == 1)
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                flagBullet = 0;
+                            }
+                            if (flagDireita == 1)
+                            {
+                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                flagBullet = 0;
+                            }
+                            if (boardBullet[0] == 34 && flagDireita == 0) flagDireita = 1;
+                            if (boardBullet[0] != 34 && board[boardBullet[0] + 1, boardBullet[1]] == 2) flagDireita = 1;
+                            if (flagBullet == 0)
+                            {
+                                flagDireita = 0;
+                                auxLastDirection = 0;
+                            }
+                        }
+                    }
+
                     int cont1 = 0;
 
                     if (pelletcont > 9)
@@ -1490,149 +1681,6 @@ namespace Pacman_Revolution
                         }
                     }
 
-
-                    ////disparar OLD
-                    //if (pelletcont > 0)
-                    //{
-                    //    if (lastBullet >= 0.8f)
-                    //    {
-                    //        if (Keyboard.GetState().IsKeyDown(Keys.Q))
-                    //        {
-                    //            if (lastdirectionfaced == 1)
-                    //            {
-                    //                cont1 = 0;
-                    //                if (scanGoUp() == true && cont1 < 5)
-                    //                {
-                    //                    flagBullet[0] = 2;
-                    //                    flagFirstBullet[0] = 1;
-                    //                }
-                    //            }
-                    //            if (lastdirectionfaced == 2)
-                    //            {
-                    //                cont1 = 0;
-                    //                bX = pX;
-                    //                bY = pY;
-                    //                while (scanGoDown() == true && cont1 < 5)
-                    //                {
-                    //                    lastBullet = 0f;
-
-                                      
-                    //                    cont1++;
-
-                                       
-                    //                }
-                    //            }
-                    //            if (lastdirectionfaced == 3)
-                    //            {
-                    //                cont1 = 0;
-                    //                bX = pX;
-                    //                bY = pY;
-                    //                while (scanGoRight() == true && cont1 < 5)
-                    //                {
-                    //                    lastBullet = 0f;
-
-                                   
-                               
-                    //                }
-                    //            }
-                    //            if (lastdirectionfaced == 4)
-                    //            {
-                    //                cont1 = 0;
-                    //                bX = pX;
-                    //                bY = pY;
-                    //                while (scanGoLeft() == true && cont1 < 5)
-                    //                {
-                    //                    lastBullet = 0f;
-
-                                 
-                                  
-                    //                }
-                    //            }
-
-                    //            if (lastBullet < 0.1f)
-                    //            {
-                    //                pelletcont = pelletcont - 3;
-                    //            }
-
-                    //        }
-
-                    //    }
-                    //}
-                
-                    //dispararparte1
-
-                    if (contbullet == 0)
-                    {
-                        if (pelletcont > 0)
-                        {
-                            if (lastBullet >= 0.5f)
-                            {
-                                if (Keyboard.GetState().IsKeyDown(Keys.Q))
-                                {
-                                    if (lastdirectionfaced == 1)
-                                    {
-                                        if (canGoUp() == true)
-                                        {
-                                            contbullet = 1;
-                                            pelletcont = pelletcont - 1;
-                                            bulletSpeed = 0;
-                                            lastBullet = 0;
-                                            auxflagbullet = board[pX, pY - 1];
-                                            board[pX, pY - 1] = 9;
-                                            flagBullet[pX, pY - 1] = 1;
-                                        }
-                                    }
-                                    if (lastdirectionfaced == 2)
-                                    {
-                                        if (canGoDown() == true)
-                                        {
-                                            pelletcont = pelletcont - 1;
-                                            lastBullet = 0;
-                                            board[pX, pY + 1] = 9;
-                                            flagBullet[pX, pY + 1] = 2;
-                                        }
-                                    }
-
-
-
-
-                                    //if (flagBullet[0] == 2 && cont1 < 5)
-                                    //{
-
-
-                                    //if (flagFirstBullet[0] == 1)
-                                    //{
-
-
-
-                                    //boardBullet[0] = pX;
-                                    //boardBullet[1] = pY - 1;
-                                    //flagFirstBullet[0] = 2;
-                                    //}
-                                    //else
-                                    //{
-                                    //    Console.WriteLine("AAAAAAAAAAAAAA");
-                                    //    board[boardBullet[0], boardBullet[1]] = 0;
-                                    //    boardBullet[1] = boardBullet[1] - 1;
-                                    //    board[boardBullet[0], boardBullet[1]] = 9;
-                                    //}
-                                  
-                            
-                                    //}
-
-
-
-                                }
-                            }
-                        }
-                    }
-
-
-
-                  
-
-
-
                     //teleport
                     if (pelletcont > 24)
                     {
@@ -1677,13 +1725,8 @@ namespace Pacman_Revolution
 
 
 
-
-
-
                 }
-
-
-              
+ 
 
 
                 //detetar se um fantasma apanhou o pacman
@@ -1716,54 +1759,6 @@ namespace Pacman_Revolution
                         }
                     }
             }
-
-
-
-
-
-
-
-                //dispararparte2
-              
-
-
-                cont3 = 0;
-                if (contbullet > 0)
-                {
-                    if (bulletSpeed > 0.08f)
-                    {
-                        for (int x = 0; x < 40; x++)
-                        {
-                            for (int y = 0; y < 22; y++)
-                            {
-                                //1 - cima
-                                if (flagBullet[x, y] == 1)
-                                {
-                                    if    (y - 1 == 0 || (board[x, y - 1] != 0 && board[x, y - 1] != 3 ))   
-                                    {
-                                        flagBullet[x, y] = 0;
-                                        board[x, y] = 0;
-                                        contbullet = 0;
-                                        bulletSpeed = 0f;
-                                        cont3 = 1;
-                                    }
-                                }
-                                if (flagBullet[x, y] == 1 && cont3 == 0)
-                                {
-                                    cont3 = 1;
-                                    bulletSpeed = 0f;
-                                    board[x, y] = auxflagbullet;
-                                    auxflagbullet = board[x, y - 1];
-                                    flagBullet[x, y - 1] = 1;
-                                    board[x, y - 1] = 9;
-                                }
-
-                            }
-                        }
-                    }
-                }
-
-
 
                 if (lastdirectionfaced == 1)
                 {
@@ -1978,6 +1973,10 @@ namespace Pacman_Revolution
                     if (board[x, y] == 10)
                     {
                         spriteBatch.Draw(portal, new Vector2(x * 30+5, (y - 2) * 30));
+                    }
+                    if (board[x, y] == 11)
+                    {
+                        spriteBatch.Draw(bulletH, new Vector2(x * 30 + 10, (y - 2) * 30));
                     }
 
                     //if (board[x, y] == 4)
