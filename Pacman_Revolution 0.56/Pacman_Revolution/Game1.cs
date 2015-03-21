@@ -656,7 +656,7 @@ namespace Pacman_Revolution
                 {
                     ghosttype = 1;  //movimento random
                 }
-                if (ghostcount != 0 && ghostcount != 1 )
+                if (ghostcount != 0)
                 {
                     ghosttype = 3;  //segue o jogador
                 }
@@ -2216,7 +2216,8 @@ namespace Pacman_Revolution
                 spriteBatch.DrawString(font1, "GAME OVER", new Vector2(530, 70), Color.Yellow);
                 spriteBatch.DrawString(font1, "Time: " + totalgametime, new Vector2(475, 150), Color.Yellow);
                 spriteBatch.DrawString(font1, "Pellets Collected: " + pelletScore, new Vector2(475, 180), Color.Yellow);
-                spriteBatch.DrawString(font1, "Score:" + score, new Vector2(475, 210), Color.Yellow);
+                spriteBatch.DrawString(font1, "Kills:" + kills, new Vector2(475, 210), Color.Yellow);
+                spriteBatch.DrawString(font1, "Score:" + score, new Vector2(475, 240), Color.Yellow);
             }
 
             //teleport marker
@@ -2444,7 +2445,7 @@ namespace Pacman_Revolution
 
         private void ghostDead(int vida, int ghostX, int ghostY, int numGhost)
         {
-            if ((board[ghostX, ghostY] == 9 && CooldownGhostHit > 0.1f))
+            if ((board[ghostX, ghostY] == 9 || board[ghostX, ghostY] == 11 || board[ghostX, ghostY] == 12 || board[ghostX, ghostY] == 13) && CooldownGhostHit > 0.1f)
             {
                 vida--;
                 CooldownGhostHit = 0f;
@@ -2452,6 +2453,7 @@ namespace Pacman_Revolution
             if (vida <= 0)
             {
                 kills++;
+                score += 5;
                 board[ghostX, ghostY] = 14;
                 ghostcoords[numGhost, 0] = 13;
                 gpX = 13;
