@@ -43,7 +43,7 @@ namespace Pacman_Revolution
         int[] ghostHealth = new int[6];
         int[] ghostLastDirection = new int[6]; //guardar a direção do último movimento dos vários fantasmas
         int pX = 0, pY = 12, auxgpX=20, auxgpY=10, gpX=13, gpY=10, spX=1, spY=1, lastdirectionfaced=0, gameover=0;
-        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3, pelletScore = 0;
+        int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3, pelletScore = 0, kills = 0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
         float ghostspeed=0f;
@@ -55,6 +55,7 @@ namespace Pacman_Revolution
         float totalgametime = 0f;
         float lastBullet = 10f;
         float CooldownVida = 10f;
+        float CooldownGhostHit = 10f;
         float bulletSpeed = 10f;
         float supertime = 0f;
         int flagBullet = 0, auxLastDirection = 0, flagCima = 0, flagBaixo = 0, flagEsquerda = 0, flagDireita = 0;
@@ -624,6 +625,7 @@ namespace Pacman_Revolution
             {
                 totalgametime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 CooldownVida += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                CooldownGhostHit += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 bulletSpeed += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             spacepressed = false;
@@ -1458,6 +1460,13 @@ namespace Pacman_Revolution
                         {
                             if (flagFirstBullet == 0)
                             {
+                                if (ghostboard[pX, pY - 1] == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
+                                    }
+                                }
                                 boardBullet[0] = pX;
                                 boardBullet[1] = pY - 1;
                                 flagFirstBullet = 1;
@@ -1488,11 +1497,25 @@ namespace Pacman_Revolution
                                 flagCima = 0;
                                 auxLastDirection = 0;
                             }
+                            if (ghostboard[boardBullet[0], boardBullet[1] - 1] == 1)
+                            {
+                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                {
+                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
+                                }
+                            }
                         }
                         else if (auxLastDirection == 2)   //BAIXO
                         {
                             if (flagFirstBullet == 0)
                             {
+                                if (ghostboard[pX, pY + 1] == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
+                                    }
+                                }
                                 boardBullet[0] = pX;
                                 boardBullet[1] = pY + 1;
                                 flagFirstBullet = 1;
@@ -1529,11 +1552,25 @@ namespace Pacman_Revolution
                                 flagBaixo = 0;
                                 auxLastDirection = 0;
                             }
+                            if (boardBullet[1] != 21 && ghostboard[boardBullet[0], boardBullet[1] + 1] == 1)
+                            {
+                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                {
+                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
+                                }
+                            }
                         }
                         else if (auxLastDirection == 4)   //ESQUERDA
                         {
                             if (flagFirstBullet == 0)
                             {
+                                if (ghostboard[pX - 1, pY] == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
+                                    }
+                                }
                                 boardBullet[0] = pX - 1;
                                 boardBullet[1] = pY;
                                 flagFirstBullet = 1;
@@ -1570,11 +1607,25 @@ namespace Pacman_Revolution
                                 flagEsquerda = 0;
                                 auxLastDirection = 0;
                             }
+                            if (boardBullet[0] != 0 && ghostboard[boardBullet[0] - 1, boardBullet[1]] == 1)
+                            {
+                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                {
+                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
+                                }
+                            }
                         }
                         else if (auxLastDirection == 3)   //DIREITA
                         {
                             if (flagFirstBullet == 0)
                             {
+                                if (ghostboard[pX + 1, pY] == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
+                                    }
+                                }
                                 boardBullet[0] = pX + 1;
                                 boardBullet[1] = pY;
                                 flagFirstBullet = 1;
@@ -1610,6 +1661,13 @@ namespace Pacman_Revolution
                             {
                                 flagDireita = 0;
                                 auxLastDirection = 0;
+                            }
+                        }
+                        if (boardBullet[0] != 34 && ghostboard[boardBullet[0] + 1, boardBullet[1]] == 1)
+                        {
+                            for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                            {
+                                ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
                             }
                         }
                         for (ghostcount = 0; ghostcount < 6; ghostcount++)
@@ -2058,6 +2116,8 @@ namespace Pacman_Revolution
 
                 spriteBatch.DrawString(font1, "Score:" + score, new Vector2(1052, 95), Color.White);
 
+                spriteBatch.DrawString(font1, "Kills:" + kills, new Vector2(1052, 120), Color.White);
+
                 spriteBatch.DrawString(font1, "Health:" + vidaPacman, new Vector2(1052, 10), Color.White);
 
                 //spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1050, 130), Color.White);
@@ -2384,17 +2444,19 @@ namespace Pacman_Revolution
 
         private void ghostDead(int vida, int ghostX, int ghostY, int numGhost)
         {
-            if (board[ghostX, ghostY] == 9)
+            if ((board[ghostX, ghostY] == 9 && CooldownGhostHit > 0.1f))
             {
                 vida--;
+                CooldownGhostHit = 0f;
             }
             if (vida <= 0)
             {
+                kills++;
                 board[ghostX, ghostY] = 14;
-                vida = 1;
                 ghostcoords[numGhost, 0] = 13;
                 gpX = 13;
                 gpY = 10;
+                vida = 1;
             }//imagem de fantasma morto
         }
 
