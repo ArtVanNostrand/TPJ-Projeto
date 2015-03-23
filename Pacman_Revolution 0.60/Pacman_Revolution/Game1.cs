@@ -23,8 +23,9 @@ namespace Pacman_Revolution
         Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, ghost4, ghost5, ghost6, bullet, box, bulletH, explosion;
         Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown, portal, superbullet, superbulletH;
         SpriteFont font1;
-        SoundEffect eatingpellet, music1, dashsound, soundteleport, soundtransform, soundpacmanhit;
-        SoundEffect songsuper;
+        SoundEffect eatingpellet, dashsound, soundteleport, soundtransform, soundpacmanhit;
+        SoundEffect soundboom, soundgameover, soundwrong;
+        SoundEffect music1, songsuper;
         //board = 0 -> nada/vazio
         //board = 1 -> pacman
         //board = 2 -> bloco
@@ -60,13 +61,13 @@ namespace Pacman_Revolution
         float supertime = 0f;
         int flagBullet = 0, auxLastDirection = 0, flagCima = 0, flagBaixo = 0, flagEsquerda = 0, flagDireita = 0;
         int auxflagbullet = 0;
-        int contbullet = 0, super = 0;
+        int contbullet = 0, super = 0, cont5=0, Qpressed=0;
         int cont3=0, cont4=0;
         float bullettravelspeed = 0.6f;
         float pacmanspeed = 1f / 10f;
 
         int cooldown = 0, random1 = 0, bX, bY;
-
+        
         int bulletcont = 0;
         int flagFirstBullet = 0;
 
@@ -548,19 +549,19 @@ namespace Pacman_Revolution
             afterimageup = Content.Load<Texture2D>("afterimage_pacman30up");
             afterimagedown = Content.Load<Texture2D>("afterimage_pacman30down");
             afterimageleft = Content.Load<Texture2D>("afterimage_pacman30left");
+            explosion = Content.Load<Texture2D>("explosao30x30");
 
             dashsound = Content.Load<SoundEffect>("placeholder sound");
             eatingpellet = Content.Load<SoundEffect>("eating pellet sound v1");
             soundteleport = Content.Load<SoundEffect>("pacmanteleport");
             soundtransform = Content.Load<SoundEffect>("pacmantransform");
             soundpacmanhit = Content.Load<SoundEffect>("pacmanhit");
-
-            songsuper = Content.Load<SoundEffect>("superpacman14s");
-
-            explosion = Content.Load<Texture2D>("explosao30x30");
-            
+            soundboom = Content.Load<SoundEffect>("soundboom");
+            soundgameover = Content.Load<SoundEffect>("soundgameover");
+            soundwrong = Content.Load<SoundEffect>("wrong sound effect");
 
             music1 = Content.Load<SoundEffect>("PAC MAN Championship Edition DX  Pac Rainbow");
+            songsuper = Content.Load<SoundEffect>("superpacman14s");
 
             font1 = Content.Load<SpriteFont>("QuartzMS13");
 
@@ -594,6 +595,7 @@ namespace Pacman_Revolution
 
             eatingpellet.Dispose();
             dashsound.Dispose();
+
             music1.Dispose();
 
        
@@ -666,6 +668,7 @@ namespace Pacman_Revolution
                 {
                     
                     gameover = 1;
+                 
                 }
 
                                                      //ghostspeed
@@ -684,7 +687,10 @@ namespace Pacman_Revolution
                             if (super == 0)
                             {
                                 vidaPacman--;
-                                soundpacmanhit.Play();
+                                if (vidaPacman > 0)
+                                {
+                                    soundpacmanhit.Play();
+                                }
                             }
                         }
 
@@ -728,7 +734,10 @@ namespace Pacman_Revolution
                             if (super == 0)
                             {
                                 vidaPacman--;
-                                soundpacmanhit.Play();
+                                if (vidaPacman > 0)
+                                {
+                                    soundpacmanhit.Play();
+                                }
                             }
                         }
                     }//ghosttype==1
@@ -746,7 +755,10 @@ namespace Pacman_Revolution
                             if (super == 0)
                             {
                                 vidaPacman--;
-                                soundpacmanhit.Play();
+                                if (vidaPacman > 0)
+                                {
+                                    soundpacmanhit.Play();
+                                }
                             }
                         }
 
@@ -802,7 +814,10 @@ namespace Pacman_Revolution
                             if (super == 0)
                             {
                                 vidaPacman--;
-                                soundpacmanhit.Play();
+                                if (vidaPacman > 0)
+                                {
+                                    soundpacmanhit.Play();
+                                }
                             }
                         }
                     }//ghosttype==2
@@ -818,7 +833,10 @@ namespace Pacman_Revolution
                             if (super == 0)
                             {
                                 vidaPacman--;
-                                soundpacmanhit.Play();
+                                if (vidaPacman > 0)
+                                {
+                                    soundpacmanhit.Play();
+                                }
                             }
                         }
 
@@ -1023,7 +1041,10 @@ namespace Pacman_Revolution
                             if (super == 0)
                             {
                                 vidaPacman--;
-                                soundpacmanhit.Play();
+                                if (vidaPacman > 0)
+                                {
+                                    soundpacmanhit.Play();
+                                }
                             }
                         }
                     }//ghosttype==3
@@ -1400,7 +1421,10 @@ namespace Pacman_Revolution
 
                     //LASTDIRECTIONFACED »» 1 = cima // 2 = baixo // 3 = direita // 4 = esquerda
                     //Disparar OLD parte 1
-                    if (pelletcont > 0)
+
+                    if(lastBullet>0.5f){
+
+                    if (pelletcont > 2)
                     {
                         if (lastBullet >= bullettravelspeed)
                         {
@@ -1410,6 +1434,9 @@ namespace Pacman_Revolution
                                 {
                                     if (scanGoUp() == true)
                                     {
+                                        lastBullet = 0f;
+                                        pelletcont = pelletcont - 3;
+                                        dashsound.Play();
                                         auxLastDirection = 1;
                                         flagBullet = 1;
                                         flagFirstBullet = 0;
@@ -1419,6 +1446,9 @@ namespace Pacman_Revolution
                                 {
                                     if (scanGoDown() == true)
                                     {
+                                        lastBullet = 0f;
+                                        pelletcont = pelletcont - 3;
+                                        dashsound.Play();
                                         auxLastDirection = 2;
                                         flagBullet = 1;
                                         flagFirstBullet = 0;
@@ -1428,6 +1458,9 @@ namespace Pacman_Revolution
                                 {
                                     if (scanGoRight() == true)
                                     {
+                                        lastBullet = 0f;
+                                        pelletcont = pelletcont - 3;
+                                        dashsound.Play();
                                         auxLastDirection = 4;
                                         flagBullet = 1;
                                         flagFirstBullet = 0;
@@ -1437,21 +1470,21 @@ namespace Pacman_Revolution
                                 {
                                     if (scanGoLeft() == true)
                                     {
+                                        lastBullet = 0f;
+                                        pelletcont = pelletcont - 3;
+                                        dashsound.Play();
                                         auxLastDirection = 3;
                                         flagBullet = 1;
                                         flagFirstBullet = 0;
                                     }
                                 }
 
-                                if (lastBullet < 0.1f)
-                                {
-                                    pelletcont = pelletcont - 3;
-                                }
 
                             }
 
                         }
                     }
+                }
 
                     //Disparar OLD parte 2
                     if (flagBullet == 1)
@@ -1678,88 +1711,102 @@ namespace Pacman_Revolution
 
                     int cont1 = 0;
 
-                    if (pelletcont > 9)
-                    {
-                        if (lastDashMove >= 10f)
+                   
+                        if (Keyboard.GetState().IsKeyDown(Keys.W))
                         {
-                            if (Keyboard.GetState().IsKeyDown(Keys.W))
+                            if (pelletcont > 9)
                             {
-
-                                //dash - mexe-o 5 unidades para o sentido que o pacman esta virado mas gasta 10 pellets
-                                if (lastdirectionfaced == 1)
+                                if (lastDashMove >= 10f)
                                 {
-                                    cont1 = 0;
-                                    while (canGoUp() == true && cont1 < 5)
-                                    {
-                                        lastAfterimage = 0f;
-                                        lastDashMove = 0f;
+                                    
+                                        //dash - mexe-o 5 unidades para o sentido que o pacman esta virado mas gasta 10 pellets
+                                        if (lastdirectionfaced == 1)
+                                        {
+                                            cont1 = 0;
+                                            while (canGoUp() == true && cont1 < 5)
+                                            {
+                                                Qpressed = 1;
+                                                lastAfterimage = 0f;
+                                                lastDashMove = 0f;
 
-                                        board[pX, pY] = 5;
-                                        cont1++;
+                                                board[pX, pY] = 5;
+                                                cont1++;
 
-                                        pY--;
-                                        board[pX, pY] = 1;
-                                        spacepressed = true;
-                                    }
+                                                pY--;
+                                                board[pX, pY] = 1;
+                                                spacepressed = true;
+                                            }
+                                        }
+                                        if (lastdirectionfaced == 2)
+                                        {
+                                            cont1 = 0;
+                                            while (canGoDown() == true && cont1 < 5)
+                                            {
+                                                lastAfterimage = 0f;
+                                                lastDashMove = 0f;
+
+                                                board[pX, pY] = 6;
+                                                cont1++;
+
+                                                pY++;
+                                                board[pX, pY] = 1;
+                                                spacepressed = true;
+                                            }
+                                        }
+                                        if (lastdirectionfaced == 3)
+                                        {
+                                            cont1 = 0;
+
+                                            while (canGoRight() == true && cont1 < 5)
+                                            {
+                                                lastAfterimage = 0f;
+                                                lastDashMove = 0f;
+
+                                                board[pX, pY] = 7;
+                                                cont1++;
+                                                pX++;
+                                                board[pX, pY] = 1;
+                                                spacepressed = true;
+                                            }
+                                        }
+                                        if (lastdirectionfaced == 4)
+                                        {
+                                            cont1 = 0;
+                                            while (canGoLeft() == true && cont1 < 5)
+                                            {
+                                                lastAfterimage = 0f;
+                                                lastDashMove = 0f;
+
+                                                board[pX, pY] = 8;
+                                                cont1++;
+
+                                                pX--;
+                                                board[pX, pY] = 1;
+                                                spacepressed = true;
+                                            }
+                                        }
+                                        if (lastDashMove < 0.1f)
+                                        {
+                                            dashsound.Play();
+                                            pelletcont = pelletcont - 10;
+                                        }
+
+
+                                    
                                 }
-                                if (lastdirectionfaced == 2)
+                                else
                                 {
-                                    cont1 = 0;
-                                    while (canGoDown() == true && cont1 < 5)
-                                    {
-                                        lastAfterimage = 0f;
-                                        lastDashMove = 0f;
-
-                                        board[pX, pY] = 6;
-                                        cont1++;
-
-                                        pY++;
-                                        board[pX, pY] = 1;
-                                        spacepressed = true;
-                                    }
+                                    soundwrong.Play();
                                 }
-                                if (lastdirectionfaced == 3)
-                                {
-                                    cont1 = 0;
-
-                                    while (canGoRight() == true && cont1 < 5)
-                                    {
-                                        lastAfterimage = 0f;
-                                        lastDashMove = 0f;
-
-                                        board[pX, pY] = 7;
-                                        cont1++;
-                                        pX++;
-                                        board[pX, pY] = 1;
-                                        spacepressed = true;
-                                    }
-                                }
-                                if (lastdirectionfaced == 4)
-                                {
-                                    cont1 = 0;
-                                    while (canGoLeft() == true && cont1 < 5)
-                                    {
-                                        lastAfterimage = 0f;
-                                        lastDashMove = 0f;
-
-                                        board[pX, pY] = 8;
-                                        cont1++;
-
-                                        pX--;
-                                        board[pX, pY] = 1;
-                                        spacepressed = true;
-                                    }
-                                }
-                                if (lastDashMove < 0.1f)
-                                {
-                                    dashsound.Play();
-                                    pelletcont = pelletcont - 10;
-                                }
-
+                            }
+                            else
+                            {
+                                soundwrong.Play();
                             }
 
                         }
-                    }
+                    
+
 
                     //teleport
                     if (pelletcont > 24)
@@ -2060,7 +2107,7 @@ namespace Pacman_Revolution
                     }
                     if (board[x, y] == 11)
                     {
-                        spriteBatch.Draw(bulletH, new Vector2(x * 30 + 10, (y - 2) * 30));
+                        spriteBatch.Draw(bulletH, new Vector2(x * 30 + 10, (y - 2) * 30+10));
                     }
                     if (board[x, y] == 12)
                     {
@@ -2068,11 +2115,11 @@ namespace Pacman_Revolution
                     }
                     if (board[x, y] == 13)
                     {
-                        spriteBatch.Draw(superbulletH, new Vector2(x * 30 + 10, (y - 2) * 30));
+                        spriteBatch.Draw(superbulletH, new Vector2(x * 30 + 10, (y - 2) * 30+10));
                     }
                     if (board[x, y] == 14)
                     {
-                        spriteBatch.Draw(explosion, new Vector2(x * 30 + 10, (y - 2) * 30));
+                        spriteBatch.Draw(explosion, new Vector2(x * 30, (y - 2) * 30));
                     }
 
                     //if (board[x, y] == 4)
@@ -2123,7 +2170,7 @@ namespace Pacman_Revolution
                 //spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1050, 130), Color.White);
 
                 spriteBatch.DrawString(font1, "Shoot:3P(Q)", new Vector2(1065, 150), Color.White);
-                if (lastBullet > 0.5f || super==1)
+                if ((lastBullet > 0.5f && flagBullet==0) || (super==1 && flagBullet==0))
                 {
                     spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 175), Color.White);
                 }
@@ -2169,6 +2216,11 @@ namespace Pacman_Revolution
 
             if (gameover == 1)
             {
+                if (cont5 == 0)
+                {
+                    soundgameover.Play();
+                    cont5 = 1;
+                }
                 //music1.Stop();
                 pacman = Content.Load<Texture2D>("pacman v2 30x30 -  up");
                 spriteBatch.Draw(pacman, new Vector2(420, 18));
@@ -2452,6 +2504,7 @@ namespace Pacman_Revolution
             }
             if (vida <= 0)
             {
+                soundboom.Play();
                 kills++;
                 score += 5;
                 board[ghostX, ghostY] = 14;
