@@ -1537,6 +1537,13 @@ namespace Pacman_Revolution
                                     ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
                                 }
                             }
+                            if (boardBullet[1] != 21 && ghostboard[boardBullet[0], boardBullet[1] + 1] == 1)
+                            {
+                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                {
+                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
+                                }
+                            }
                         }
                         else if (auxLastDirection == 2)   //BAIXO
                         {
@@ -1590,6 +1597,13 @@ namespace Pacman_Revolution
                                 for (ghostcount = 0; ghostcount < 6; ghostcount++)
                                 {
                                     ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
+                                }
+                            }
+                            if (ghostboard[boardBullet[0], boardBullet[1] - 1] == 1)
+                            {
+                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                {
+                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
                                 }
                             }
                         }
@@ -1647,6 +1661,13 @@ namespace Pacman_Revolution
                                     ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
                                 }
                             }
+                            if (boardBullet[0] != 34 && ghostboard[boardBullet[0] + 1, boardBullet[1]] == 1)
+                            {
+                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                {
+                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
+                                }
+                            }
                         }
                         else if (auxLastDirection == 3)   //DIREITA
                         {
@@ -1701,6 +1722,13 @@ namespace Pacman_Revolution
                             for (ghostcount = 0; ghostcount < 6; ghostcount++)
                             {
                                 ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
+                            }
+                        }
+                        if (boardBullet[0] != 0 && ghostboard[boardBullet[0] - 1, boardBullet[1]] == 1)
+                        {
+                            for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                            {
+                                ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
                             }
                         }
                         for (ghostcount = 0; ghostcount < 6; ghostcount++)
