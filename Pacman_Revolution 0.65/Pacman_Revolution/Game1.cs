@@ -34,6 +34,7 @@ namespace Pacman_Revolution
         //board = 5-8 -> afterimages
         //ghostboard = 1 -> fantasma
         bool spacepressed = false;
+        bool Wpressed = false, QPressed = false, Epressed = false, Rpressed = false;
         //40x20
         int[,] board = new int[40, 22]; //é preciso +2 no y (20 para 22)
         int[,] ghostboard = new int[40, 22];//é preciso +2 no y (20 para 22)
@@ -1463,81 +1464,102 @@ namespace Pacman_Revolution
                     //LASTDIRECTIONFACED »» 1 = cima // 2 = baixo // 3 = direita // 4 = esquerda
                     //Disparar OLD parte 1
 
-                    if(lastBullet>0.5f){
-
-                    if (pelletcont > 2)
+                    if (Keyboard.GetState().IsKeyUp(Keys.Q)) QPressed = false;
+                    if (QPressed == false && Keyboard.GetState().IsKeyDown(Keys.Q))
                     {
-                        if (lastBullet >= bullettravelspeed)
+                        if (flagBullet == 0)
                         {
-                            if (Keyboard.GetState().IsKeyDown(Keys.Q) && flagBullet == 0)
+                            if (lastBullet > 0.5f)
                             {
-                                if (pY != 2 && lastdirectionfaced == 1 && (board[pX, pY - 1] == 0 || board[pX, pY - 1] == 3))
+
+                                if (pelletcont > 2)
                                 {
-                                    if (scanGoUp() == true)
+                                    if (lastBullet >= bullettravelspeed)
                                     {
-                                        lastBullet = 0f;
-                                        if (super == 0)
+                                        if (pY != 2 && lastdirectionfaced == 1 && (board[pX, pY - 1] == 0 || board[pX, pY - 1] == 3))
                                         {
-                                            pelletcont = pelletcont - 3;
+                                            if (scanGoUp() == true)
+                                            {
+                                                lastBullet = 0f;
+                                                if (super == 0)
+                                                {
+                                                    pelletcont = pelletcont - 3;
+                                                }
+                                                dashsound.Play();
+                                                auxLastDirection = 1;
+                                                flagBullet = 1;
+                                                flagFirstBullet = 0;
+                                            }
                                         }
-                                        dashsound.Play();
-                                        auxLastDirection = 1;
-                                        flagBullet = 1;
-                                        flagFirstBullet = 0;
-                                    }
-                                }
-                                if (pY != 21 && lastdirectionfaced == 2 && (board[pX, pY + 1] == 0 || board[pX, pY + 1] == 3))
-                                {
-                                    if (scanGoDown() == true)
-                                    {
-                                        lastBullet = 0f;
-                                        if (super == 0)
+                                        if (pY != 21 && lastdirectionfaced == 2 && (board[pX, pY + 1] == 0 || board[pX, pY + 1] == 3))
                                         {
-                                            pelletcont = pelletcont - 3;
+                                            if (scanGoDown() == true)
+                                            {
+                                                lastBullet = 0f;
+                                                if (super == 0)
+                                                {
+                                                    pelletcont = pelletcont - 3;
+                                                }
+                                                dashsound.Play();
+                                                auxLastDirection = 2;
+                                                flagBullet = 1;
+                                                flagFirstBullet = 0;
+                                            }
                                         }
-                                        dashsound.Play();
-                                        auxLastDirection = 2;
-                                        flagBullet = 1;
-                                        flagFirstBullet = 0;
-                                    }
-                                }
-                                if (pX != 0 && lastdirectionfaced == 4 && (board[pX - 1, pY] == 0 || board[pX - 1, pY] == 3))
-                                {
-                                    if (scanGoRight() == true)
-                                    {
-                                        lastBullet = 0f;
-                                        if (super == 0)
+                                        if (pX != 0 && lastdirectionfaced == 4 && (board[pX - 1, pY] == 0 || board[pX - 1, pY] == 3))
                                         {
-                                            pelletcont = pelletcont - 3;
+                                            if (scanGoRight() == true)
+                                            {
+                                                lastBullet = 0f;
+                                                if (super == 0)
+                                                {
+                                                    pelletcont = pelletcont - 3;
+                                                }
+                                                dashsound.Play();
+                                                auxLastDirection = 4;
+                                                flagBullet = 1;
+                                                flagFirstBullet = 0;
+                                            }
                                         }
-                                        dashsound.Play();
-                                        auxLastDirection = 4;
-                                        flagBullet = 1;
-                                        flagFirstBullet = 0;
-                                    }
-                                }
-                                if (pX != 34 && lastdirectionfaced == 3 && (board[pX + 1, pY] == 0 || board[pX + 1, pY] == 3))
-                                {
-                                    if (scanGoLeft() == true)
-                                    {
-                                        lastBullet = 0f;
-                                        if (super == 0)
+                                        if (pX != 34 && lastdirectionfaced == 3 && (board[pX + 1, pY] == 0 || board[pX + 1, pY] == 3))
                                         {
-                                            pelletcont = pelletcont - 3;
+                                            if (scanGoLeft() == true)
+                                            {
+                                                lastBullet = 0f;
+                                                if (super == 0)
+                                                {
+                                                    pelletcont = pelletcont - 3;
+                                                }
+                                                dashsound.Play();
+                                                auxLastDirection = 3;
+                                                flagBullet = 1;
+                                                flagFirstBullet = 0;
+                                            }
                                         }
-                                        dashsound.Play();
-                                        auxLastDirection = 3;
-                                        flagBullet = 1;
-                                        flagFirstBullet = 0;
-                                    }
-                                }
 
 
+                                    }
+                                    else
+                                    {
+                                        soundwrong.Play();
+                                    }
+                                }
+                                else
+                                {
+                                    soundwrong.Play();
+                                }
                             }
-
+                            else
+                            {
+                                soundwrong.Play();
+                            }
                         }
+                        else
+                        {
+                            soundwrong.Play();
+                        }
+                        QPressed = true;
                     }
-                }
 
                     //Disparar OLD parte 2
                     if (flagBullet == 1)
@@ -1792,8 +1814,9 @@ namespace Pacman_Revolution
 
                     int cont1 = 0;
 
-                   
-                        if (Keyboard.GetState().IsKeyDown(Keys.W))
+
+                    if (Keyboard.GetState().IsKeyUp(Keys.W)) Wpressed = false;
+                    if (Wpressed == false && Keyboard.GetState().IsKeyDown(Keys.W))
                         {
                             if (pelletcont > 9)
                             {
@@ -1875,7 +1898,7 @@ namespace Pacman_Revolution
                                             }
                                         }
 
-
+                                        
                                     
                                 }
                                 else
@@ -1887,18 +1910,19 @@ namespace Pacman_Revolution
                             {
                                 soundwrong.Play();
                             }
-
+                            Wpressed = true;
                         }
                     
 
 
                     //teleport
+                    if (Keyboard.GetState().IsKeyUp(Keys.E)) Epressed = false;
+                    if (Epressed == false && Keyboard.GetState().IsKeyDown(Keys.E))
+                    {
                     if (pelletcont > 19)
                     {
                         if (lastTeleport >= 1.9f)
                         {
-                            if (Keyboard.GetState().IsKeyDown(Keys.E))
-                            {
                                 if (super == 0)
                                 {
                                     pelletcont = pelletcont - 20;
@@ -1933,7 +1957,16 @@ namespace Pacman_Revolution
                                 }
 
                             }
+                        else
+                        {
+                            soundwrong.Play();
                         }
+                        }
+                    else
+                    {
+                        soundwrong.Play();
+                    }
+                    Epressed = true;
                     }//teleport
 
 
@@ -2054,14 +2087,15 @@ namespace Pacman_Revolution
 
 
                 //super
+                if (Keyboard.GetState().IsKeyUp(Keys.R)) Rpressed = false;
+                if (Rpressed == false && Keyboard.GetState().IsKeyDown(Keys.R))
+                {
                 if (super == 0)
                 {
                     if (pelletcont > 99)
                     {
                         if (lastSuper >= 45f)
                         {
-                            if (Keyboard.GetState().IsKeyDown(Keys.R))
-                            {
                                 bullettravelspeed = 0.2f;
                                 soundtransform.Play();
                                 pelletcont = pelletcont - 100;
@@ -2075,11 +2109,19 @@ namespace Pacman_Revolution
                               
                                 //MediaPlayer.Play(songsuper);
                             }
+                        else
+                        {
+                            soundwrong.Play();
                         }
+                        }
+                    else
+                    {
+                        soundwrong.Play();
                     }
+                    }
+                Rpressed = true;
                 }
-
-
+            
                 if (super == 1)
                 {
 
@@ -2100,13 +2142,8 @@ namespace Pacman_Revolution
                         super = 0;
                         pacmanspeed = 1f / 10f;
                         bullettravelspeed = 0.6f;
-                        songsuper.Dispose();
-
-                        //music1.Play();
-                        //MediaPlayer.Stop();
                     }
                 }//super
-
 
 
             //cheats
