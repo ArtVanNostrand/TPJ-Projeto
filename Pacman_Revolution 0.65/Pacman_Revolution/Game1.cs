@@ -1311,6 +1311,10 @@ namespace Pacman_Revolution
 
                     //    }//ghosttype==10
 
+                    if (boardBullet[0] == gpX && boardBullet[1] == gpY && flagBullet == 1)
+                    {
+                          ghostDead(ghostHealth[ghostcount], gpX, gpY, ghostcount);
+                    }
                     ghostcoords[ghostcount, 0] = gpX;
                     ghostcoords[ghostcount, 1] = gpY;
                     //ghostcount++;
