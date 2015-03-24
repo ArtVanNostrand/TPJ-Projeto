@@ -24,7 +24,7 @@ namespace Pacman_Revolution
         Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown, portal, superbullet, superbulletH;
         SpriteFont font1;
         SoundEffect eatingpellet, dashsound, soundteleport, soundtransform, soundpacmanhit;
-        SoundEffect soundboom, soundgameover, soundwrong;
+        SoundEffect soundboom, soundgameover, soundwrong, soundnice;
         SoundEffect music1, songsuper;
         //board = 0 -> nada/vazio
         //board = 1 -> pacman
@@ -47,7 +47,8 @@ namespace Pacman_Revolution
         int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3, pelletScore = 0, kills = 0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
-        float ghostspeed=0f;
+        int level = 1;
+        float ghostspeed=0f, ghostspeedlevel=1;
         float[] lastGhostMove = new float[8];
         float lastAfterimage = -9999f;
         float lastDashMove = 10f;
@@ -61,8 +62,10 @@ namespace Pacman_Revolution
         float supertime = 0f;
         int flagBullet = 0, auxLastDirection = 0, flagCima = 0, flagBaixo = 0, flagEsquerda = 0, flagDireita = 0;
         int auxflagbullet = 0;
+        int pellettotal = 0;
         int contbullet = 0, super = 0, cont5=0, Qpressed=0;
         int cont3=0, cont4=0;
+        int vidasganhas = 0;
         float bullettravelspeed = 0.6f;
         float pacmanspeed = 1f / 10f;
 
@@ -559,6 +562,7 @@ namespace Pacman_Revolution
             soundboom = Content.Load<SoundEffect>("soundboom");
             soundgameover = Content.Load<SoundEffect>("soundgameover");
             soundwrong = Content.Load<SoundEffect>("wrong sound effect");
+            soundnice = Content.Load<SoundEffect>("right sound effect");
 
             music1 = Content.Load<SoundEffect>("PAC MAN Championship Edition DX  Pac Rainbow");
             songsuper = Content.Load<SoundEffect>("superpacman14s");
@@ -633,15 +637,52 @@ namespace Pacman_Revolution
             spacepressed = false;
 
 
-            ghostspeed=4f;
+            ghostspeed=3.5f;
+            ghostspeedlevel = 1;
 
-            if(totalgametime>60f){
-                ghostspeed=5f;
+            if(totalgametime>20f){
+                ghostspeed=4f;
+                ghostspeedlevel = 2;
             }
-            if(totalgametime>120f){
-                ghostspeed=6f;
+            if(totalgametime>50f){
+                ghostspeed=4.5f;
+                ghostspeedlevel = 3;
             }
-
+            if (totalgametime > 80f)
+            {
+                ghostspeed = 5f;
+                ghostspeedlevel = 4;
+            }
+            if (totalgametime > 120f)
+            {
+                ghostspeed = 5.5f;
+                ghostspeedlevel = 5;
+            }
+            if (totalgametime > 160f)
+            {
+                ghostspeed = 6f;
+                ghostspeedlevel = 6;
+            }
+            if (totalgametime > 200f)
+            {
+                ghostspeed = 6.5f;
+                ghostspeedlevel = 7;
+            }
+            if (totalgametime > 250f)
+            {
+                ghostspeed = 7f;
+                ghostspeedlevel = 8;
+            }
+            if (totalgametime > 300f)
+            {
+                ghostspeed = 8f;
+                ghostspeedlevel = 9;
+            }
+            if (totalgametime > 600f)
+            {
+                ghostspeed = 10f;
+                ghostspeedlevel = 10;
+            }
 
             Random rnd = new Random();
             int randommov = rnd.Next(1, 5);
@@ -1296,7 +1337,7 @@ namespace Pacman_Revolution
                                     eatingpellet.Play();
                                     pelletcont++;
                                     pelletScore++;
-                                    score++;
+                                    score = score + (1 * level);
                                 }
                                 //apaga a posição antiga do pacman, mexe-o para baixo e desenha a nova posição
                                 board[pX, pY] = 0;
@@ -1306,7 +1347,7 @@ namespace Pacman_Revolution
                                     eatingpellet.Play();
                                     pelletcont++;
                                     pelletScore++;
-                                    score++;
+                                    score = score + (1 * level);
                                 }
                                 board[pX, pY] = 1;
                                 //
@@ -1338,7 +1379,7 @@ namespace Pacman_Revolution
                                     eatingpellet.Play();
                                     pelletcont++;
                                     pelletScore++;
-                                    score++;
+                                    score = score + (1 * level);
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 2;
@@ -1370,7 +1411,7 @@ namespace Pacman_Revolution
                                     eatingpellet.Play();
                                     pelletcont++;
                                     pelletScore++;
-                                    score++;
+                                    score = score + (1 * level);
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 3;
@@ -1402,7 +1443,7 @@ namespace Pacman_Revolution
                                     eatingpellet.Play();
                                     pelletcont++;
                                     pelletScore++;
-                                    score++;
+                                    score = score + (1 * level);
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 4;
@@ -1435,7 +1476,10 @@ namespace Pacman_Revolution
                                     if (scanGoUp() == true)
                                     {
                                         lastBullet = 0f;
-                                        pelletcont = pelletcont - 3;
+                                        if (super == 0)
+                                        {
+                                            pelletcont = pelletcont - 3;
+                                        }
                                         dashsound.Play();
                                         auxLastDirection = 1;
                                         flagBullet = 1;
@@ -1447,7 +1491,10 @@ namespace Pacman_Revolution
                                     if (scanGoDown() == true)
                                     {
                                         lastBullet = 0f;
-                                        pelletcont = pelletcont - 3;
+                                        if (super == 0)
+                                        {
+                                            pelletcont = pelletcont - 3;
+                                        }
                                         dashsound.Play();
                                         auxLastDirection = 2;
                                         flagBullet = 1;
@@ -1459,7 +1506,10 @@ namespace Pacman_Revolution
                                     if (scanGoRight() == true)
                                     {
                                         lastBullet = 0f;
-                                        pelletcont = pelletcont - 3;
+                                        if (super == 0)
+                                        {
+                                            pelletcont = pelletcont - 3;
+                                        }
                                         dashsound.Play();
                                         auxLastDirection = 4;
                                         flagBullet = 1;
@@ -1471,7 +1521,10 @@ namespace Pacman_Revolution
                                     if (scanGoLeft() == true)
                                     {
                                         lastBullet = 0f;
-                                        pelletcont = pelletcont - 3;
+                                        if (super == 0)
+                                        {
+                                            pelletcont = pelletcont - 3;
+                                        }
                                         dashsound.Play();
                                         auxLastDirection = 3;
                                         flagBullet = 1;
@@ -1816,7 +1869,10 @@ namespace Pacman_Revolution
                                         if (lastDashMove < 0.1f)
                                         {
                                             dashsound.Play();
-                                            pelletcont = pelletcont - 10;
+                                            if (super == 0)
+                                            {
+                                                pelletcont = pelletcont - 10;
+                                            }
                                         }
 
 
@@ -1837,13 +1893,16 @@ namespace Pacman_Revolution
 
 
                     //teleport
-                    if (pelletcont > 24)
+                    if (pelletcont > 19)
                     {
                         if (lastTeleport >= 1.9f)
                         {
                             if (Keyboard.GetState().IsKeyDown(Keys.E))
                             {
-                                pelletcont = pelletcont - 25;
+                                if (super == 0)
+                                {
+                                    pelletcont = pelletcont - 20;
+                                }
                                 lastTeleport = 0f;
 
                                 if (tmarker == 0)
@@ -2050,10 +2109,95 @@ namespace Pacman_Revolution
 
 
 
+            //cheats
+                if (Keyboard.GetState().IsKeyDown(Keys.O))
+                {
+                    vidaPacman++;
+                }
                 if (Keyboard.GetState().IsKeyDown(Keys.P))
                 {
                     pelletcont = pelletcont + 100;
                 }
+            //cheats
+
+
+            //respawn pellets
+                pellettotal = 0;
+                for (int x = 0; x < 40; x++)
+                {
+                    for (int y = 0; y < 22; y++)
+                    {
+                        if (board[x, y] == 3)
+                        {
+                            pellettotal++;
+                        }
+                    }
+                }
+
+                if (pellettotal == 0)
+                {
+                    if (gameover == 0)
+                    {
+                        soundnice.Play();
+                        score = score + (50 * level);
+                        level++;
+                        for (int x = 0; x < 35; x++)
+                        {
+                            for (int y = 2; y < 22; y++)
+                            {
+                                if (board[x, y] != 2 && board[x, y] != 1)
+                                {
+                                    board[x, y] = 3;
+                                }
+                            }
+                        }
+                    }
+                }
+            //respawn pellets
+
+
+            //ganhar vidas
+                if (vidasganhas == 0)
+                {
+                    if (score > 500)
+                    {
+                        vidaPacman++;
+                        vidasganhas++;
+                    }
+                }
+                if (vidasganhas == 1)
+                {
+                    if (score > 1500)
+                    {
+                        vidaPacman++;
+                        vidasganhas++;
+                    }
+                }
+                if (vidasganhas == 2)
+                {
+                    if (score > 2500)
+                    {
+                        vidaPacman++;
+                        vidasganhas++;
+                    }
+                }
+                if (vidasganhas == 3)
+                {
+                    if (score > 5000)
+                    {
+                        vidaPacman++;
+                        vidasganhas++;
+                    }
+                }
+                if (vidasganhas == 4)
+                {
+                    if (score > 10000)
+                    {
+                        vidaPacman++;
+                        vidasganhas++;
+                    }
+                }
+                //ganhar vidas
 
             base.Update(gameTime);
         }
@@ -2185,57 +2329,73 @@ namespace Pacman_Revolution
 
             if (gameover == 0)
             {
-                spriteBatch.DrawString(font1, "Time:" + totalgametime, new Vector2(1052, 70), Color.White);
 
-                spriteBatch.DrawString(font1, "Pellets:" + pelletcont, new Vector2(1052, 35), Color.White);
 
-                spriteBatch.DrawString(font1, "Score:" + score, new Vector2(1052, 95), Color.White);
+                spriteBatch.DrawString(font1, "*Info*", new Vector2(1100, 5), Color.White);
 
-                spriteBatch.DrawString(font1, "Kills:" + kills, new Vector2(1052, 120), Color.White);
 
-                spriteBatch.DrawString(font1, "Health:" + vidaPacman, new Vector2(1052, 10), Color.White);
+                spriteBatch.DrawString(font1, "Health:" + vidaPacman, new Vector2(1052, 30), Color.White);
 
-                //spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1050, 130), Color.White);
+                spriteBatch.DrawString(font1, "Pellets:" + pelletcont, new Vector2(1052, 55), Color.White);
 
-                spriteBatch.DrawString(font1, "Shoot:3P(Q)", new Vector2(1065, 150), Color.White);
+
+                spriteBatch.DrawString(font1, "Time:" + totalgametime, new Vector2(1052, 90), Color.White);
+
+                spriteBatch.DrawString(font1, "Score:" + score, new Vector2(1052, 115), Color.White);
+
+                spriteBatch.DrawString(font1, "Kills:" + kills, new Vector2(1052, 140), Color.White);
+
+                spriteBatch.DrawString(font1, "Ghost Speed:" + ghostspeedlevel, new Vector2(1052, 165), Color.White);
+
+
+                spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1075, 225), Color.White);
+
+                spriteBatch.DrawString(font1, "Shoot:3P(Q)", new Vector2(1065, 250), Color.White);
                 if ((lastBullet > 0.5f && flagBullet==0) || (super==1 && flagBullet==0))
                 {
-                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 175), Color.White);
+                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 275), Color.White);
                 }
                 else
                 {
-                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 175), Color.White);
+                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 275), Color.White);
                 }
 
 
-                spriteBatch.DrawString(font1, "Dash:10P(W)", new Vector2(1065, 225), Color.White);
+                spriteBatch.DrawString(font1, "Dash:10P(W)", new Vector2(1065, 325), Color.White);
                 if (lastDashMove > 10f || super== 1)
                 {
-                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 250), Color.White);
+                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 350), Color.White);
                 }
                 else
                 {
-                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 250), Color.White);
+                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 350), Color.White);
                 }
 
-                spriteBatch.DrawString(font1, "Tele:25P(E)", new Vector2(1065, 300), Color.White);
+                spriteBatch.DrawString(font1, "Tele:20P(E)", new Vector2(1065, 400), Color.White);
                 if (lastTeleport > 1.9f || super==1)
                 {
-                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 325), Color.White);
+                    if (tmarker == 0)
+                    {
+                        spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 425), Color.White);
+                    }
+                    if (tmarker == 1)
+                    {
+                        spriteBatch.DrawString(font1, "(SET!)", new Vector2(1090, 425), Color.White);
+                    }
                 }
                 else
                 {
-                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 325), Color.White);
+                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 425), Color.White);
                 }
 
-                spriteBatch.DrawString(font1, "Super:100P(R)", new Vector2(1058, 375), Color.White);
+                spriteBatch.DrawString(font1, "Super:100P(R)", new Vector2(1058, 475), Color.White);
                 if (lastSuper > 45f)
                 {
-                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 400), Color.White);
+                    spriteBatch.DrawString(font1, "(READY!)", new Vector2(1090, 500), Color.White);
                 }
                 else
                 {
-                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 400), Color.White);
+                    spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 500), Color.White);
                 }
             }
 
@@ -2512,7 +2672,7 @@ namespace Pacman_Revolution
 
         private bool gcanGoRight()
         {
-            if (gpX == 39 || board[gpX + 1, gpY] == 2)
+            if (gpX == 34 || board[gpX + 1, gpY] == 2)
             {
                 return false;
             }
@@ -2534,7 +2694,7 @@ namespace Pacman_Revolution
             {
                 soundboom.Play();
                 kills++;
-                score += 5;
+                score = score + (5 * level);
                 board[ghostX, ghostY] = 14;
                 ghostcoords[numGhost, 0] = 13;
                 gpX = 13;
