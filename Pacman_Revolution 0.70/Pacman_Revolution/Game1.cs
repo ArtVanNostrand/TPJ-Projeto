@@ -1596,6 +1596,13 @@ namespace Pacman_Revolution
                                                 auxLastDirection = 1;
                                                 flagBullet = 1;
                                                 flagFirstBullet = 0;
+                                                if (ghostboard[pX, pY - 1] == 1)
+                                                {
+                                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                                    {
+                                                        if (ghostboard[ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1] == 1) ghostDead(0, ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
+                                                    }
+                                                }
                                             }
                                         }
                                         if (pY != 21 && lastdirectionfaced == 2 && (board[pX, pY + 1] == 0 || board[pX, pY + 1] == 3))
@@ -1611,6 +1618,13 @@ namespace Pacman_Revolution
                                                 auxLastDirection = 2;
                                                 flagBullet = 1;
                                                 flagFirstBullet = 0;
+                                                if (ghostboard[pX, pY + 1] == 1)
+                                                {
+                                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                                    {
+                                                        if (ghostboard[ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1] == 1) ghostDead(0, ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
+                                                    }
+                                                }
                                             }
                                         }
                                         if (pX != 0 && lastdirectionfaced == 4 && (board[pX - 1, pY] == 0 || board[pX - 1, pY] == 3))
@@ -1626,6 +1640,13 @@ namespace Pacman_Revolution
                                                 auxLastDirection = 4;
                                                 flagBullet = 1;
                                                 flagFirstBullet = 0;
+                                                if (ghostboard[pX + 1, pY] == 1)
+                                                {
+                                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                                    {
+                                                        if (ghostboard[ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1]] == 1) ghostDead(0, ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
+                                                    }
+                                                }
                                             }
                                         }
                                         if (pX != 34 && lastdirectionfaced == 3 && (board[pX + 1, pY] == 0 || board[pX + 1, pY] == 3))
@@ -1641,6 +1662,13 @@ namespace Pacman_Revolution
                                                 auxLastDirection = 3;
                                                 flagBullet = 1;
                                                 flagFirstBullet = 0;
+                                                if (ghostboard[pX - 1, pY] == 1)
+                                                {
+                                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                                    {
+                                                        if (ghostboard[ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1]] == 1) ghostDead(0, ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
+                                                    }
+                                                }
                                             }
                                         }
 
@@ -1682,14 +1710,15 @@ namespace Pacman_Revolution
                                         ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
                                     }
                                 }
+                                auxflagbullet = board[pX, pY];
                                 boardBullet[0] = pX;
                                 boardBullet[1] = pY - 1;
                                 flagFirstBullet = 1;
-                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                board[boardBullet[0], boardBullet[1]] = 9;
                             }
                             else if ((board[boardBullet[0], boardBullet[1] - 1] == 0 || board[boardBullet[0], boardBullet[1] - 1] == 3) && boardBullet[1] != 1)
                             {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                if (auxflagbullet != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
                                 boardBullet[1] = boardBullet[1] - 1;
                                 auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                 if (super == 0)
@@ -1742,10 +1771,11 @@ namespace Pacman_Revolution
                                 boardBullet[1] = pY + 1;
                                 flagFirstBullet = 1;
                                 auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                board[boardBullet[0], boardBullet[1]] = 9;
                             }
                             else if (boardBullet[1] != 21 && (board[boardBullet[0], boardBullet[1] + 1] == 0 || board[boardBullet[0], boardBullet[1] + 1] == 3))
                             {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                if (auxflagbullet != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
                                 boardBullet[1] = boardBullet[1] + 1;
                                 auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                 if (super == 0)
@@ -1804,10 +1834,11 @@ namespace Pacman_Revolution
                                 boardBullet[1] = pY;
                                 flagFirstBullet = 1;
                                 auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                board[boardBullet[0], boardBullet[1]] = 11;
                             }
                             else if (boardBullet[0] != 0 && (board[boardBullet[0] - 1, boardBullet[1]] == 0 || board[boardBullet[0] - 1, boardBullet[1]] == 3))
                             {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                if (auxflagbullet != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
                                 boardBullet[0] = boardBullet[0] - 1;
                                 auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                 if (super == 0)
@@ -1866,10 +1897,11 @@ namespace Pacman_Revolution
                                 boardBullet[1] = pY;
                                 flagFirstBullet = 1;
                                 auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                board[boardBullet[0], boardBullet[1]] = 11;
                             }
                             else if (boardBullet[0] != 34 && (board[boardBullet[0] + 1, boardBullet[1]] == 0 || board[boardBullet[0] + 1, boardBullet[1]] == 3))
                             {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                if (auxflagbullet != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
                                 boardBullet[0] = boardBullet[0] + 1;
                                 auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                 if (super == 0)
@@ -2656,7 +2688,7 @@ namespace Pacman_Revolution
         private bool scanGoUp()
         {
 
-            if (spY == 2 || board[spX, spY - 1] == 2 || board[spX, spY - 1] == 1 || ghostboard[spX, spY - 1] != 0)
+            if (spY == 2 || board[spX, spY - 1] == 2 || board[spX, spY - 1] == 1)
             {
                 board[spX, spY] = 0;
                 return false;
@@ -2717,7 +2749,7 @@ namespace Pacman_Revolution
         private bool scanGoDown()
         {
 
-            if (spY >= 21 || board[spX, spY+1] == 2 || board[spX, spY+1] == 1 || ghostboard[spX, spY+1] != 0)
+            if (spY >= 21 || board[spX, spY+1] == 2 || board[spX, spY+1] == 1)
             {
                 board[spX, spY] = 0;
                 return false;
@@ -2762,7 +2794,7 @@ namespace Pacman_Revolution
         private bool scanGoLeft()
         {
 
-            if (spX == 0|| board[spX - 1, spY] == 2 || board[spX - 1, spY] == 1 || ghostboard[spX - 1, spY] != 0)
+            if (spX == 0|| board[spX - 1, spY] == 2 || board[spX - 1, spY] == 1)
             {
                 board[spX, spY] = 0;
                 return false;
@@ -2805,7 +2837,7 @@ namespace Pacman_Revolution
         private bool scanGoRight()
         {
 
-            if (spX == 34 || board[spX + 1, spY] == 2 || board[spX + 1, spY] == 1 || ghostboard[spX + 1, spY] !=0)
+            if (spX == 34 || board[spX + 1, spY] == 2 || board[spX + 1, spY] == 1)
             {
                 board[spX, spY] = 0;
                 return false;
