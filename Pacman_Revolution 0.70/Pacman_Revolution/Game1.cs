@@ -50,7 +50,7 @@ namespace Pacman_Revolution
         int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3, pelletScore = 0, kills = 0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
-        int level = 1;
+        int level = 1, flagSpeed = 0;
         float ghostspeed=0f, ghostspeedlevel=1;
         float[] lastGhostMove = new float[8];
         float lastAfterimage = -9999f;
@@ -126,7 +126,7 @@ namespace Pacman_Revolution
             {
                 ghostHealth[linha] = 1;
             }
-
+            ghostspeed = 3.5f;
                 //ghostboard[1,1] = 2;
 
 
@@ -650,52 +650,94 @@ namespace Pacman_Revolution
             spacepressed = false;
 
 
-            ghostspeed=3.5f;
             ghostspeedlevel = 1;
-
             if(totalgametime>30f){
                 ghostspeed=4f;
                 ghostspeedlevel = 2;
-                //soundghostspeedup.Play();
+                if (flagSpeed == 0)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 1;
+                }
             }
             if(totalgametime>60f){
                 ghostspeed=4.5f;
                 ghostspeedlevel = 3;
+                if (flagSpeed == 1)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 2;
+                }
             }
             if (totalgametime > 90f)
             {
                 ghostspeed = 5f;
                 ghostspeedlevel = 4;
+                if (flagSpeed == 2)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 3;
+                }
             }
             if (totalgametime > 120f)
             {
                 ghostspeed = 5.5f;
                 ghostspeedlevel = 5;
+                if (flagSpeed == 3)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 4;
+                }
             }
             if (totalgametime > 150f)
             {
                 ghostspeed = 6f;
                 ghostspeedlevel = 6;
+                if (flagSpeed == 4)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 5;
+                }
             }
             if (totalgametime > 200f)
             {
                 ghostspeed = 6.5f;
                 ghostspeedlevel = 7;
+                if (flagSpeed == 5)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 6;
+                }
             }
             if (totalgametime > 250f)
             {
                 ghostspeed = 7f;
                 ghostspeedlevel = 8;
+                if (flagSpeed == 6)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 7;
+                }
             }
             if (totalgametime > 300f)
             {
                 ghostspeed = 8f;
                 ghostspeedlevel = 9;
+                if (flagSpeed == 7)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 8;
+                }
             }
             if (totalgametime > 600f)
             {
                 ghostspeed = 10f;
                 ghostspeedlevel = 10;
+                if (flagSpeed == 8)
+                {
+                    soundghostspeedup.Play();
+                    flagSpeed = 9;
+                }
             }
 
             Random rnd = new Random();
@@ -708,6 +750,11 @@ namespace Pacman_Revolution
 
                 gpX = ghostcoords[ghostcount, 0];
                 gpY = ghostcoords[ghostcount, 1];
+
+                if (board[gpX, gpY] == 1 && super == 1)
+                {
+                    ghostDead(0, gpX, gpY, ghostcount);
+                }
 
                 if (ghostcount == 0)
                 {
@@ -874,7 +921,7 @@ namespace Pacman_Revolution
                                     soundpacmanhit.Play();
                                 }
                             }
-                            if (super == 1)
+                            else
                             {
                                 ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
                             }
@@ -1335,10 +1382,13 @@ namespace Pacman_Revolution
                     //        }
 
                     //    }//ghosttype==10
-
                     if (boardBullet[0] == gpX && boardBullet[1] == gpY && flagBullet == 1)
                     {
                           ghostDead(ghostHealth[ghostcount], gpX, gpY, ghostcount);
+                    }
+                    if (board[gpX, gpY] == 1 && super == 1)
+                    {
+                        ghostDead(0, gpX, gpY, ghostcount);
                     }
                     ghostcoords[ghostcount, 0] = gpX;
                     ghostcoords[ghostcount, 1] = gpY;
@@ -1372,6 +1422,13 @@ namespace Pacman_Revolution
                                 //apaga a posição antiga do pacman, mexe-o para baixo e desenha a nova posição
                                 board[pX, pY] = 0;
                                 pY--;
+                                if (ghostboard[pX, pY] == 1 && super == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        if (ghostboard[ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1]] == 1) ghostDead(0, gpX, gpY, ghostcount);
+                                    }
+                                }
                                 if (board[pX, pY] == 3)
                                 {
                                     eatingpellet.Play();
@@ -1404,6 +1461,13 @@ namespace Pacman_Revolution
 
                                 board[pX, pY] = 0;
                                 pY++;
+                                if (ghostboard[pX, pY] == 1 && super == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        if (ghostboard[ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1]] == 1) ghostDead(0, gpX, gpY, ghostcount);
+                                    }
+                                }
                                 if (board[pX, pY] == 3)
                                 {
                                     eatingpellet.Play();
@@ -1436,6 +1500,13 @@ namespace Pacman_Revolution
 
                                 board[pX, pY] = 0;
                                 pX++;
+                                if (ghostboard[pX, pY] == 1 && super == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        if (ghostboard[ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1]] == 1) ghostDead(0, gpX, gpY, ghostcount);
+                                    }
+                                }
                                 if (board[pX, pY] == 3)
                                 {
                                     eatingpellet.Play();
@@ -1468,6 +1539,13 @@ namespace Pacman_Revolution
 
                                 board[pX, pY] = 0;
                                 pX--;
+                                if (ghostboard[pX, pY] == 1 && super == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        if (ghostboard[ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1]] == 1) ghostDead(0, gpX, gpY, ghostcount);
+                                    }
+                                }
                                 if (board[pX, pY] == 3)
                                 {
                                     eatingpellet.Play();
