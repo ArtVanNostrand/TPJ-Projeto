@@ -24,8 +24,8 @@ namespace Pacman_Revolution
         Texture2D pacman, block, pellet, black, ghost, ghost2, ghost3, ghost4, ghost5, ghost6, bullet, box, bulletH, explosion;
         Texture2D afterimageright, afterimageleft, afterimageup, afterimagedown, portal, superbullet, superbulletH;
         SpriteFont font1;
-        SoundEffect eatingpellet, dashsound, soundteleport, soundtransform, soundpacmanhit;
-        SoundEffect soundboom, soundgameover, soundwrong, soundnice;
+        SoundEffect eatingpellet, dashsound, soundteleport, soundtransform, soundpacmanhit, soundghostspeedup;
+        SoundEffect soundboom, soundgameover, soundwrong, soundnice, soundbullet, soundghosthit, sound1up;
         Song music1;
         SoundEffect songsuper;
         //board = 0 -> nada/vazio
@@ -571,6 +571,10 @@ namespace Pacman_Revolution
             soundgameover = Content.Load<SoundEffect>("soundgameover");
             soundwrong = Content.Load<SoundEffect>("wrong sound effect");
             soundnice = Content.Load<SoundEffect>("right sound effect");
+            soundbullet = Content.Load<SoundEffect>("soundbullet2");
+            soundghosthit = Content.Load<SoundEffect>("soundghosthit");
+            sound1up = Content.Load<SoundEffect>("sound1up");
+            soundghostspeedup = Content.Load<SoundEffect>("soundspeedup");
 
             music1 = Content.Load<Song>("music1pacman");
             songsuper = Content.Load<SoundEffect>("superpacman14s");
@@ -649,15 +653,16 @@ namespace Pacman_Revolution
             ghostspeed=3.5f;
             ghostspeedlevel = 1;
 
-            if(totalgametime>20f){
+            if(totalgametime>30f){
                 ghostspeed=4f;
                 ghostspeedlevel = 2;
+                //soundghostspeedup.Play();
             }
-            if(totalgametime>50f){
+            if(totalgametime>60f){
                 ghostspeed=4.5f;
                 ghostspeedlevel = 3;
             }
-            if (totalgametime > 80f)
+            if (totalgametime > 90f)
             {
                 ghostspeed = 5f;
                 ghostspeedlevel = 4;
@@ -667,7 +672,7 @@ namespace Pacman_Revolution
                 ghostspeed = 5.5f;
                 ghostspeedlevel = 5;
             }
-            if (totalgametime > 160f)
+            if (totalgametime > 150f)
             {
                 ghostspeed = 6f;
                 ghostspeedlevel = 6;
@@ -869,6 +874,10 @@ namespace Pacman_Revolution
                                     soundpacmanhit.Play();
                                 }
                             }
+                            if (super == 1)
+                            {
+                                ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
+                            }
                         }
                     }//ghosttype==2
 
@@ -887,6 +896,10 @@ namespace Pacman_Revolution
                                 {
                                     soundpacmanhit.Play();
                                 }
+                            }
+                            if (super == 1)
+                            {
+                                ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
                             }
                         }
 
@@ -1095,6 +1108,10 @@ namespace Pacman_Revolution
                                 {
                                     soundpacmanhit.Play();
                                 }
+                            }
+                            if (super == 1)
+                            {
+                                ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
                             }
                         }
                     }//ghosttype==3
@@ -1484,7 +1501,7 @@ namespace Pacman_Revolution
                             if (lastBullet > 0.5f)
                             {
 
-                                if (pelletcont > 2)
+                                if (pelletcont > 2 || super ==1)
                                 {
                                     if (lastBullet >= bullettravelspeed)
                                     {
@@ -1497,7 +1514,7 @@ namespace Pacman_Revolution
                                                 {
                                                     pelletcont = pelletcont - 3;
                                                 }
-                                                dashsound.Play();
+                                                soundbullet.Play();
                                                 auxLastDirection = 1;
                                                 flagBullet = 1;
                                                 flagFirstBullet = 0;
@@ -1512,7 +1529,7 @@ namespace Pacman_Revolution
                                                 {
                                                     pelletcont = pelletcont - 3;
                                                 }
-                                                dashsound.Play();
+                                                soundbullet.Play();
                                                 auxLastDirection = 2;
                                                 flagBullet = 1;
                                                 flagFirstBullet = 0;
@@ -1527,7 +1544,7 @@ namespace Pacman_Revolution
                                                 {
                                                     pelletcont = pelletcont - 3;
                                                 }
-                                                dashsound.Play();
+                                                soundbullet.Play();
                                                 auxLastDirection = 4;
                                                 flagBullet = 1;
                                                 flagFirstBullet = 0;
@@ -1542,7 +1559,7 @@ namespace Pacman_Revolution
                                                 {
                                                     pelletcont = pelletcont - 3;
                                                 }
-                                                dashsound.Play();
+                                                soundbullet.Play();
                                                 auxLastDirection = 3;
                                                 flagBullet = 1;
                                                 flagFirstBullet = 0;
@@ -1830,7 +1847,7 @@ namespace Pacman_Revolution
                     if (Keyboard.GetState().IsKeyUp(Keys.W)) Wpressed = false;
                     if (Wpressed == false && Keyboard.GetState().IsKeyDown(Keys.W))
                         {
-                            if (pelletcont > 9)
+                            if (pelletcont > 9 || super==1)
                             {
                                 if (lastDashMove >= 10f)
                                 {
@@ -1931,7 +1948,7 @@ namespace Pacman_Revolution
                     if (Keyboard.GetState().IsKeyUp(Keys.E)) Epressed = false;
                     if (Epressed == false && Keyboard.GetState().IsKeyDown(Keys.E))
                     {
-                    if (pelletcont > 19)
+                    if (pelletcont > 19 || super==1)
                     {
                         if (lastTeleport >= 1.9f)
                         {
@@ -2209,38 +2226,43 @@ namespace Pacman_Revolution
                 {
                     if (score > 500)
                     {
+                        sound1up.Play();
                         vidaPacman++;
                         vidasganhas++;
                     }
                 }
                 if (vidasganhas == 1)
                 {
-                    if (score > 1500)
+                    if (score > 1250)
                     {
+                        sound1up.Play();
                         vidaPacman++;
                         vidasganhas++;
                     }
                 }
                 if (vidasganhas == 2)
                 {
-                    if (score > 2500)
+                    if (score > 2200)
                     {
+                        sound1up.Play();
                         vidaPacman++;
                         vidasganhas++;
                     }
                 }
                 if (vidasganhas == 3)
                 {
-                    if (score > 5000)
+                    if (score > 4000)
                     {
+                        sound1up.Play();
                         vidaPacman++;
                         vidasganhas++;
                     }
                 }
                 if (vidasganhas == 4)
                 {
-                    if (score > 10000)
+                    if (score > 7000)
                     {
+                        sound1up.Play();
                         vidaPacman++;
                         vidasganhas++;
                     }
@@ -2733,7 +2755,7 @@ namespace Pacman_Revolution
 
         private void ghostDead(int vida, int ghostX, int ghostY, int numGhost)
         {
-            if ((board[ghostX, ghostY] == 9 || board[ghostX, ghostY] == 11 || board[ghostX, ghostY] == 12 || board[ghostX, ghostY] == 13) && CooldownGhostHit > 0.1f)
+            if ((board[ghostX, ghostY] == 9 || board[ghostX, ghostY] == 11 || board[ghostX, ghostY] == 12 || board[ghostX, ghostY] == 13 || (board[ghostX,ghostY]==1 && super==1)) && CooldownGhostHit > 0.1f)
             {
                 vida--;
                 CooldownGhostHit = 0f;
