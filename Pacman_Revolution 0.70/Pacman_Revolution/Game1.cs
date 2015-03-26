@@ -53,6 +53,7 @@ namespace Pacman_Revolution
         int level = 1, flagSpeed = 0;
         float ghostspeed=0f, ghostspeedlevel=1;
         float[] lastGhostMove = new float[8];
+        float lastBulletMove = 0f;
         float lastAfterimage = -9999f;
         float lastDashMove = 10f;
         float lastTimeHit = 0f;
@@ -69,7 +70,7 @@ namespace Pacman_Revolution
         int contbullet = 0, super = 0, cont5=0, Qpressed=0;
         int cont3=0, cont4=0;
         int vidasganhas = 0;
-        float bullettravelspeed = 0.6f;
+        float bullettravelspeed = 1f;
         float pacmanspeed = 1f / 10f;
 
         System.Collections.ArrayList musicas;
@@ -634,6 +635,7 @@ namespace Pacman_Revolution
             {
                 lastGhostMove[x] += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
+            lastBulletMove += 100f;
             lastDashMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastTimeHit += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastBullet += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -1581,9 +1583,9 @@ namespace Pacman_Revolution
 
                                 if (pelletcont > 2 || super ==1)
                                 {
-                                    if (lastBullet >= bullettravelspeed)
+                                    if (lastBullet >= 0.5f)
                                     {
-                                        if (pY != 2 && lastdirectionfaced == 1 && (board[pX, pY - 1] == 0 || board[pX, pY - 1] == 3))
+                                        if (pY != 2 && lastdirectionfaced == 1 && (board[pX, pY - 1] == 0 || board[pX, pY - 1] == 3 || board[pX, pY - 1] == 10))
                                         {
                                             if (scanGoUp() == true)
                                             {
@@ -1605,7 +1607,7 @@ namespace Pacman_Revolution
                                                 }
                                             }
                                         }
-                                        if (pY != 21 && lastdirectionfaced == 2 && (board[pX, pY + 1] == 0 || board[pX, pY + 1] == 3))
+                                        if (pY != 21 && lastdirectionfaced == 2 && (board[pX, pY + 1] == 0 || board[pX, pY + 1] == 3 || board[pX, pY - 1] == 10))
                                         {
                                             if (scanGoDown() == true)
                                             {
@@ -1627,7 +1629,7 @@ namespace Pacman_Revolution
                                                 }
                                             }
                                         }
-                                        if (pX != 0 && lastdirectionfaced == 4 && (board[pX - 1, pY] == 0 || board[pX - 1, pY] == 3))
+                                        if (pX != 0 && lastdirectionfaced == 4 && (board[pX - 1, pY] == 0 || board[pX - 1, pY] == 3 || board[pX, pY - 1] == 10))
                                         {
                                             if (scanGoRight() == true)
                                             {
@@ -1649,7 +1651,7 @@ namespace Pacman_Revolution
                                                 }
                                             }
                                         }
-                                        if (pX != 34 && lastdirectionfaced == 3 && (board[pX + 1, pY] == 0 || board[pX + 1, pY] == 3))
+                                        if (pX != 34 && lastdirectionfaced == 3 && (board[pX + 1, pY] == 0 || board[pX + 1, pY] == 3 || board[pX, pY - 1] == 10))
                                         {
                                             if (scanGoLeft() == true)
                                             {
@@ -1697,181 +1699,298 @@ namespace Pacman_Revolution
                     }
 
                     //Disparar OLD parte 2
-                    if (flagBullet == 1)
+                    if (lastBulletMove >= 1f / bullettravelspeed)
                     {
-                        if (auxLastDirection == 1)    //CIMA
+                        lastBulletMove = 0f;
+                        if (flagBullet == 1)
                         {
-                            if (flagFirstBullet == 0)
+                            if (auxLastDirection == 1)    //CIMA
                             {
-                                if (ghostboard[pX, pY - 1] == 1)
+                                if (flagFirstBullet == 0)
+                                {
+                                    if (ghostboard[pX, pY - 1] == 1)
+                                    {
+                                        for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                        {
+                                            ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
+                                        }
+                                    }
+
+                                    boardBullet[0] = pX;
+                                    boardBullet[1] = pY - 1;
+                                    flagFirstBullet = 1;
+                                    auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                    board[boardBullet[0], boardBullet[1]] = 9;
+                                }
+                                else if ((board[boardBullet[0], boardBullet[1] - 1] == 0 || board[boardBullet[0], boardBullet[1] - 1] == 3 || board[boardBullet[0], boardBullet[1] - 1] == 10) && boardBullet[1] != 1)
+                                {
+                                    if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
+                                    {
+                                        eatingpellet.Play();
+                                        pelletcont++;
+                                        pelletScore++;
+                                        score = score + (1 * level);
+                                    }
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    boardBullet[1] = boardBullet[1] - 1;
+                                    auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                    if (super == 0)
+                                    {
+                                        board[boardBullet[0], boardBullet[1]] = 9;
+                                    }
+                                    else
+                                    {
+                                        board[boardBullet[0], boardBullet[1]] = 12;
+                                    }
+                                }
+                                if (boardBullet[1] == 1 || flagCima == 1)
+                                {
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    flagBullet = 0;
+                                }
+                                if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
+                                {
+                                    eatingpellet.Play();
+                                    pelletcont++;
+                                    pelletScore++;
+                                    score = score + (1 * level);
+                                }
+                                if (board[boardBullet[0], boardBullet[1] - 1] == 2) flagCima = 1;
+                                if (flagBullet == 0)
+                                {
+                                    flagCima = 0;
+                                    auxLastDirection = 0;
+                                }
+                                if (ghostboard[boardBullet[0], boardBullet[1] - 1] == 1)
                                 {
                                     for (ghostcount = 0; ghostcount < 6; ghostcount++)
                                     {
                                         ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
                                     }
                                 }
-                                auxflagbullet = board[pX, pY];
-                                boardBullet[0] = pX;
-                                boardBullet[1] = pY - 1;
-                                flagFirstBullet = 1;
-                                board[boardBullet[0], boardBullet[1]] = 9;
-                            }
-                            else if ((board[boardBullet[0], boardBullet[1] - 1] == 0 || board[boardBullet[0], boardBullet[1] - 1] == 3) && boardBullet[1] != 1)
-                            {
-                                if (auxflagbullet != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                boardBullet[1] = boardBullet[1] - 1;
-                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
-                                if (super == 0)
-                                {
-                                    board[boardBullet[0], boardBullet[1]] = 9;
-                                }
-                                else
-                                {
-                                    board[boardBullet[0], boardBullet[1]] = 12;
-                                }
-                            }
-                            if (boardBullet[1] == 1 || flagCima == 1)
-                            {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                flagBullet = 0;
-                            }
-                            if (board[boardBullet[0], boardBullet[1] - 1] == 2) flagCima = 1;
-                            if (flagBullet == 0)
-                            {
-                                flagCima = 0;
-                                auxLastDirection = 0;
-                            }
-                            if (ghostboard[boardBullet[0], boardBullet[1] - 1] == 1)
-                            {
-                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
-                                {
-                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
-                                }
-                            }
-                            if (boardBullet[1] != 21 && ghostboard[boardBullet[0], boardBullet[1] + 1] == 1)
-                            {
-                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
-                                {
-                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
-                                }
-                            }
-                        }
-                        else if (auxLastDirection == 2)   //BAIXO
-                        {
-                            if (flagFirstBullet == 0)
-                            {
-                                if (ghostboard[pX, pY + 1] == 1)
+                                if (boardBullet[1] != 21 && ghostboard[boardBullet[0], boardBullet[1] + 1] == 1)
                                 {
                                     for (ghostcount = 0; ghostcount < 6; ghostcount++)
                                     {
                                         ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
                                     }
                                 }
-                                boardBullet[0] = pX;
-                                boardBullet[1] = pY + 1;
-                                flagFirstBullet = 1;
-                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
-                                board[boardBullet[0], boardBullet[1]] = 9;
                             }
-                            else if (boardBullet[1] != 21 && (board[boardBullet[0], boardBullet[1] + 1] == 0 || board[boardBullet[0], boardBullet[1] + 1] == 3))
+                            else if (auxLastDirection == 2)   //BAIXO
                             {
-                                if (auxflagbullet != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                boardBullet[1] = boardBullet[1] + 1;
-                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
-                                if (super == 0)
+                                if (flagFirstBullet == 0)
                                 {
+                                    if (ghostboard[pX, pY + 1] == 1)
+                                    {
+                                        for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                        {
+                                            ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
+                                        }
+                                    }
+                                    boardBullet[0] = pX;
+                                    boardBullet[1] = pY + 1;
+                                    flagFirstBullet = 1;
+                                    auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                     board[boardBullet[0], boardBullet[1]] = 9;
                                 }
-                                else
+                                else if (boardBullet[1] != 21 && (board[boardBullet[0], boardBullet[1] + 1] == 0 || board[boardBullet[0], boardBullet[1] + 1] == 3 || board[boardBullet[0], boardBullet[1] + 1] == 10))
                                 {
-                                    board[boardBullet[0], boardBullet[1]] = 12;
+                                    if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
+                                    {
+                                        eatingpellet.Play();
+                                        pelletcont++;
+                                        pelletScore++;
+                                        score = score + (1 * level);
+                                    }
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    boardBullet[1] = boardBullet[1] + 1;
+                                    auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                    if (super == 0)
+                                    {
+                                        board[boardBullet[0], boardBullet[1]] = 9;
+                                    }
+                                    else
+                                    {
+                                        board[boardBullet[0], boardBullet[1]] = 12;
+                                    }
+                                }
+                                if (boardBullet[1] == 21 && flagBaixo == 1)
+                                {
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    flagBullet = 0;
+                                }
+                                if (flagBaixo == 1)
+                                {
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    flagBullet = 0;
+                                }
+                                if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
+                                {
+                                    eatingpellet.Play();
+                                    pelletcont++;
+                                    pelletScore++;
+                                    score = score + (1 * level);
+                                }
+                                if (boardBullet[1] == 21 && flagBaixo == 0) flagBaixo = 1;
+                                if (boardBullet[1] != 21 && board[boardBullet[0], boardBullet[1] + 1] == 2) flagBaixo = 1;
+                                if (flagBullet == 0)
+                                { 
+                                    flagBaixo = 0;
+                                    auxLastDirection = 0;
+                                }
+                                if (boardBullet[1] != 21 && ghostboard[boardBullet[0], boardBullet[1] + 1] == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
+                                    }
+                                }
+                                if (ghostboard[boardBullet[0], boardBullet[1] - 1] == 1)
+                                {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
+                                    }
                                 }
                             }
-                            if (boardBullet[1] == 21 && flagBaixo == 1)
+                            else if (auxLastDirection == 4)   //ESQUERDA
                             {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                flagBullet = 0;
-                            }
-                            if (flagBaixo == 1)
-                            {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                flagBullet = 0;
-                            }
-                            if (boardBullet[1] == 21 && flagBaixo == 0) flagBaixo = 1;
-                            if (boardBullet[1] != 21 && board[boardBullet[0], boardBullet[1] + 1] == 2) flagBaixo = 1;
-                            if (flagBullet == 0)
-                            {
-                                flagBaixo = 0;
-                                auxLastDirection = 0;
-                            }
-                            if (boardBullet[1] != 21 && ghostboard[boardBullet[0], boardBullet[1] + 1] == 1)
-                            {
-                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                if (flagFirstBullet == 0)
                                 {
-                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] + 1, ghostcount);
+                                    if (ghostboard[pX - 1, pY] == 1)
+                                    {
+                                        for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                        {
+                                            ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
+                                        }
+                                    }
+                                    boardBullet[0] = pX - 1;
+                                    boardBullet[1] = pY;
+                                    flagFirstBullet = 1;
+                                    auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                    board[boardBullet[0], boardBullet[1]] = 11;
                                 }
-                            }
-                            if (ghostboard[boardBullet[0], boardBullet[1] - 1] == 1)
-                            {
-                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                else if (boardBullet[0] != 0 && (board[boardBullet[0] - 1, boardBullet[1]] == 0 || board[boardBullet[0] - 1, boardBullet[1]] == 3 || board[boardBullet[0] - 1, boardBullet[1]] == 10))
                                 {
-                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
+                                    if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
+                                    {
+                                        eatingpellet.Play();
+                                        pelletcont++;
+                                        pelletScore++;
+                                        score = score + (1 * level);
+                                    }
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    boardBullet[0] = boardBullet[0] - 1;
+                                    auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                    if (super == 0)
+                                    {
+                                        board[boardBullet[0], boardBullet[1]] = 11;
+                                    }
+                                    else
+                                    {
+                                        board[boardBullet[0], boardBullet[1]] = 13;
+                                    }
                                 }
-                            }
-                        }
-                        else if (auxLastDirection == 4)   //ESQUERDA
-                        {
-                            if (flagFirstBullet == 0)
-                            {
-                                if (ghostboard[pX - 1, pY] == 1)
+                                if (boardBullet[0] == 0 && flagEsquerda == 1)
+                                {
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    flagBullet = 0;
+                                }
+                                if (flagEsquerda == 1)
+                                {
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    flagBullet = 0;
+                                }
+                                if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
+                                {
+                                    eatingpellet.Play();
+                                    pelletcont++;
+                                    pelletScore++;
+                                    score = score + (1 * level);
+                                }
+                                if (boardBullet[0] == 0 && flagEsquerda == 0) flagEsquerda = 1;
+                                if (boardBullet[0] != 0 && board[boardBullet[0] - 1, boardBullet[1]] == 2) flagEsquerda = 1;
+                                if (flagBullet == 0)
+                                {
+                                    flagEsquerda = 0;
+                                    auxLastDirection = 0;
+                                }
+                                if (boardBullet[0] != 0 && ghostboard[boardBullet[0] - 1, boardBullet[1]] == 1)
                                 {
                                     for (ghostcount = 0; ghostcount < 6; ghostcount++)
                                     {
                                         ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
                                     }
                                 }
-                                boardBullet[0] = pX - 1;
-                                boardBullet[1] = pY;
-                                flagFirstBullet = 1;
-                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
-                                board[boardBullet[0], boardBullet[1]] = 11;
-                            }
-                            else if (boardBullet[0] != 0 && (board[boardBullet[0] - 1, boardBullet[1]] == 0 || board[boardBullet[0] - 1, boardBullet[1]] == 3))
-                            {
-                                if (auxflagbullet != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                boardBullet[0] = boardBullet[0] - 1;
-                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
-                                if (super == 0)
+                                if (boardBullet[0] != 34 && ghostboard[boardBullet[0] + 1, boardBullet[1]] == 1)
                                 {
+                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                    {
+                                        ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
+                                    }
+                                }
+                            }
+                            else if (auxLastDirection == 3)   //DIREITA
+                            {
+                                if (flagFirstBullet == 0)
+                                {
+                                    if (ghostboard[pX + 1, pY] == 1)
+                                    {
+                                        for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                        {
+                                            ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
+                                        }
+                                    }
+                                    boardBullet[0] = pX + 1;
+                                    boardBullet[1] = pY;
+                                    flagFirstBullet = 1;
+                                    auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                     board[boardBullet[0], boardBullet[1]] = 11;
                                 }
-                                else
+                                else if (boardBullet[0] != 34 && (board[boardBullet[0] + 1, boardBullet[1]] == 0 || board[boardBullet[0] + 1, boardBullet[1]] == 3 || board[boardBullet[0] + 1, boardBullet[1]] == 10))
                                 {
-                                    board[boardBullet[0], boardBullet[1]] = 13;
+                                    if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
+                                    {
+                                        eatingpellet.Play();
+                                        pelletcont++;
+                                        pelletScore++;
+                                        score = score + (1 * level);
+                                    }
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    boardBullet[0] = boardBullet[0] + 1;
+                                    auxflagbullet = board[boardBullet[0], boardBullet[1]];
+                                    if (super == 0)
+                                    {
+                                        board[boardBullet[0], boardBullet[1]] = 11;
+                                    }
+                                    else
+                                    {
+                                        board[boardBullet[0], boardBullet[1]] = 13;
+                                    }
                                 }
-                            }
-                            if (boardBullet[0] == 0 && flagEsquerda == 1)
-                            {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                flagBullet = 0;
-                            }
-                            if (flagEsquerda == 1)
-                            {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                flagBullet = 0;
-                            }
-                            if (boardBullet[0] == 0 && flagEsquerda == 0) flagEsquerda = 1;
-                            if (boardBullet[0] != 0 && board[boardBullet[0] - 1, boardBullet[1]] == 2) flagEsquerda = 1;
-                            if (flagBullet == 0)
-                            {
-                                flagEsquerda = 0;
-                                auxLastDirection = 0;
-                            }
-                            if (boardBullet[0] != 0 && ghostboard[boardBullet[0] - 1, boardBullet[1]] == 1)
-                            {
-                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
+                                if (boardBullet[0] == 34 && flagDireita == 1)
                                 {
-                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    flagBullet = 0;
+                                }
+                                if (flagDireita == 1)
+                                {
+                                    if (board[boardBullet[0], boardBullet[1]] != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
+                                    flagBullet = 0;
+                                }
+                                if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
+                                {
+                                    eatingpellet.Play();
+                                    pelletcont++;
+                                    pelletScore++;
+                                    score = score + (1 * level);
+                                }
+                                if (boardBullet[0] == 34 && flagDireita == 0) flagDireita = 1;
+                                if (boardBullet[0] != 34 && board[boardBullet[0] + 1, boardBullet[1]] == 2) flagDireita = 1;
+                                if (flagBullet == 0)
+                                {
+                                    flagDireita = 0;
+                                    auxLastDirection = 0;
                                 }
                             }
                             if (boardBullet[0] != 34 && ghostboard[boardBullet[0] + 1, boardBullet[1]] == 1)
@@ -1881,73 +2000,17 @@ namespace Pacman_Revolution
                                     ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
                                 }
                             }
-                        }
-                        else if (auxLastDirection == 3)   //DIREITA
-                        {
-                            if (flagFirstBullet == 0)
+                            if (boardBullet[0] != 0 && ghostboard[boardBullet[0] - 1, boardBullet[1]] == 1)
                             {
-                                if (ghostboard[pX + 1, pY] == 1)
+                                for (ghostcount = 0; ghostcount < 6; ghostcount++)
                                 {
-                                    for (ghostcount = 0; ghostcount < 6; ghostcount++)
-                                    {
-                                        ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
-                                    }
-                                }
-                                boardBullet[0] = pX + 1;
-                                boardBullet[1] = pY;
-                                flagFirstBullet = 1;
-                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
-                                board[boardBullet[0], boardBullet[1]] = 11;
-                            }
-                            else if (boardBullet[0] != 34 && (board[boardBullet[0] + 1, boardBullet[1]] == 0 || board[boardBullet[0] + 1, boardBullet[1]] == 3))
-                            {
-                                if (auxflagbullet != 1) board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                boardBullet[0] = boardBullet[0] + 1;
-                                auxflagbullet = board[boardBullet[0], boardBullet[1]];
-                                if (super == 0)
-                                {
-                                    board[boardBullet[0], boardBullet[1]] = 11;
-                                }
-                                else
-                                {
-                                    board[boardBullet[0], boardBullet[1]] = 13;
+                                    ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
                                 }
                             }
-                            if (boardBullet[0] == 34 && flagDireita == 1)
-                            {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                flagBullet = 0;
-                            }
-                            if (flagDireita == 1)
-                            {
-                                board[boardBullet[0], boardBullet[1]] = auxflagbullet;
-                                flagBullet = 0;
-                            }
-                            if (boardBullet[0] == 34 && flagDireita == 0) flagDireita = 1;
-                            if (boardBullet[0] != 34 && board[boardBullet[0] + 1, boardBullet[1]] == 2) flagDireita = 1;
-                            if (flagBullet == 0)
-                            {
-                                flagDireita = 0;
-                                auxLastDirection = 0;
-                            }
-                        }
-                        if (boardBullet[0] != 34 && ghostboard[boardBullet[0] + 1, boardBullet[1]] == 1)
-                        {
                             for (ghostcount = 0; ghostcount < 6; ghostcount++)
                             {
-                                ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] + 1, ghostcoords[ghostcount, 1], ghostcount);
+                                ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
                             }
-                        }
-                        if (boardBullet[0] != 0 && ghostboard[boardBullet[0] - 1, boardBullet[1]] == 1)
-                        {
-                            for (ghostcount = 0; ghostcount < 6; ghostcount++)
-                            {
-                                ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0] - 1, ghostcoords[ghostcount, 1], ghostcount);
-                            }
-                        }
-                        for (ghostcount = 0; ghostcount < 6; ghostcount++)
-                        {
-                            ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1], ghostcount);
                         }
                     }
 
@@ -2236,7 +2299,7 @@ namespace Pacman_Revolution
                         if (lastSuper >= 45f)
                         {
                                 MediaPlayer.Stop();
-                                bullettravelspeed = 0.2f;
+                                bullettravelspeed = 12f;
                                 soundtransform.Play();
                                 pelletcont = pelletcont - 100;
                                 lastSuper = 0f;
@@ -2278,7 +2341,7 @@ namespace Pacman_Revolution
                     {
                         super = 0;
                         pacmanspeed = 1f / 10f;
-                        bullettravelspeed = 0.6f;
+                        bullettravelspeed = 10f;
                         MediaPlayer.Play(music1);
                     }
                 }//super
