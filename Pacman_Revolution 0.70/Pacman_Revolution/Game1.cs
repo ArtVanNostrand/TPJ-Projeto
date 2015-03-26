@@ -655,7 +655,7 @@ namespace Pacman_Revolution
 
             if (flagExplosion == 1)
             {
-                board[boardBullet[0], boardBullet[1]] = 14;
+                board[xExplosion, yExplosion] = 14;
                 flagExplosion = 0;
                 lastExplosion = 0;
                 flagHide = 1;
@@ -1605,9 +1605,9 @@ namespace Pacman_Revolution
 
                                 if (pelletcont > 2 || super ==1)
                                 {
-                                    if (lastBullet >= 0.5f)
+                                    if (lastBullet >= 1f)
                                     {
-                                        if (pY != 2 && lastdirectionfaced == 1 && (board[pX, pY - 1] == 0 || board[pX, pY - 1] == 3 || board[pX, pY - 1] == 10))
+                                        if (pY != 2 && lastdirectionfaced == 1 && (board[pX, pY - 1] == 0 || board[pX, pY - 1] == 3 || board[pX, pY - 1] == 10 || board[pX, pY - 1] == 14))
                                         {
                                             if (scanGoUp() == true)
                                             {
@@ -1629,7 +1629,7 @@ namespace Pacman_Revolution
                                                 }
                                             }
                                         }
-                                        if (pY != 21 && lastdirectionfaced == 2 && (board[pX, pY + 1] == 0 || board[pX, pY + 1] == 3 || board[pX, pY - 1] == 10))
+                                        if (pY != 21 && lastdirectionfaced == 2 && (board[pX, pY + 1] == 0 || board[pX, pY + 1] == 3 || board[pX, pY + 1] == 10 || board[pX, pY + 1] == 14))
                                         {
                                             if (scanGoDown() == true)
                                             {
@@ -1651,7 +1651,7 @@ namespace Pacman_Revolution
                                                 }
                                             }
                                         }
-                                        if (pX != 0 && lastdirectionfaced == 4 && (board[pX - 1, pY] == 0 || board[pX - 1, pY] == 3 || board[pX, pY - 1] == 10))
+                                        if (pX != 0 && lastdirectionfaced == 4 && (board[pX - 1, pY] == 0 || board[pX - 1, pY] == 3 || board[pX - 1, pY] == 10 || board[pX - 1, pY] == 14))
                                         {
                                             if (scanGoRight() == true)
                                             {
@@ -1673,7 +1673,7 @@ namespace Pacman_Revolution
                                                 }
                                             }
                                         }
-                                        if (pX != 34 && lastdirectionfaced == 3 && (board[pX + 1, pY] == 0 || board[pX + 1, pY] == 3 || board[pX, pY - 1] == 10))
+                                        if (pX != 34 && lastdirectionfaced == 3 && (board[pX + 1, pY] == 0 || board[pX + 1, pY] == 3 || board[pX + 1, pY] == 10 || board[pX + 1, pY] == 14))
                                         {
                                             if (scanGoLeft() == true)
                                             {
@@ -1744,7 +1744,7 @@ namespace Pacman_Revolution
                                     auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                     board[boardBullet[0], boardBullet[1]] = 9;
                                 }
-                                else if ((board[boardBullet[0], boardBullet[1] - 1] == 0 || board[boardBullet[0], boardBullet[1] - 1] == 3 || board[boardBullet[0], boardBullet[1] - 1] == 10) && boardBullet[1] != 1)
+                                else if ((board[boardBullet[0], boardBullet[1] - 1] == 0 || board[boardBullet[0], boardBullet[1] - 1] == 3 || board[boardBullet[0], boardBullet[1] - 1] == 10 || board[boardBullet[0], boardBullet[1] - 1] == 14) && boardBullet[1] != 1)
                                 {
                                     if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
                                     {
@@ -1815,7 +1815,7 @@ namespace Pacman_Revolution
                                     auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                     board[boardBullet[0], boardBullet[1]] = 9;
                                 }
-                                else if (boardBullet[1] != 21 && (board[boardBullet[0], boardBullet[1] + 1] == 0 || board[boardBullet[0], boardBullet[1] + 1] == 3 || board[boardBullet[0], boardBullet[1] + 1] == 10))
+                                else if (boardBullet[1] != 21 && (board[boardBullet[0], boardBullet[1] + 1] == 0 || board[boardBullet[0], boardBullet[1] + 1] == 3 || board[boardBullet[0], boardBullet[1] + 1] == 10 || board[boardBullet[0], boardBullet[1] + 1] == 14))
                                 {
                                     if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
                                     {
@@ -1892,7 +1892,7 @@ namespace Pacman_Revolution
                                     auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                     board[boardBullet[0], boardBullet[1]] = 11;
                                 }
-                                else if (boardBullet[0] != 0 && (board[boardBullet[0] - 1, boardBullet[1]] == 0 || board[boardBullet[0] - 1, boardBullet[1]] == 3 || board[boardBullet[0] - 1, boardBullet[1]] == 10))
+                                else if (boardBullet[0] != 0 && (board[boardBullet[0] - 1, boardBullet[1]] == 0 || board[boardBullet[0] - 1, boardBullet[1]] == 3 || board[boardBullet[0] - 1, boardBullet[1]] == 10 || board[boardBullet[0] - 1, boardBullet[1]] == 14))
                                 {
                                     if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
                                     {
@@ -1969,7 +1969,7 @@ namespace Pacman_Revolution
                                     auxflagbullet = board[boardBullet[0], boardBullet[1]];
                                     board[boardBullet[0], boardBullet[1]] = 11;
                                 }
-                                else if (boardBullet[0] != 34 && (board[boardBullet[0] + 1, boardBullet[1]] == 0 || board[boardBullet[0] + 1, boardBullet[1]] == 3 || board[boardBullet[0] + 1, boardBullet[1]] == 10))
+                                else if (boardBullet[0] != 34 && (board[boardBullet[0] + 1, boardBullet[1]] == 0 || board[boardBullet[0] + 1, boardBullet[1]] == 3 || board[boardBullet[0] + 1, boardBullet[1]] == 10 || board[boardBullet[0] + 1, boardBullet[1]] == 14))
                                 {
                                     if (board[boardBullet[0], boardBullet[1]] == 1 && auxflagbullet == 3)
                                     {
