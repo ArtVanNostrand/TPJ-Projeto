@@ -50,10 +50,11 @@ namespace Pacman_Revolution
         int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3, pelletScore = 0, kills = 0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
-        int level = 1, flagSpeed = 0;
+        int level = 1, flagSpeed = 0, flagExplosion = 0, auxExplosion, xExplosion, yExplosion, flagHide = 0;
         float ghostspeed=0f, ghostspeedlevel=1;
         float[] lastGhostMove = new float[8];
         float lastBulletMove = 0f;
+        float lastExplosion = 0f;
         float lastAfterimage = -9999f;
         float lastDashMove = 10f;
         float lastTimeHit = 0f;
@@ -65,7 +66,7 @@ namespace Pacman_Revolution
         float bulletSpeed = 10f;
         float supertime = 0f;
         int flagBullet = 0, auxLastDirection = 0, flagCima = 0, flagBaixo = 0, flagEsquerda = 0, flagDireita = 0;
-        int auxflagbullet = 0;
+        int auxflagbullet = 0, auxSup;
         int pellettotal = 0;
         int contbullet = 0, super = 0, cont5=0, Qpressed=0;
         int cont3=0, cont4=0;
@@ -641,6 +642,7 @@ namespace Pacman_Revolution
             lastBullet += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastTeleport += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastAfterimage += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            lastExplosion += (float)gameTime.ElapsedGameTime.TotalSeconds;
             lastSuper += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (gameover == 0)
             {
@@ -651,6 +653,19 @@ namespace Pacman_Revolution
             }
             spacepressed = false;
 
+            if (flagExplosion == 1)
+            {
+                board[boardBullet[0], boardBullet[1]] = 14;
+                flagExplosion = 0;
+                lastExplosion = 0;
+                flagHide = 1;
+            }
+            if (lastExplosion > 0.1f && flagHide == 1)
+            {
+                board[xExplosion, yExplosion] = auxExplosion;
+                flagHide = 0;
+            }
+            
 
             ghostspeedlevel = 1;
             if(totalgametime>30f){
@@ -755,7 +770,13 @@ namespace Pacman_Revolution
 
                 if (board[gpX, gpY] == 1 && super == 1)
                 {
-                    ghostDead(0, gpX, gpY, ghostcount);
+                    soundboom.Play();//som de comer
+                    kills++;
+                    score = score + (5 * level);
+                    ghostcoords[ghostcount, 0] = 13;
+                    gpX = 13;
+                    gpY = 10;
+                    ghostHealth[ghostcount] = 1;
                 }
 
                 if (ghostcount == 0)
@@ -1392,6 +1413,7 @@ namespace Pacman_Revolution
                     {
                         ghostDead(0, gpX, gpY, ghostcount);
                     }
+                    if (board[gpX, gpY] != 1) auxSup = board[gpX, gpY];
                     ghostcoords[ghostcount, 0] = gpX;
                     ghostcoords[ghostcount, 1] = gpY;
                     //ghostcount++;
@@ -2935,14 +2957,18 @@ namespace Pacman_Revolution
             }
             if (vida <= 0)
             {
+                xExplosion = ghostcoords[numGhost, 0];
+                yExplosion = ghostcoords[numGhost, 1];
+                auxExplosion = auxflagbullet;
                 soundboom.Play();
                 kills++;
                 score = score + (5 * level);
-                board[ghostX, ghostY] = 14;
                 ghostcoords[numGhost, 0] = 13;
                 gpX = 13;
                 gpY = 10;
                 vida = 1;
+                flagBullet = 0;
+                flagExplosion = 1;
             }//imagem de fantasma morto
         }
 
