@@ -571,7 +571,7 @@ namespace Pacman_Revolution
             soundpacmanhit = Content.Load<SoundEffect>("pacmanhit");
             soundboom = Content.Load<SoundEffect>("soundboom");
             soundgameover = Content.Load<SoundEffect>("soundgameover");
-            soundwrong = Content.Load<SoundEffect>("wrong sound effect");
+            soundwrong = Content.Load<SoundEffect>("wrong sound effect v2");
             soundnice = Content.Load<SoundEffect>("right sound effect");
             soundbullet = Content.Load<SoundEffect>("soundbullet2");
             soundghosthit = Content.Load<SoundEffect>("soundghosthit");
