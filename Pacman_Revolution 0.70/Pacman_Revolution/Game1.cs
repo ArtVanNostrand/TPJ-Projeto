@@ -2965,6 +2965,7 @@ namespace Pacman_Revolution
                 kills++;
                 score = score + (5 * level);
                 ghostcoords[numGhost, 0] = 13;
+                ghostcoords[numGhost, 1] = 10;
                 gpX = 13;
                 gpY = 10;
                 vida = 1;
