@@ -1,6 +1,5 @@
 ﻿#region Using Statements
 using System;
-//using System.Collections.ArrayList;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -14,9 +13,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Pacman_Revolution
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -37,7 +33,6 @@ namespace Pacman_Revolution
         //ghostboard = 1 -> fantasma
         bool spacepressed = false;
         bool Wpressed = false, QPressed = false, Epressed = false, Rpressed = false;
-        //40x20
         int[,] board = new int[40, 22]; //é preciso +2 no y (20 para 22)
         int[,] ghostboard = new int[40, 22];//é preciso +2 no y (20 para 22)
         int[] boardBullet = new int[2];
@@ -73,14 +68,9 @@ namespace Pacman_Revolution
         int vidasganhas = 0;
         float bullettravelspeed = 1f;
         float pacmanspeed = 1f / 10f;
-
-        System.Collections.ArrayList musicas;
-
         int cooldown = 0, random1 = 0, bX, bY;
-        
         int bulletcont = 0;
         int flagFirstBullet = 0;
-
         float lastTeleport = 10f;
         int tpX = 1, tpY = 1, tmarker=0;
 
@@ -95,23 +85,11 @@ namespace Pacman_Revolution
             graphics.PreferredBackBufferHeight = 600; //y
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
 
            //Codigo apenas corre quando o progama é inicializado
             base.Initialize();
-
-            //musicas = new System.Collections.ArrayList();
-            //musicas.Add(music1);
-            //musicas.Add(songsuper);
-
-            MediaPlayer.Play(music1);
 
             for (linha = 0; linha < 6; linha++)
             {
@@ -130,9 +108,6 @@ namespace Pacman_Revolution
             }
             ghostspeed = 3.5f;
                 //ghostboard[1,1] = 2;
-
-
-
                 //começa a desenhar blocos e pellets
                 //board[x,y]=2 -> blocos
                 //board[x,y]=3 -> pellets
@@ -450,13 +425,7 @@ namespace Pacman_Revolution
             board[33, 18] = 2;
             board[33, 20] = 2;
 
-            //board[34, 7] = 2;
-            //board[34, 11] = 2;
-            //board[34, 12] = 2;
-
-
-
-            //por as pellets
+            //pôr as pellets
             for (int x = 0; x < 35; x++)
             {
                 for (int y = 2; y < 22; y++)
@@ -524,23 +493,16 @@ namespace Pacman_Revolution
                 board[30, y] = 2;
             }
 
-
             board[0, 12] = 1;
 
             //Zonas em que o fantasma fica preso agora abertas
             board[4, 12] = 0;
             board[16, 13] = 0;
             board[30, 12] = 0;
-
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             box = Content.Load<Texture2D>("bloco");
             pacman = Content.Load<Texture2D>("pacman v2 30x30");
@@ -563,7 +525,6 @@ namespace Pacman_Revolution
             afterimagedown = Content.Load<Texture2D>("afterimage_pacman30down");
             afterimageleft = Content.Load<Texture2D>("afterimage_pacman30left");
             explosion = Content.Load<Texture2D>("explosao30x30");
-
             dashsound = Content.Load<SoundEffect>("placeholder sound");
             eatingpellet = Content.Load<SoundEffect>("eating pellet sound v1");
             soundteleport = Content.Load<SoundEffect>("pacmanteleport");
@@ -577,23 +538,13 @@ namespace Pacman_Revolution
             soundghosthit = Content.Load<SoundEffect>("soundghosthit");
             sound1up = Content.Load<SoundEffect>("sound1up");
             soundghostspeedup = Content.Load<SoundEffect>("soundspeedup");
-
             music1 = Content.Load<Song>("music1pacman");
             songsuper = Content.Load<SoundEffect>("superpacman14s");
-
             font1 = Content.Load<SpriteFont>("QuartzMS13");
-
-
-            // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
             pacman.Dispose();
             block.Dispose();
             pellet.Dispose();
@@ -610,22 +561,28 @@ namespace Pacman_Revolution
             afterimageleft.Dispose();
             bullet.Dispose();
             box.Dispose();
-
             eatingpellet.Dispose();
             dashsound.Dispose();
-
             music1.Dispose();
             songsuper.Dispose();
-
-       
+            bulletH.Dispose();
+            superbullet.Dispose();
+            superbulletH.Dispose();
+            portal.Dispose();
+            explosion.Dispose();
+            soundteleport.Dispose();
+            soundtransform.Dispose();
+            soundpacmanhit.Dispose();
+            soundboom.Dispose();
+            soundgameover.Dispose();
+            soundwrong.Dispose();
+            soundnice.Dispose();
+            soundbullet.Dispose();
+            soundghosthit.Dispose();
+            sound1up.Dispose();
+            soundghostspeedup.Dispose();
         }
 
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -666,7 +623,6 @@ namespace Pacman_Revolution
                 if (board[xExplosion, yExplosion] != 1) board[xExplosion, yExplosion] = auxExplosion;
                 flagHide = 0;
             }
-            
 
             ghostspeedlevel = 1;
             if(totalgametime>30f){
@@ -764,8 +720,6 @@ namespace Pacman_Revolution
             //MOVIMENTO FANTASMAS
             for (ghostcount = 0; ghostcount < 6; ghostcount++)
             {
-
-
                 gpX = ghostcoords[ghostcount, 0];
                 gpY = ghostcoords[ghostcount, 1];
 
@@ -793,9 +747,7 @@ namespace Pacman_Revolution
                 //detetar se um fantasma apanhou o pacman
                 if (pacmanDead(vidaPacman, pX, pY, gpX, gpY, lastTimeHit) == true)
                 {
-                    
                     gameover = 1;
-                 
                 }
 
                                                      //ghostspeed
@@ -869,7 +821,6 @@ namespace Pacman_Revolution
                         }
                     }//ghosttype==1
 
-
                     //segue o jogador mas prioritiza o x
                     if (ghosttype == 2)
                     {
@@ -891,7 +842,6 @@ namespace Pacman_Revolution
 
                         if (gpX != pX)
                         {
-
                             if (gpX > pX)
                             {
                                 if (gcanGoLeft() == true)
@@ -913,7 +863,6 @@ namespace Pacman_Revolution
 
                         if (gpY != pY)
                         {
-
                             if (cooldown == 0)
                             {
                                 if (gpY > pY)
@@ -953,11 +902,9 @@ namespace Pacman_Revolution
                         }
                     }//ghosttype==2
 
-
                     //segue o jogador +/- random
                     if (ghosttype == 3)
                     {
-
                         if (pX == gpX && pY == gpY && CooldownVida > 3f)
                         {
                             CooldownVida = 0f;
@@ -977,7 +924,6 @@ namespace Pacman_Revolution
 
                         ghostboard[gpX, gpY] = 0;
                         int flag1, cooldown2;
-
                         cooldown2 = 0;
                         random1 = 0;
                         flag1 = 0;
@@ -1042,10 +988,6 @@ namespace Pacman_Revolution
                             }
                         }
 
-
-
-
-
                         if (cooldown2 == 0)
                         {
                             if (repeat[1] + repeat[2] + repeat[3] + repeat[4] > 9)
@@ -1061,7 +1003,6 @@ namespace Pacman_Revolution
                                 if (gcanGoUp() == true && ghostLastDirection[ghostcount] != 5)
                                 {
                                     flag2 = 0;
-                                    //repeat[1]++;
                                     gpY--;
                                     ghostLastDirection[ghostcount] = 8;
                                     cooldown2 = 1;
@@ -1072,7 +1013,6 @@ namespace Pacman_Revolution
                                 if (gcanGoLeft() == true && ghostLastDirection[ghostcount] != 6)
                                 {
                                     flag2 = 0;
-                                    //repeat[1]++;
                                     gpX--;
                                     ghostLastDirection[ghostcount] = 4;
                                     cooldown2 = 1;
@@ -1083,7 +1023,6 @@ namespace Pacman_Revolution
                                 if (gcanGoDown() == true && ghostLastDirection[ghostcount] != 8)
                                 {
                                     flag2 = 0;
-                                    //repeat[1]++;
                                     gpY++;
                                     ghostLastDirection[ghostcount] = 5;
                                     cooldown2 = 1;
@@ -1094,7 +1033,6 @@ namespace Pacman_Revolution
                                 if (gcanGoRight() == true && ghostLastDirection[ghostcount] != 4)
                                 {
                                     flag2 = 0;
-                                    //repeat[1]++;
                                     gpX++;
                                     ghostLastDirection[ghostcount] = 6;
                                     cooldown2 = 1;
@@ -1102,21 +1040,15 @@ namespace Pacman_Revolution
                             }
                         }
 
-
-
-
                         if (cooldown2 == 0)
                         {
                             if (gcanGoUp() == true && ghostLastDirection[ghostcount] != 5)
                             {
-                                //if (repeat[1] < 5)
-                                //{
                                 flag2 = 1;
                                 repeat[1]++;
                                 gpY--;
                                 ghostLastDirection[ghostcount] = 8;
                                 cooldown2 = 1;
-                                //}
                             }
                         }
 
@@ -1124,14 +1056,11 @@ namespace Pacman_Revolution
                         {
                             if (gcanGoLeft() == true && ghostLastDirection[ghostcount] != 6)
                             {
-                                //if (repeat[2] < 5)
-                                //{
                                 flag2 = 2;
                                 repeat[2]++;
                                 gpX--;
                                 ghostLastDirection[ghostcount] = 4;
                                 cooldown2 = 1;
-                                //}
                             }
                         }
 
@@ -1139,14 +1068,11 @@ namespace Pacman_Revolution
                         {
                             if (gcanGoDown() == true && ghostLastDirection[ghostcount] != 8)
                             {
-                                //if (repeat[3] < 5)
-                                //{
                                 flag2 = 3;
                                 repeat[3]++;
                                 gpY++;
                                 ghostLastDirection[ghostcount] = 5;
                                 cooldown2 = 1;
-                                //}
                             }
                         }
 
@@ -1154,19 +1080,13 @@ namespace Pacman_Revolution
                         {
                             if (gcanGoRight() == true && ghostLastDirection[ghostcount] != 4)
                             {
-                                //if (repeat[4] < 5)
-                                //{
                                 flag2 = 4;
                                 repeat[4]++;
                                 gpX++;
                                 ghostLastDirection[ghostcount] = 6;
                                 cooldown2 = 1;
-                                //}
                             }
                         }
-
-
-
 
                         if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
                         else ghostboard[gpX, gpY] = 2;
@@ -1188,29 +1108,19 @@ namespace Pacman_Revolution
                         }
                     }//ghosttype==3
 
-
-
-
-
-
-
                     //segue o jogador +/- random
                     if (ghosttype == 4)
                     {
                         ghostboard[gpX, gpY] = 0;
                         int flag1, cooldown2;
-
                         cooldown2 = 0;
                         random1 = 0;
                         flag1 = 0;
-
                         if ((gpX != pX) && (gpY != pY))
                         {
                             random1 = rnd.Next(1, 3);
                             flag1 = 1;
                         }
-
-
 
                         if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
                         {
@@ -1262,18 +1172,13 @@ namespace Pacman_Revolution
                             }
                         }
 
-
-
                         if (cooldown2 == 0)
                         {
                             if (gcanGoUp() == true)
                             {
-
                                 flag2 = 1;
-
                                 gpY--;
                                 cooldown2 = 1;
-
                             }
                         }
 
@@ -1281,12 +1186,9 @@ namespace Pacman_Revolution
                         {
                             if (gcanGoLeft() == true)
                             {
-
                                 flag2 = 2;
-
                                 gpX--;
                                 cooldown2 = 1;
-
                             }
                         }
 
@@ -1294,12 +1196,9 @@ namespace Pacman_Revolution
                         {
                             if (gcanGoDown() == true)
                             {
-
                                 flag2 = 3;
-
                                 gpY++;
                                 cooldown2 = 1;
-
                             }
                         }
 
@@ -1307,106 +1206,16 @@ namespace Pacman_Revolution
                         {
                             if (gcanGoRight() == true)
                             {
-
                                 flag2 = 4;
-
                                 gpX++;
                                 cooldown2 = 1;
-
                             }
                         }
 
-
-
-
                         if (ghostcount == 0) ghostboard[gpX, gpY] = 1;
                         else ghostboard[gpX, gpY] = 2;
-                        //auxgpX = gpX;
-                        //auxgpY = gpY;
-
                     }//ghosttype==4
 
-
-
-
-
-
-                    ////segue o jogador deseparecendo as vezes
-                    //if (ghosttype == 10)
-                    //{
-                    //    ghostboard[gpX, gpY] = 0;
-                    //    int flag1;
-
-                    //    flag1 = 0;
-
-                    //    if ((gpX != pX) && (gpY != pY))
-                    //    {
-                    //        random1 = rnd.Next(1, 2);
-                    //        flag1 = 1;
-                    //    }
-
-                    //    if ((flag1 == 0) || (flag1 == 1 && random1 == 1))
-                    //    {
-                    //        if (gpX != pX)
-                    //        {
-                    //            if (flag1 == 1 && random1 == 1)
-                    //            {
-                    //                if (gpX > pX)
-                    //                {
-                    //                    if (gcanGoLeft() == true)
-                    //                    {
-                    //                        gpX--;
-
-                    //                    }
-                    //                }
-                    //                else
-                    //                {
-                    //                    if (gcanGoRight() == true)
-                    //                    {
-                    //                        gpX++;
-
-                    //                    }
-                    //                }
-
-                    //            }
-                    //        }
-                    //    }
-
-                    //        if ((flag1 == 0) || (flag1 == 1 && random1 == 2))
-                    //        {
-                    //            if (gpY != pY)
-                    //            {
-
-
-                    //                if (cooldown == 0)
-                    //                {
-                    //                    if (gpY > pY)
-                    //                    {
-                    //                        if (gcanGoUp() == true)
-                    //                        {
-                    //                            gpY--;
-                    //                        }
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        if (gcanGoDown() == true)
-                    //                        {
-                    //                            gpY++;
-                    //                        }
-                    //                    }
-                    //                }
-
-                    //            }
-
-                    //            if (gpX == pX)
-                    //            {
-
-                    //            }
-
-                    //            ghostboard[gpX, gpY] = 1;
-                    //        }
-
-                    //    }//ghosttype==10
                     if (boardBullet[0] == gpX && boardBullet[1] == gpY && flagBullet == 1)
                     {
                           ghostDead(ghostHealth[ghostcount], gpX, gpY, ghostcount);
@@ -1418,18 +1227,13 @@ namespace Pacman_Revolution
                     if (board[gpX, gpY] != 1) auxSup = board[gpX, gpY];
                     ghostcoords[ghostcount, 0] = gpX;
                     ghostcoords[ghostcount, 1] = gpY;
-                    //ghostcount++;
-                    //if (ghostcount == 3) ghostcount = 0;
                 }
             }
 
                 if (lastHumanMove >= pacmanspeed)
                 {
                     int flag = 0;
-
                     lastHumanMove = 0f;
-
-
 
                     if (Keyboard.GetState().IsKeyDown(Keys.Up))
                     {
@@ -1463,16 +1267,7 @@ namespace Pacman_Revolution
                                     score = score + (1 * level);
                                 }
                                 board[pX, pY] = 1;
-                                //
                                 lastdirectionfaced = 1;
-                                //if (CooldownVida > 3f)
-                                //{
-                                //    pacman = Content.Load<Texture2D>("pacman v2 30x30 -  up");
-                                //}
-                                //else
-                                //{
-                                //    pacman = Content.Load<Texture2D>("hurtpacmanup");
-                                //}
                             }
                         }
                     }
@@ -1484,7 +1279,6 @@ namespace Pacman_Revolution
                         {
                             if (flag == 1)
                             {
-
                                 board[pX, pY] = 0;
                                 pY++;
                                 if (ghostboard[pX, pY] == 1 && super == 1)
@@ -1503,15 +1297,6 @@ namespace Pacman_Revolution
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 2;
-
-                                //if (CooldownVida > 3f)
-                                //{
-                                //    pacman = Content.Load<Texture2D>("pacman v2 30x30 -  down");
-                                //}
-                                //else
-                                //{
-                                //    pacman = Content.Load<Texture2D>("newpacmanhurtdown");
-                                //}
                             }
                         }
                     }
@@ -1523,7 +1308,6 @@ namespace Pacman_Revolution
                         {
                             if (flag == 1)
                             {
-
                                 board[pX, pY] = 0;
                                 pX++;
                                 if (ghostboard[pX, pY] == 1 && super == 1)
@@ -1542,14 +1326,6 @@ namespace Pacman_Revolution
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 3;
-                                //if (CooldownVida > 3f)
-                                //{
-                                //    pacman = Content.Load<Texture2D>("pacman v2 30x30 -  right");
-                                //}
-                                //else
-                                //{
-                                //    pacman = Content.Load<Texture2D>("hurtpacmanright");
-                                //}
                             }
                         }
 
@@ -1562,7 +1338,6 @@ namespace Pacman_Revolution
                             flag++;
                             if (flag == 1)
                             {
-
                                 board[pX, pY] = 0;
                                 pX--;
                                 if (ghostboard[pX, pY] == 1 && super == 1)
@@ -1581,15 +1356,6 @@ namespace Pacman_Revolution
                                 }
                                 board[pX, pY] = 1;
                                 lastdirectionfaced = 4;
-
-                                //if (CooldownVida > 3f)
-                                //{
-                                //    pacman = Content.Load<Texture2D>("pacman v2 30x30");
-                                //}
-                                //else
-                                //{
-                                //    pacman = Content.Load<Texture2D>("hurtpacmanleft");
-                                //}
                             }
                         }
                     }
@@ -1604,7 +1370,6 @@ namespace Pacman_Revolution
                         {
                             if (lastBullet > 0.5f)
                             {
-
                                 if (pelletcont > 2 || super ==1)
                                 {
                                     if (lastBullet >= 0.5f)
@@ -1697,8 +1462,6 @@ namespace Pacman_Revolution
                                                 }
                                             }
                                         }
-
-
                                     }
                                     else
                                     {
@@ -1739,7 +1502,6 @@ namespace Pacman_Revolution
                                             ghostDead(ghostHealth[ghostcount], ghostcoords[ghostcount, 0], ghostcoords[ghostcount, 1] - 1, ghostcount);
                                         }
                                     }
-
                                     boardBullet[0] = pX;
                                     boardBullet[1] = pY - 1;
                                     flagFirstBullet = 1;
@@ -2039,8 +1801,6 @@ namespace Pacman_Revolution
                     }
 
                     int cont1 = 0;
-
-
                     if (Keyboard.GetState().IsKeyUp(Keys.W)) Wpressed = false;
                     if (Wpressed == false && Keyboard.GetState().IsKeyDown(Keys.W))
                         {
@@ -2048,7 +1808,6 @@ namespace Pacman_Revolution
                             {
                                 if (lastDashMove >= 10f)
                                 {
-                                    
                                         //dash - mexe-o 5 unidades para o sentido que o pacman esta virado mas gasta 10 pellets
                                         if (lastdirectionfaced == 1)
                                         {
@@ -2058,10 +1817,8 @@ namespace Pacman_Revolution
                                                 Qpressed = 1;
                                                 lastAfterimage = 0f;
                                                 lastDashMove = 0f;
-
                                                 board[pX, pY] = 5;
                                                 cont1++;
-
                                                 pY--;
                                                 board[pX, pY] = 1;
                                                 spacepressed = true;
@@ -2074,10 +1831,8 @@ namespace Pacman_Revolution
                                             {
                                                 lastAfterimage = 0f;
                                                 lastDashMove = 0f;
-
                                                 board[pX, pY] = 6;
                                                 cont1++;
-
                                                 pY++;
                                                 board[pX, pY] = 1;
                                                 spacepressed = true;
@@ -2086,12 +1841,10 @@ namespace Pacman_Revolution
                                         if (lastdirectionfaced == 3)
                                         {
                                             cont1 = 0;
-
                                             while (canGoRight() == true && cont1 < 5)
                                             {
                                                 lastAfterimage = 0f;
                                                 lastDashMove = 0f;
-
                                                 board[pX, pY] = 7;
                                                 cont1++;
                                                 pX++;
@@ -2106,10 +1859,8 @@ namespace Pacman_Revolution
                                             {
                                                 lastAfterimage = 0f;
                                                 lastDashMove = 0f;
-
                                                 board[pX, pY] = 8;
                                                 cont1++;
-
                                                 pX--;
                                                 board[pX, pY] = 1;
                                                 spacepressed = true;
@@ -2122,10 +1873,7 @@ namespace Pacman_Revolution
                                             {
                                                 pelletcont = pelletcont - 10;
                                             }
-                                        }
-
-                                        
-                                    
+                                        }    
                                 }
                                 else
                                 {
@@ -2138,8 +1886,6 @@ namespace Pacman_Revolution
                             }
                             Wpressed = true;
                         }
-                    
-
 
                     //teleport
                     if (Keyboard.GetState().IsKeyUp(Keys.E)) Epressed = false;
@@ -2164,7 +1910,6 @@ namespace Pacman_Revolution
                                     tmarker = 1;
                                 }else{
 
-                                
                                     for (int x = 0; x < 40; x++)
                                     {
                                         for (int y = 0; y < 22; y++)
@@ -2181,7 +1926,6 @@ namespace Pacman_Revolution
                                     soundteleport.Play();
                                     tmarker = 0;
                                 }
-
                             }
                         else
                         {
@@ -2194,17 +1938,10 @@ namespace Pacman_Revolution
                     }
                     Epressed = true;
                     }//teleport
-
-
-
-
                 }
- 
-
 
                 //detetar se um fantasma apanhou o pacman
                 if (pacmanDead(vidaPacman, pX, pY, gpX, gpY, lastTimeHit) == true) gameover = 1;
-
                 if (gameover == 1)
                 {
                     for (int x = 0; x < 40; x++)
@@ -2216,8 +1953,6 @@ namespace Pacman_Revolution
                         }
                     }
                 }
-
-
 
                 if (lastAfterimage > 0.5f)
                 {
@@ -2306,12 +2041,6 @@ namespace Pacman_Revolution
                     }
                 }
 
-
-
-
-
-
-
                 //super
                 if (Keyboard.GetState().IsKeyUp(Keys.R)) Rpressed = false;
                 if (Rpressed == false && Keyboard.GetState().IsKeyDown(Keys.R))
@@ -2357,7 +2086,6 @@ namespace Pacman_Revolution
                         {
                             cont4 = 0;
                             songsuper.Play();
-                            //MediaPlayer.Play(songsuper);
                         }
                     }
                     if (supertime >= 14.5f)
@@ -2368,19 +2096,6 @@ namespace Pacman_Revolution
                         MediaPlayer.Play(music1);
                     }
                 }//super
-
-
-            //cheats
-                if (Keyboard.GetState().IsKeyDown(Keys.O))
-                {
-                    vidaPacman++;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.P))
-                {
-                    pelletcont = pelletcont + 100;
-                }
-            //cheats
-
 
             //respawn pellets
                 pellettotal = 0;
@@ -2415,7 +2130,6 @@ namespace Pacman_Revolution
                     }
                 }
             //respawn pellets
-
 
             //ganhar vidas
                 if (vidasganhas == 0)
@@ -2464,32 +2178,17 @@ namespace Pacman_Revolution
                     }
                 }
                 //ganhar vidas
-
             base.Update(gameTime);
         }
 
-
-
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
             spriteBatch.Begin();
-
-         
-
-            //spriteBatch.Draw(pacman, new Vector2(300, 300), Color.Yellow);
-
             for (int x = 0; x < 40; x++)
             {
                 for (int y = 0; y < 22; y++)
                 {
-
                     //vai desenhando todos os elementos do jogo a medida que são precisos
                     //board[x, y] == 0 -> nada/vazio
                     //board[x, y] == 1 -> pacman
@@ -2498,7 +2197,6 @@ namespace Pacman_Revolution
                     //board[x, y] == 4 -> bullet
                     //board[x, y] == 5-8-> afterimages
                     //ghostboard[x, y] == 1 -> fantasma
-                   
                     if (board[x, y] == 0)
                     {
                         spriteBatch.Draw(black, new Vector2(x * 30, (y - 2) * 30));
@@ -2559,26 +2257,6 @@ namespace Pacman_Revolution
                     {
                         spriteBatch.Draw(explosion, new Vector2(x * 30, (y - 2) * 30));
                     }
-
-                    //if (board[x, y] == 4)
-                    //{
-                    //    spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
-                    //}
-                    //if (ghostboard[x, y] == 0)
-                    //{
-                    //    spriteBatch.Draw(black, new Vector2(x * 30, (y - 2) * 30));
-                    //}
-
-
-                    //if (ghostboard[x, y] == 1)
-                    //{
-                    //    spriteBatch.Draw(ghost, new Vector2(x * 30, (y - 2) * 30));
-                    //}
-                    //if (ghostboard[x, y] == 2)
-                    //{
-                    //    spriteBatch.Draw(ghost2, new Vector2(x * 30, (y - 2) * 30));
-                    //}
-
                     if (gameover == 0)
                     {
                         spriteBatch.Draw(ghost, new Vector2(ghostcoords[0, 0] * 30, (ghostcoords[0, 1] - 2) * 30));
@@ -2588,34 +2266,19 @@ namespace Pacman_Revolution
                         spriteBatch.Draw(ghost5, new Vector2(ghostcoords[4, 0] * 30, (ghostcoords[4, 1] - 2) * 30));
                         spriteBatch.Draw(ghost6, new Vector2(ghostcoords[5, 0] * 30, (ghostcoords[5, 1] - 2) * 30));
                     }
-                        
-
                 }
             }
 
             if (gameover == 0)
             {
-
-
                 spriteBatch.DrawString(font1, "*Info*", new Vector2(1100, 5), Color.White);
-
-
-                spriteBatch.DrawString(font1, "Health:" + vidaPacman, new Vector2(1052, 30), Color.White);
-
+                spriteBatch.DrawString(font1, "Life:" + vidaPacman, new Vector2(1052, 30), Color.White);
                 spriteBatch.DrawString(font1, "Pellets:" + pelletcont, new Vector2(1052, 55), Color.White);
-
-
                 spriteBatch.DrawString(font1, "Time:" + totalgametime, new Vector2(1052, 90), Color.White);
-
                 spriteBatch.DrawString(font1, "Score:" + score, new Vector2(1052, 115), Color.White);
-
                 spriteBatch.DrawString(font1, "Kills:" + kills, new Vector2(1052, 140), Color.White);
-
                 spriteBatch.DrawString(font1, "Ghost Speed:" + ghostspeedlevel, new Vector2(1052, 165), Color.White);
-
-
                 spriteBatch.DrawString(font1, "*Abilities*", new Vector2(1075, 225), Color.White);
-
                 spriteBatch.DrawString(font1, "Shoot:3P(Q)", new Vector2(1065, 250), Color.White);
                 if ((lastBullet > 0.5f && flagBullet==0) || (super==1 && flagBullet==0))
                 {
@@ -2625,8 +2288,6 @@ namespace Pacman_Revolution
                 {
                     spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 275), Color.White);
                 }
-
-
                 spriteBatch.DrawString(font1, "Dash:10P(W)", new Vector2(1065, 325), Color.White);
                 if (lastDashMove > 10f || super== 1)
                 {
@@ -2636,7 +2297,6 @@ namespace Pacman_Revolution
                 {
                     spriteBatch.DrawString(font1, "(Wait...)", new Vector2(1090, 350), Color.White);
                 }
-
                 spriteBatch.DrawString(font1, "Tele:20P(E)", new Vector2(1065, 400), Color.White);
                 if (lastTeleport > 1.9f || super==1)
                 {
@@ -2667,7 +2327,6 @@ namespace Pacman_Revolution
 
             //                                              x   y largura altura
             if (gameover == 0) DrawRectangle(new Rectangle(1050, 0, 148, 600), Color.DarkBlue);
-
             if (gameover == 1)
             {
                 if (cont5 == 0)
@@ -2675,7 +2334,6 @@ namespace Pacman_Revolution
                     soundgameover.Play();
                     cont5 = 1;
                 }
-                //music1.Stop();
                 pacman = Content.Load<Texture2D>("pacman v2 30x30 -  up");
                 spriteBatch.Draw(pacman, new Vector2(420, 18));
                 spriteBatch.Draw(pacman, new Vector2(450, 18));
@@ -2745,19 +2403,14 @@ namespace Pacman_Revolution
 
         private void DrawRectangle(Rectangle r, Color c)
         {
-
             spriteBatch.Draw(box, new Rectangle(r.X, r.Y, r.Width, 1), c);
             spriteBatch.Draw(box, new Rectangle(r.X, r.Y, 1, r.Height), c);
             spriteBatch.Draw(box, new Rectangle(r.X, r.Y + r.Height - 1, r.Width, 1), c);
             spriteBatch.Draw(box, new Rectangle(r.X + r.Width - 1, r.Y, 1, r.Height), c);
-
         }
-
-
 
         private bool canGoUp()
         {
-
             //verifica se o pacman pode ir para cima, ou seja, não o deixa sair fora do ecra nem ir para a mesma posição que um bloco
             if (pY == 2 || board[pX,pY-1]==2)
             {
@@ -2765,15 +2418,12 @@ namespace Pacman_Revolution
             }
             else
             {
-                
                 return true;
             }
-
         }
 
         private bool scanGoUp()
         {
-
             if (spY == 2 || board[spX, spY - 1] == 2 || board[spX, spY - 1] == 1)
             {
                 board[spX, spY] = 0;
@@ -2783,12 +2433,10 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
 
         private bool bulletcanGoUp()
         {
-
             if (spY == 2 || board[spX, spY - 1] == 2 || board[spX, spY - 1] == 1 || ghostboard[spX, spY - 1] != 0)
             {
                 board[spX, spY] = 0;
@@ -2798,13 +2446,10 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
-
 
         private bool gcanGoUp()
         {
-
             //mesma coisa que a função de cima exceto que é para o fantasma
             if (gpY == 2 || board[gpX, gpY - 1] == 2)
             {
@@ -2812,29 +2457,23 @@ namespace Pacman_Revolution
             }
             else
             {
-
                 return true;
             }
-
         }
         private bool canGoDown()
         {
-
             if (pY >= 21 || board[pX, pY + 1] == 2)
             {
                 return false;
             }
             else
             {
-               
                 return true;
             }
-
         }
 
         private bool scanGoDown()
         {
-
             if (spY >= 21 || board[spX, spY+1] == 2 || board[spX, spY+1] == 1)
             {
                 board[spX, spY] = 0;
@@ -2844,28 +2483,22 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
 
         private bool gcanGoDown()
         {
-
             if (gpY >= 21 || board[gpX, gpY + 1] == 2)
             {
                 return false;
             }
             else
             {
-
                 return true;
             }
-
         }
-
 
         private bool canGoLeft()
         {
-
             if (pX == 0 || board[pX-1, pY] == 2)
             {
                 return false;
@@ -2874,12 +2507,10 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
 
         private bool scanGoLeft()
         {
-
             if (spX == 0|| board[spX - 1, spY] == 2 || board[spX - 1, spY] == 1)
             {
                 board[spX, spY] = 0;
@@ -2889,12 +2520,10 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
 
         private bool gcanGoLeft()
         {
-
             if (gpX == 0 || board[gpX - 1, gpY] == 2)
             {
                 return false;
@@ -2903,12 +2532,10 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
 
         private bool canGoRight()
         {
-
             if (pX == 34 || board[pX + 1, pY] == 2)
             {
                 return false;
@@ -2917,12 +2544,10 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
 
         private bool scanGoRight()
         {
-
             if (spX == 34 || board[spX + 1, spY] == 2 || board[spX + 1, spY] == 1)
             {
                 board[spX, spY] = 0;
@@ -2932,9 +2557,7 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
-
 
         private bool gcanGoRight()
         {
@@ -2946,7 +2569,6 @@ namespace Pacman_Revolution
             {
                 return true;
             }
-
         }
 
         private void ghostDead(int vida, int ghostX, int ghostY, int numGhost)
@@ -2980,14 +2602,8 @@ namespace Pacman_Revolution
 
         private bool pacmanDead(int vida, int pacmanX, int pacmanY, int ghostX, int ghostY, float lastHit)
         {
-            //if (pacmanX == ghostX && pacmanY == ghostY && lastHit >= 3)
-            //{
-            //    vida--;
-            //    lastHit = 0;
-            //}
             if (vida <= 0) return true;
             else return false;
         }
-
     }
 }
