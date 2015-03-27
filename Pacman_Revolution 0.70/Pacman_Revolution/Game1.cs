@@ -50,7 +50,7 @@ namespace Pacman_Revolution
         int pelletcont = 0, ghosttype = 1, flag2 = 0, linha, ghostcount, score = 0, vidaPacman = 3, pelletScore = 0, kills = 0;
         int[] repeat = new int[5];
         float lastHumanMove = 0f;
-        int level = 1, flagSpeed = 0, flagExplosion = 0, auxExplosion, xExplosion, yExplosion, flagHide = 0;
+        int level = 1, flagSpeed = 0, flagExplosion = 0, auxExplosion, xExplosion, yExplosion, flagHide = 0, flagCollision = 0;
         float ghostspeed=0f, ghostspeedlevel=1;
         float[] lastGhostMove = new float[8];
         float lastBulletMove = 0f;
@@ -778,6 +778,7 @@ namespace Pacman_Revolution
                     gpX = 13;
                     gpY = 10;
                     ghostHealth[ghostcount] = 1;
+                    flagCollision = 1;
                 }
 
                 if (ghostcount == 0)
@@ -2348,7 +2349,6 @@ namespace Pacman_Revolution
                 {
              
                     lastDashMove = 10f;
-                    lastBullet = 10f;
                     lastTeleport = 10f;
                     supertime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     if (supertime >= 0.5f)
@@ -2969,8 +2969,12 @@ namespace Pacman_Revolution
                 gpX = 13;
                 gpY = 10;
                 vida = 1;
-                flagBullet = 0;
-                flagExplosion = 1;
+                if (flagCollision == 0)
+                {
+                    flagBullet = 0;
+                    flagExplosion = 1;
+                }
+                else flagCollision = 0;
             }//imagem de fantasma morto
         }
 
