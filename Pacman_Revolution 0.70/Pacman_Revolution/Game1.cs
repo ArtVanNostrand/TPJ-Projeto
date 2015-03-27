@@ -655,6 +655,7 @@ namespace Pacman_Revolution
 
             if (flagExplosion == 1)
             {
+                if (board[xExplosion, yExplosion] != 1) board[boardBullet[0], boardBullet[1]] = auxExplosion;
                 board[xExplosion, yExplosion] = 14;
                 flagExplosion = 0;
                 lastExplosion = 0;
@@ -662,7 +663,7 @@ namespace Pacman_Revolution
             }
             if (lastExplosion > 0.1f && flagHide == 1)
             {
-                board[xExplosion, yExplosion] = auxExplosion;
+                if (board[xExplosion, yExplosion] != 1) board[xExplosion, yExplosion] = auxExplosion;
                 flagHide = 0;
             }
             
@@ -1605,7 +1606,7 @@ namespace Pacman_Revolution
 
                                 if (pelletcont > 2 || super ==1)
                                 {
-                                    if (lastBullet >= 1f)
+                                    if (lastBullet >= 0.5f)
                                     {
                                         if (pY != 2 && lastdirectionfaced == 1 && (board[pX, pY - 1] == 0 || board[pX, pY - 1] == 3 || board[pX, pY - 1] == 10 || board[pX, pY - 1] == 14))
                                         {
